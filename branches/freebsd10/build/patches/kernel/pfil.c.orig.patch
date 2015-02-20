@@ -1,0 +1,22 @@
+--- sys/net/pfil.c.orig	2014-01-09 14:31:18.000000000 +0000
++++ sys/net/pfil.c	2014-01-09 14:32:54.000000000 +0000
+@@ -331,13 +331,15 @@
+ 			return (EEXIST);
+ 
+ 	/*
+-	 * Insert the input list in reverse order of the output list so that
+-	 * the same path is followed in or out of the kernel.
++	 * m0n0wall: insert hooks in reverse order (with respect to default
++	 * FreeBSD behavior) to ensure that the dynamically loaded ipfw
++	 * is called before ipfilter for outbound and after ipfilter for
++	 * inbound packets (due to NAT).
+ 	 */
+ 	if (flags & PFIL_IN)
+-		TAILQ_INSERT_HEAD(chain, pfh1, pfil_chain);
+-	else
+ 		TAILQ_INSERT_TAIL(chain, pfh1, pfil_chain);
++	else
++		TAILQ_INSERT_HEAD(chain, pfh1, pfil_chain);
+ 	return (0);
+ }
+ 

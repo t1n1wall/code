@@ -1,0 +1,78 @@
+--- sys/sys/mbuf.h.orig	2014-01-09 17:58:33.000000000 +0000
++++ sys/sys/mbuf.h	2014-01-09 17:59:00.000000000 +0000
+@@ -223,6 +223,7 @@
+ #define	M_VLANTAG	0x00000080 /* ether_vtag is valid */
+ #define	M_FLOWID	0x00000100 /* deprecated: flowid is valid */
+ #define	M_NOFREE	0x00000200 /* do not free mbuf, embedded in cluster */
++#define M_IPIN_SKIPPFIL 0x00800000 /* m0n0wall: skip pfil processing in ip_input */
+ 
+ #define	M_PROTO1	0x00001000 /* protocol-specific */
+ #define	M_PROTO2	0x00002000 /* protocol-specific */
+--- sys/netinet/ip_input.c.orig	2014-01-09 16:44:50.000000000 +0000
++++ sys/netinet/ip_input.c	2014-01-09 18:08:01.000000000 +0000
+@@ -449,18 +449,22 @@
+ 		}
+ 	}
+ 
+-	if (m->m_pkthdr.csum_flags & CSUM_IP_CHECKED) {
+-		sum = !(m->m_pkthdr.csum_flags & CSUM_IP_VALID);
+-	} else {
+-		if (hlen == sizeof(struct ip)) {
+-			sum = in_cksum_hdr(ip);
++	/* skip checksum checks if we came from dummynet, since we'll already
++	   have been here in that case */
++	if (!(m->m_flags & M_IPIN_SKIPPFIL)) {
++		if (m->m_pkthdr.csum_flags & CSUM_IP_CHECKED) {
++			sum = !(m->m_pkthdr.csum_flags & CSUM_IP_VALID);
+ 		} else {
+-			sum = in_cksum(m, hlen);
++			if (hlen == sizeof(struct ip)) {
++				sum = in_cksum_hdr(ip);
++			} else {
++				sum = in_cksum(m, hlen);
++			}
++		}
++		if (sum) {
++		    IPSTAT_INC(ips_badsum);
++			goto bad;
+ 		}
+-	}
+-	if (sum) {
+-		IPSTAT_INC(ips_badsum);
+-		goto bad;
+ 	}
+ 
+ #ifdef ALTQ
+@@ -513,6 +517,22 @@
+ 	if (!PFIL_HOOKED(&V_inet_pfil_hook))
+ 		goto passin;
+ 
++	if (m->m_flags & M_IPIN_SKIPPFIL) {
++		/* m0n0wall: packet has already been through dummynet, and therefore
++		   also through ipnat (reversed processing order in m0n0wall);
++		   we skip the pfil hooks to avoid ipnat being called again on
++		   this packet (this implicitly assumes that one_pass=1).
++		   However, we need to remove the ipfw tag, otherwise the
++		   packet will be treated improperly in ip_output. */
++        struct m_tag *ipfw_tag;
++        ipfw_tag = m_tag_locate(m, MTAG_IPFW_RULE, 0, NULL);
++        if (ipfw_tag != NULL)
++            m_tag_delete(m, ipfw_tag);
++		
++		m->m_flags &= ~M_IPIN_SKIPPFIL;
++		goto passin;
++	}
++
+ 	odst = ip->ip_dst;
+ 	if (pfil_run_hooks(&V_inet_pfil_hook, &m, ifp, PFIL_IN, NULL) != 0)
+ 		return;
+--- sys/netpfil/ipfw/ip_dn_io.c.orig	2014-01-09 18:01:24.000000000 +0000
++++ sys/netpfil/ipfw/ip_dn_io.c	2014-01-09 18:06:05.000000000 +0000
+@@ -662,6 +662,7 @@
+ 			break ;
+ 
+ 		case DIR_IN :
++			m->m_flags |= M_IPIN_SKIPPFIL;
+ 			netisr_dispatch(NETISR_IP, m);
+ 			break;
+ 

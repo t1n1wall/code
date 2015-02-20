@@ -1,0 +1,563 @@
+--- mini_httpd.c.orig	2014-10-19 07:33:10.000000000 +0100
++++ mini_httpd.c	2015-02-17 17:39:36.000000000 +0000
+@@ -77,7 +77,7 @@
+ 
+ 
+ #if defined(AF_INET6) && defined(IN6_IS_ADDR_V4MAPPED)
+-#define USE_IPV6
++/* #define USE_IPV6 */
+ #endif
+ 
+ #ifndef STDIN_FILENO
+@@ -144,7 +144,7 @@
+ #define AUTH_FILE ".htpasswd"
+ #endif /* AUTH_FILE */
+ #ifndef READ_TIMEOUT
+-#define READ_TIMEOUT 60
++#define READ_TIMEOUT 30
+ #endif /* READ_TIMEOUT */
+ #ifndef WRITE_TIMEOUT
+ #define WRITE_TIMEOUT 300
+@@ -173,13 +173,25 @@
+ #endif /* USE_IPV6 */
+     } usockaddr;
+ 
++typedef struct {
++	int			cpid;	/* child PID - 0 if unused */
++	in_addr_t	caddr;	/* client address */
++} conninfo;
+ 
+ static char* argv0;
+ static int debug;
+ static unsigned short port;
++static conninfo* clients;
++static int maxproc;
++static int maxperip;
++static sigset_t sigchildset;
++static int currproc;
+ static char* dir;
+ static char* data_dir;
+ static int do_chroot;
++static int captivemode;
++static char* cpelementpath;
++static char* cpelementhost;
+ static int vhost;
+ static char* user;
+ static char* cgi_pattern;
+@@ -215,6 +227,7 @@
+ static size_t request_size, request_len, request_idx;
+ static int method;
+ static char* path;
++static char* captive_reqpath;
+ static char* file;
+ static char* pathinfo;
+ struct stat sb;
+@@ -330,9 +343,15 @@
+     argv0 = argv[0];
+     debug = 0;
+     port = 0;
++	maxproc = 16 ;
++	maxperip = 0 ;
++	currproc = 0 ;
+     dir = (char*) 0;
+     data_dir = (char*) 0;
+     do_chroot = 0;
++    captivemode = 0;
++    cpelementpath = NULL;
++    captive_reqpath = NULL;
+     vhost = 0;
+     cgi_pattern = (char*) 0;
+     url_pattern = (char*) 0;
+@@ -385,6 +404,20 @@
+ 	    ++argn;
+ 	    port = (unsigned short) atoi( argv[argn] );
+ 	    }
++	else if ( strcmp( argv[argn], "-maxproc" ) == 0 && argn + 1 < argc )
++	    {
++	    ++argn;
++	    maxproc = (unsigned short) atoi( argv[argn] );
++	    if (maxproc <= 0)
++	    	usage();
++	    }
++	else if ( strcmp( argv[argn], "-maxperip" ) == 0 && argn + 1 < argc )
++	    {
++	    ++argn;
++	    maxperip = (unsigned short) atoi( argv[argn] );
++	    if (maxperip < 0)
++	    	usage();
++	    }
+ 	else if ( strcmp( argv[argn], "-d" ) == 0 && argn + 1 < argc )
+ 	    {
+ 	    ++argn;
+@@ -439,12 +472,24 @@
+ 	    ++argn;
+ 	    max_age = atoi( argv[argn] );
+ 	    }
++	else if ( strcmp( argv[argn], "-cpelement" ) == 0 && argn + 2 < argc )
++	    {
++	    ++argn;
++	    cpelementpath = argv[argn];
++	    ++argn;
++	    cpelementhost = argv[argn];
++	    }
++	else if ( strcmp( argv[argn], "-a" ) == 0 )
++	    captivemode = 1;
+ 	else
+ 	    usage();
+ 	++argn;
+ 	}
+     if ( argn != argc )
+ 	usage();
++	
++	if (maxproc < maxperip)
++	    usage();
+ 
+     cp = strrchr( argv0, '/' );
+     if ( cp != (char*) 0 )
+@@ -453,6 +498,16 @@
+ 	cp = argv0;
+     openlog( cp, LOG_NDELAY|LOG_PID, LOG_DAEMON );
+ 
++	if (maxperip != 0) {
++		int i;
++		clients = e_malloc(sizeof(conninfo) * maxproc);
++		for (i = 0; i < maxproc; i++)
++			clients[i].cpid = 0;
++		
++		sigemptyset(&sigchildset);
++		sigaddset(&sigchildset, SIGCHLD);
++	}
++
+     if ( port == 0 )
+ 	{
+ #ifdef USE_SSL
+@@ -553,7 +608,7 @@
+ 	ssl_ctx = SSL_CTX_new( SSLv23_server_method() );
+ 	SSL_CTX_set_options( ssl_ctx, SSL_OP_NO_SSLv3 );
+ 	if ( certfile[0] != '\0' )
+-	    if ( SSL_CTX_use_certificate_file( ssl_ctx, certfile, SSL_FILETYPE_PEM ) == 0 ||
++	    if ( SSL_CTX_use_certificate_chain_file( ssl_ctx, certfile ) == 0 ||
+ 		 SSL_CTX_use_PrivateKey_file( ssl_ctx, certfile, SSL_FILETYPE_PEM ) == 0 ||
+ 		 SSL_CTX_check_private_key( ssl_ctx ) == 0 )
+ 		{
+@@ -733,6 +788,7 @@
+ 	    exit( 1 );
+ 	    }
+ 	/* Check for unnecessary security exposure. */
++	/*
+ 	if ( ! do_chroot )
+ 	    {
+ 	    syslog( LOG_WARNING,
+@@ -740,6 +796,7 @@
+ 	    (void) fprintf( stderr,
+ 		"%s: started as root without requesting chroot(), warning only\n", argv0 );
+ 	    }
++	*/
+ 	}
+ 
+     /* Catch various signals. */
+@@ -762,6 +819,7 @@
+ 
+     init_mime();
+ 
++	/*
+     if ( hostname == (char*) 0 )
+ 	syslog(
+ 	    LOG_NOTICE, "%.80s starting on port %d", SERVER_SOFTWARE,
+@@ -770,7 +828,8 @@
+ 	syslog(
+ 	    LOG_NOTICE, "%.80s starting on %.80s, port %d", SERVER_SOFTWARE,
+ 	    hostname, (int) port );
+-
++	*/
++	
+     /* Main loop. */
+     for (;;)
+ 	{
+@@ -806,7 +865,7 @@
+ 	    }
+ 	if ( select( maxfd + 1, &lfdset, (fd_set*) 0, (fd_set*) 0, (struct timeval*) 0 ) < 0 )
+ 	    {
+-	    if ( errno == EINTR || errno == EAGAIN )
++	    if ( errno == EINTR || errno == EAGAIN || errno == ECONNABORTED )
+ 		continue;	/* try again */
+ 	    syslog( LOG_CRIT, "select - %m" );
+ 	    perror( "select" );
+@@ -838,6 +897,36 @@
+ 	    exit( 1 );
+ 	    }
+ 
++	/* If we've reached max child procs, then close the connection - 
++	   don't attempt to send back a response since that itself may 
++	   cause our process to hang. */
++	if (currproc >= maxproc) {
++		close(conn_fd) ;
++		continue ;
++	}
++	
++	sigprocmask(SIG_BLOCK, &sigchildset, NULL);
++	
++	/* If maxperip is enabled, count the number of existing connections
++	   from this client and close the connection if the max is exceeded. */
++	if (maxperip != 0) {
++		int i;
++		int nconns = 0;
++		
++		for (i = 0; i < maxproc; i++) {
++			if (clients[i].cpid == 0)
++				continue;
++			else if (clients[i].caddr == usa.sa_in.sin_addr.s_addr)
++				nconns++;
++		}
++		
++		if (nconns >= maxperip) {
++			close(conn_fd);
++			sigprocmask(SIG_UNBLOCK, &sigchildset, NULL);
++			continue;
++		}
++	}
++
+ 	/* Fork a sub-process to handle the connection. */
+ 	r = fork();
+ 	if ( r < 0 )
+@@ -857,6 +946,26 @@
+ 	    handle_request();
+ 	    exit( 0 );
+ 	    }
++	    
++	currproc++;
++	
++	if (maxperip != 0) {
++		int i;
++		
++		/* record in table of clients */
++		for (i = 0; i < maxproc; i++) {
++			if (clients[i].cpid == 0) {
++				clients[i].cpid = r;
++				clients[i].caddr = usa.sa_in.sin_addr.s_addr;
++				break;
++			}
++		}
++		
++		if (i == maxproc)
++			syslog(LOG_CRIT, "client connection table full!");
++	}
++	sigprocmask(SIG_UNBLOCK, &sigchildset, NULL);
++	
+ 	(void) close( conn_fd );
+ 	}
+     }
+@@ -866,9 +975,9 @@
+ usage( void )
+     {
+ #ifdef USE_SSL
+-    (void) fprintf( stderr, "usage:  %s [-C configfile] [-D] [-S] [-E certfile] [-Y cipher] [-p port] [-d dir] [-dd data_dir] [-c cgipat] [-u user] [-h hostname] [-r] [-v] [-l logfile] [-i pidfile] [-T charset] [-P P3P] [-M maxage]\n", argv0 );
++    (void) fprintf( stderr, "usage:  %s [-C configfile] [-D] [-S] [-E certfile] [-Y cipher] [-p port] [-d dir] [-dd data_dir] [-c cgipat] [-u user] [-h hostname] [-r] [-v] [-l logfile] [-i pidfile] [-T charset] [-P P3P] [-M maxage] [-maxproc max_concurrent_procs] [-maxperip max_concurrent_procs_per_ip] [-cpelement path host]\n", argv0 );
+ #else /* USE_SSL */
+-    (void) fprintf( stderr, "usage:  %s [-C configfile] [-D] [-p port] [-d dir] [-dd data_dir] [-c cgipat] [-u user] [-h hostname] [-r] [-v] [-l logfile] [-i pidfile] [-T charset] [-P P3P] [-M maxage]\n", argv0 );
++    (void) fprintf( stderr, "usage:  %s [-C configfile] [-D] [-p port] [-d dir] [-dd data_dir] [-c cgipat] [-u user] [-h hostname] [-r] [-v] [-l logfile] [-i pidfile] [-T charset] [-P P3P] [-M maxage] [-maxproc max_concurrent_procs] [-maxperip max_concurrent_procs_per_ip] [-cpelement path host]\n", argv0 );
+ #endif /* USE_SSL */
+     exit( 1 );
+     }
+@@ -1140,7 +1249,7 @@
+     char* cp;
+     int r, file_len, i;
+     const char* index_names[] = {
+-	"index.html", "index.htm", "index.xhtml", "index.xht", "Default.htm",
++	"index.php", "index.html", "index.htm", "index.xhtml", "index.xht", "Default.htm",
+ 	"index.cgi" };
+ 
+     /* Set up the timeout for reading. */
+@@ -1178,9 +1287,11 @@
+     ** solution is writev() (as used in thttpd), or send the headers with
+     ** send(MSG_MORE) (only available in Linux so far).
+     */
++	/*
+     r = 1;
+     (void) setsockopt(
+ 	conn_fd, IPPROTO_TCP, TCP_NOPUSH, (void*) &r, sizeof(r) );
++	*/
+ #endif /* TCP_NOPUSH */
+ 
+ #ifdef USE_SSL
+@@ -1227,11 +1338,13 @@
+ 	send_error( 400, "Bad Request", "", "Can't parse request." );
+     *protocol++ = '\0';
+     protocol += strspn( protocol, " \t\012\015" );
+-    query = strchr( path, '?' );
+-    if ( query == (char*) 0 )
+-	query = "";
+-    else
+-	*query++ = '\0';
++    if (!captivemode) {
++	    query = strchr( path, '?' );
++	    if ( query == (char*) 0 )
++			query = "";
++	    else
++			*query++ = '\0';
++	}
+ 
+     /* Parse the rest of the request headers. */
+     while ( ( line = get_request_line() ) != (char*) 0 )
+@@ -1304,6 +1417,81 @@
+ 	method = METHOD_POST;
+     else
+ 	send_error( 501, "Not Implemented", "", "That method is not implemented." );
++	
++	if (captivemode) {
++		/* only accept GET in captive portal mode */
++		int iscpelement = 0;
++		
++		captive_reqpath = path;
++		
++		if (cpelementpath != NULL && cpelementhost != NULL &&
++				host != NULL && strcmp(cpelementhost, host) == 0) {
++			/* the host name in the request headers matches our host name;
++			   see if the request matches a CP element */
++			char *mypath, *myfile;
++			
++			mypath = e_strdup(path);
++			
++			strdecode(mypath, mypath);
++			if (mypath[0] == '/') {
++				myfile = &(mypath[1]);
++				de_dotdot( myfile );
++				
++				iscpelement = 1;
++				
++				/* any slashes left? */
++				for (i = 0; myfile[i]; i++) {
++					if (myfile[i] == '/') {
++						iscpelement = 0;
++						break;
++					}
++				}
++				
++				if (iscpelement && myfile[0] != '\0' &&
++					!(myfile[0] == '.' && myfile[1] == '.' &&
++				   		myfile[2] == '\0')) {
++					
++					char *cpelpath;
++					
++					iscpelement = 0;
++					
++					/* see if that CP element exists */
++					cpelpath = e_malloc(strlen(myfile) + strlen(cpelementpath) + 2);
++					
++					strcpy(cpelpath, cpelementpath);
++					strcat(cpelpath, "/");
++					strcat(cpelpath, myfile);
++					
++					r = stat(cpelpath, &sb);
++					if (r == 0 && !S_ISDIR(sb.st_mode)) {
++						iscpelement = 1;
++						file = cpelpath;
++						path = mypath;
++						pathinfo = 0;
++					}
++				} else {
++					iscpelement = 0;
++				}
++			}
++		}
++		
++    	/* Set up the timeout for writing. */
++#ifdef HAVE_SIGSET
++		(void) sigset( SIGALRM, handle_write_timeout );
++#else /* HAVE_SIGSET */
++		(void) signal( SIGALRM, handle_write_timeout );
++#endif /* HAVE_SIGSET */
++		(void) alarm( WRITE_TIMEOUT );
++		
++		if (iscpelement) {
++			do_file();
++		} else {
++			path = "/index.php";
++			file = "index.php";
++			do_cgi();
++		}
++		
++	} else {
+ 
+     strdecode( path, path );
+     if ( path[0] != '/' )
+@@ -1378,7 +1566,7 @@
+ 
+ 	got_one: ;
+ 	}
+-
++	}
+ #ifdef USE_SSL
+     SSL_free( ssl );
+ #endif /* USE_SSL */
+@@ -2147,6 +2335,7 @@
+     int envn;
+     char* cp;
+     char buf[256];
++    char rp[MAXPATHLEN];
+ 
+     envn = 0;
+     envp[envn++] = build_env( "PATH=%s", CGI_PATH );
+@@ -2167,6 +2356,7 @@
+     envp[envn++] = build_env(
+ 	"REQUEST_METHOD=%s", get_method_str( method ) );
+     envp[envn++] = build_env( "SCRIPT_NAME=%s", path );
++    envp[envn++] = build_env( "SCRIPT_FILENAME=%s", realpath(file, rp) );
+     if ( pathinfo != (char*) 0 )
+ 	{
+ 	envp[envn++] = build_env( "PATH_INFO=/%s", pathinfo );
+@@ -2201,6 +2391,9 @@
+ 	envp[envn++] = build_env( "AUTH_TYPE=%s", "Basic" );
+     if ( getenv( "TZ" ) != (char*) 0 )
+ 	envp[envn++] = build_env( "TZ=%s", getenv( "TZ" ) );
++	
++	if (captive_reqpath != NULL)
++		envp[envn++] = build_env("CAPTIVE_REQPATH=%s", captive_reqpath);
+ 
+     envp[envn] = (char*) 0;
+     return envp;
+@@ -2376,8 +2569,6 @@
+ 
+     send_error_body( s, title, text );
+ 
+-    send_error_tail();
+-
+     send_response();
+ 
+ #ifdef USE_SSL
+@@ -2413,23 +2604,16 @@
+     /* Send built-in error page. */
+     buflen = snprintf(
+ 	buf, sizeof(buf), "\
+-<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n\
+-\n\
+-<html>\n\
+-\n\
+-  <head>\n\
+-    <meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\">\n\
+-    <title>%d %s</title>\n\
+-  </head>\n\
+-\n\
+-  <body bgcolor=\"#cc9999\" text=\"#000000\" link=\"#2020ff\" vlink=\"#4040cc\">\n\
+-\n\
+-    <h4>%d %s</h4>\n",
++	+<html>\n\
+++<head><title>%d %s</title></head>\n\
+++<body>\n\
+++<h3>%d %s</h3>\n",
+ 	s, title, s, title );
+     add_to_response( buf, buflen );
+     buflen = snprintf( buf, sizeof(buf), "%s\n", text );
+     add_to_response( buf, buflen );
+-    }
++    send_error_tail();
++   }
+ 
+ 
+ static int
+@@ -2459,7 +2643,7 @@
+     {
+     char buf[500];
+     int buflen;
+-
++/*
+     if ( match( "**MSIE**", useragent ) )
+ 	{
+ 	int n;
+@@ -2473,17 +2657,11 @@
+ 	buflen = snprintf( buf, sizeof(buf), "-->\n" );
+ 	add_to_response( buf, buflen );
+ 	}
+-
++*/
+     buflen = snprintf( buf, sizeof(buf), "\
+-    <hr>\n\
+-\n\
+-    <address><a href=\"%s\">%s</a></address>\n\
+-\n\
+-  </body>\n\
+-\n\
+-</html>\n",
+-	SERVER_URL, SERVER_SOFTWARE );
+-    add_to_response( buf, buflen );
++ </body>\n\
++ </html>\n");
++	add_to_response( buf, buflen );
+     }
+ 
+ 
+@@ -2503,8 +2681,10 @@
+     start_response();
+     buflen = snprintf( buf, sizeof(buf), "%s %d %s\015\012", protocol, status, title );
+     add_to_response( buf, buflen );
++/*
+     buflen = snprintf( buf, sizeof(buf), "Server: %s\015\012", SERVER_SOFTWARE );
+     add_to_response( buf, buflen );
++*/
+     now = time( (time_t*) 0 );
+     (void) strftime( timebuf, sizeof(timebuf), rfc1123_fmt, gmtime( &now ) );
+     buflen = snprintf( buf, sizeof(buf), "Date: %s\015\012", timebuf );
+@@ -3139,8 +3319,10 @@
+     {
+     /* Don't need to set up the handler again, since it's a one-shot. */
+ 
++	/*
+     syslog( LOG_NOTICE, "exiting due to signal %d", sig );
+     (void) fprintf( stderr, "%s: exiting due to signal %d\n", argv0, sig );
++	*/
+     closelog();
+     exit( 1 );
+     }
+@@ -3201,6 +3383,23 @@
+ 		}
+ 	    break;
+ 	    }
++	currproc-- ;
++	
++	if (maxperip != 0) {
++		int i;
++		
++		/* remove from list of clients */
++		for (i = 0; i < maxproc; i++) {
++			if (clients[i].cpid == pid) {
++				clients[i].cpid = 0;
++				break;
++			}
++		}
++		
++		if (i == maxproc)
++			syslog(LOG_CRIT, "reaped child %d not found in table!", pid);
++	}
++	
+ 	}
+ 
+     /* Restore previous errno. */
+@@ -3233,7 +3432,9 @@
+ static void
+ handle_read_timeout( int sig )
+     {
++	/*
+     syslog( LOG_INFO, "%.80s connection timed out reading", ntoa( &client_addr ) );
++	*/
+     send_error(
+ 	408, "Request Timeout", "",
+ 	"No request appeared within a reasonable time period." );
+--- Makefile.orig	2014-10-19 07:33:43.000000000 +0100
++++ Makefile	2015-02-17 17:45:59.000000000 +0000
+@@ -14,10 +14,12 @@
+ # http://www.openssl.org/  Make sure the SSL_TREE definition points to the
+ # tree with your OpenSSL installation - depending on how you installed it,
+ # it may be in /usr/local instead of /usr/local/ssl.
+-#SSL_TREE =	/usr/local/ssl
+-#SSL_DEFS =	-DUSE_SSL
+-#SSL_INC =	-I$(SSL_TREE)/include
+-#SSL_LIBS =	-L$(SSL_TREE)/lib -lssl -lcrypto
++SSL_TREE =     /usr
++SSL_DEFS =     -DUSE_SSL
++SSL_INC =      -I${SSL_TREE}/include
++SSL_LIBS =     -L${SSL_TREE}/lib -lssl -lcrypto
++
++IPV6_DEFS =    -DUSE_IPV6
+ 
+ 
+ BINDIR =	/usr/local/sbin
