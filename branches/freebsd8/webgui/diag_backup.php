@@ -2,7 +2,7 @@
 <?php 
 /*
 	$Id: diag_backup.php 238 2008-01-21 18:33:33Z mkasper $
-	part of m0n0wall (http://m0n0.ch/wall)
+	part of t1n1wall (http://m0n0.ch/wall)
 	
 	Copyright (C) 2003-2007 Manuel Kasper <mk@neon1.net>.
 	All rights reserved.
@@ -101,7 +101,7 @@ if ($_POST) {
                 <tr> 
                   <td width="22%" valign="baseline" class="vncell">&nbsp;</td>
                   <td width="78%" class="vtable"> 
-                    Open a m0n0wall configuration XML file and click the button 
+                    Open a t1n1wall configuration XML file and click the button 
                       below to restore the configuration.<br>
                       <br>
                       <strong><span class="red">Note:</span></strong><br>
