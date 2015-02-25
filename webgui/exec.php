@@ -205,7 +205,7 @@ input {
 }
 
 pre {
-   border: 2px solid #435370;
+   border: 2px solid #228b22;
    background: #F0F0F0;
    padding: 1em;
    font-family: courier new, courier;
