@@ -2,7 +2,7 @@
 <?php 
 /*
 	$Id: index.php 460 2011-05-13 00:39:32Z awhite $
-	part of m0n0wall (http://m0n0.ch/wall)
+	part of t1n1wall (http://m0n0.ch/wall)
 	
 	Copyright (C) 2003-2007 Manuel Kasper <mk@neon1.net>.
 	All rights reserved.
@@ -29,7 +29,7 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 
-$pgtitle = array("m0n0wall webGUI");
+$pgtitle = array("t1n1wall webGUI");
 $pgtitle_omit = true;
 require("guiconfig.inc");
 
@@ -66,7 +66,7 @@ if ($_POST) {
                 <td height="10" colspan="2">&nbsp;</td>
               </tr>
               <tr align="center" valign="top"> 
-                <td height="170" colspan="2"><img src="logobig.gif" width="520" height="149" alt=""></td>
+                <td height="170" colspan="2"><img src="logo.png" width="520" height="149" alt=""></td>
               </tr>
               <tr> 
                 <td colspan="2" class="listtopic">System information</td>

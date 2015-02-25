@@ -91,7 +91,7 @@ if ($_POST['logout_id']) {
     echo <<<EOD
 <HTML>
 <HEAD><TITLE>Disconnecting...</TITLE></HEAD>
-<BODY BGCOLOR="#435370">
+<BODY BGCOLOR="#228b22">
 <SPAN STYLE="color: #ffffff; font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 11px;">
 <B>You've been disconnected.</B>
 </SPAN>
@@ -458,7 +458,7 @@ LogoutWin = window.open('', 'Logout', 'toolbar=0,scrollbars=0,location=0,statusb
 if (LogoutWin) {
     LogoutWin.document.write('<HTML>');
     LogoutWin.document.write('<HEAD><TITLE>Logout</TITLE></HEAD>') ;
-    LogoutWin.document.write('<BODY BGCOLOR="#435370">');
+    LogoutWin.document.write('<BODY BGCOLOR="#228b22">');
     LogoutWin.document.write('<DIV ALIGN="center" STYLE="color: #ffffff; font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 11px;">') ;
     LogoutWin.document.write('<B>Click the button below to disconnect</B><P>');
     LogoutWin.document.write('<FORM METHOD="POST" ACTION="{$oururl}">');

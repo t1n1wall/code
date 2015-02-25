@@ -2,7 +2,7 @@
 <?php 
 /*
 	$Id: services_dhcp_relay.php 411 2010-11-12 12:58:55Z mkasper $
-	part of m0n0wall (http://m0n0.ch/wall)
+	part of t1n1wall (http://m0n0.ch/wall)
 	
 	Copyright (C) 2003-2004 Justin Ellison <justin@techadvise.com>.
 	All rights reserved.
@@ -187,7 +187,7 @@ function enable_change(enable_over) {
                       <td width="78%" class="vtable">
 <input name="agentoption" type="checkbox" value="yes" <?php if ($pconfig['agentoption']) echo "checked"; ?>>
                       <strong>Append circuit ID and agent ID to requests</strong><br>
-                      If this is checked, the DHCP relay will append the circuit ID (m0n0wall interface number) and the agent ID to the DHCP request.</td>
+                      If this is checked, the DHCP relay will append the circuit ID (t1n1wall interface number) and the agent ID to the DHCP request.</td>
         		  </tr>
                       <tr> 
                         <td width="22%" valign="top" class="vncell">Destination server</td>

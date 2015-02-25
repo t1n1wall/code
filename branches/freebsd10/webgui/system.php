@@ -2,7 +2,7 @@
 <?php 
 /*
 	$Id: system.php 430 2011-04-03 16:42:21Z awhite $
-	part of m0n0wall (http://m0n0.ch/wall)
+	part of t1n1wall (http://m0n0.ch/wall)
 	
 	Copyright (C) 2003-2007 Manuel Kasper <mk@neon1.net>.
 	All rights reserved.
@@ -222,7 +222,7 @@ if ($_POST) {
                       <input name="dnsallowoverride" type="checkbox" id="dnsallowoverride" value="yes" <?php if ($pconfig['dnsallowoverride']) echo "checked"; ?>>
                       <strong>Allow DNS server list to be overridden by DHCP/PPP 
                       on WAN</strong><br>
-                      If this option is set, m0n0wall will use DNS servers assigned 
+                      If this option is set, t1n1wall will use DNS servers assigned 
                       by a DHCP/PPP server on WAN for its own purposes (including 
                       the DNS forwarder). They will not be assigned to DHCP and 
                       PPTP VPN clients, though.</span></td>

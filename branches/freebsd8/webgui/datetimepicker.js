@@ -30,7 +30,7 @@ var TimeMode=24;//default TimeMode value. 12 or 24
 
 var ShowLongMonth=true;//Show long month name in Calendar header. example: "January".
 var ShowMonthYear=true;//Show Month and Year in Calendar header.
-var MonthYearColor="#435370";//Font Color of Month and Year in Calendar header.
+var MonthYearColor="#228b22";//Font Color of Month and Year in Calendar header.
 var WeekHeadColor="#777777";//Background Color in Week header.
 var SundayColor="#D9DEE8";//Background color of Sunday.
 var SaturdayColor="#D9DEE8";//Background color of Saturday.
