@@ -33,7 +33,7 @@ $d_isfwfile = 1;
 $pgtitle = array("System", "Firmware");
 require("guiconfig.inc"); 
 
-/* checks with m0n0.ch to see if a newer firmware version is available;
+/* checks with t1n1wall.com to see if a newer firmware version is available;
    returns any HTML message it gets from the server */
 function check_firmware_version() {
 	global $g;
@@ -43,12 +43,12 @@ function check_firmware_version() {
 		"&specplatform=" . rawurlencode($specplatform['name']) . 
 		"&version=" . rawurlencode(trim(file_get_contents("/etc/version")));
 		
-	$rfd = @fsockopen("m0n0.ch", 80, $errno, $errstr, 3);
+	$rfd = @fsockopen("code.t1n1wall.com", 80, $errno, $errstr, 3);
 	if ($rfd) {
 		$hdr = "POST /wall/checkversion.php HTTP/1.0\r\n";
 		$hdr .= "Content-Type: application/x-www-form-urlencoded\r\n";
-		$hdr .= "User-Agent: m0n0wall-webGUI/1.0\r\n";
-		$hdr .= "Host: m0n0.ch\r\n";
+		$hdr .= "User-Agent: t1n1wall-webGUI/1.0\r\n";
+		$hdr .= "Host: code.t1n1wall.com\r\n";
 		$hdr .= "Content-Length: " . strlen($post) . "\r\n\r\n";
 		
 		fwrite($rfd, $hdr);

@@ -105,11 +105,11 @@ makeimage() {
 	cp kernel.gz $MW_BUILDPATH/tmp/cdroot/
 	cp mfsroot-generic-pc-cdrom.gz $MW_BUILDPATH/tmp/cdroot/mfsroot.gz
 	cp $MW_BUILDPATH/images/generic-pc-$VERSION.img $MW_BUILDPATH/tmp/cdroot/firmware.img
-	mkisofs -b "boot/cdboot" -no-emul-boot -A "m0n0wall $VERSION CD-ROM image" \
-        -c "boot/boot.catalog" -d -r -publisher "m0n0.ch" \
-        -p "m0n0.ch" -V "m0n0wall_cd" -o "m0n0wall.iso" \
+	mkisofs -b "boot/cdboot" -no-emul-boot -A "t1n1wall $VERSION CD-ROM image" \
+        -c "boot/boot.catalog" -d -r -publisher "t1n1wall.com" \
+        -p "t1n1wall.com" -V "t1n1wall_cd" -o "t1n1wall.iso" \
         -quiet $MW_BUILDPATH/tmp/cdroot
-	mv m0n0wall.iso $MW_BUILDPATH/images/generic-pc-$VERSION.iso
+	mv t1n1wall.iso $MW_BUILDPATH/images/generic-pc-$VERSION.iso
 	echo " done"
 
 echo "Finished Stage 5"

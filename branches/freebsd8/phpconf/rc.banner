@@ -42,10 +42,10 @@
 	echo <<<EOD
 
 
-*** This is m0n0wall, version {$version}
+*** This is t1n1wall, version {$version}
     built on {$buildtime} for {$g['fullplatform']}
-    Copyright (C) 2002-2014 by Manuel Kasper. All rights reserved.
-    Visit http://m0n0.ch/wall for updates.
+    Copyright (C) 2015 by Andrew White. All rights reserved.
+    Visit http://www.t1n1wall.com for updates.
     
     
     LAN IP address: {$config['interfaces']['lan']['ipaddr']}
