@@ -128,7 +128,7 @@ foreach ($sad as $sa): ?>
 	 </tr> 
 	 <tr> 
 	   <td class="list" colspan="7"></td>
-	   <td class="list"><input name="del" type="image" src="x.gif" width="17" height="17" title="delete selected SAs" alt="delete selected SAs" onclick="return confirm('Do you really want to delete the selected security associations?')"></td>
+	   <td class="list"><input name="del" type="image" src="x.png" width="17" height="17" title="delete selected SAs" alt="delete selected SAs" onclick="return confirm('Do you really want to delete the selected security associations?')"></td>
 	 </tr>
 </table>
 </form>

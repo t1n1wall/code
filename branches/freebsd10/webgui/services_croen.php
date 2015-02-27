@@ -192,11 +192,11 @@
 						</tr>';
 		
 	// Jobsets
-	$arrow = ' <img src="in.gif" width="8" height="8" border="0"> ';
+	$arrow = ' <img src="in.png" width="8" height="8" border="0"> ';
 	foreach ($pconfig['jobset'] AS $job_id => $jobset) {
 		echo '
 						<tr>
-							<td><input name="toggle_'.$job_id.'" type="image" src="enable'.(isset($jobset['disabled']) ? '_d' : '').'.gif" width="11" height="11" title="click to toggle enabled/disabled status">&nbsp;&nbsp;'.(isset($jobset['syslog']) ? '<img src="log'.(isset($jobset['disabled']) ? '_d' : '').'.gif" width="11" height="11" border="0">' : '&nbsp;').'</td>
+							<td><input name="toggle_'.$job_id.'" type="image" src="enable'.(isset($jobset['disabled']) ? '_d' : '').'.png" width="11" height="11" title="click to toggle enabled/disabled status">&nbsp;&nbsp;'.(isset($jobset['syslog']) ? '<img src="log'.(isset($jobset['disabled']) ? '_d' : '').'.png" width="11" height="11" border="0">' : '&nbsp;').'</td>
 							<td class="listlr">'.
 								($jobset['repeat'] == 'x_minute' ? str_replace("x minute", ($jobset['minute'] > 1 ? $jobset['minute']." minutes" : "minute"), $data['repeat'][$jobset['repeat']]) : $data['repeat'][$jobset['repeat']].',<br>').
 								($jobset['repeat'] == 'once' ? date($data['date_once'], strtotime(htmlspecialchars($jobset['date']).' '.htmlspecialchars($jobset['time']))) : 
@@ -232,8 +232,8 @@
 							</td>
 							<td class="listbg">'.(isset($jobset['descr']) && !empty($jobset['descr']) ? $jobset['descr'] : '&nbsp;').'</td>
 							<td nowrap class="list">
-								<a href="services_croen_edit.php?id='.$job_id.'"><img src="e.gif" title="edit job" width="17" height="17" border="0" alt="edit job"></a>
-								<input name="del_'.$job_id.'" type="image" src="x.gif" width="17" height="17" title="delete job" alt="delete job" onclick="return confirm(\'Do you really want to delete this job?\')">
+								<a href="services_croen_edit.php?id='.$job_id.'"><img src="e.png" title="edit job" width="17" height="17" border="0" alt="edit job"></a>
+								<input name="del_'.$job_id.'" type="image" src="x.png" width="17" height="17" title="delete job" alt="delete job" onclick="return confirm(\'Do you really want to delete this job?\')">
 							</td>
 						</tr>';
 	}
@@ -242,26 +242,26 @@
 						<tr> 
 							<td class="list" colspan="4"></td>
 							<td class="list">
-								<a href="services_croen_edit.php"><img src="plus.gif" title="add job" width="17" height="17" border="0" alt="add job"></a>
+								<a href="services_croen_edit.php"><img src="plus.png" title="add job" width="17" height="17" border="0" alt="add job"></a>
 							</td>
 						</tr>
 					</table>
 					<table border="0" cellspacing="0" cellpadding="0" summary="info pane">
 						<tr> 
-							<td width="16"><img src="enable.gif" width="11" height="11" alt=""></td>
+							<td width="16"><img src="enable.png" width="11" height="11" alt=""></td>
 							<td>enabled</td>
 							<td width="14"></td>
-							<td width="16"><img src="log.gif" width="11" height="11" alt=""></td>
+							<td width="16"><img src="log.png" width="11" height="11" alt=""></td>
 							<td>log</td>
 						</tr>
 						<tr>
 							<td colspan="5" height="4"></td>
 						</tr>
 						<tr>
-							<td><img src="enable_d.gif" width="11" height="11" alt=""></td>
+							<td><img src="enable_d.png" width="11" height="11" alt=""></td>
 							<td>disabled</td>
 							<td></td>
-							<td><img src="log_d.gif" width="11" height="11" alt=""></td>
+							<td><img src="log_d.png" width="11" height="11" alt=""></td>
 							<td>log (disabled)</td>
 						</tr>
 					</table>

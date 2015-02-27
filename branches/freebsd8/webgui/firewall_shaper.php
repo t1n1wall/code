@@ -301,12 +301,12 @@ function fr_insline(id, on) {
                         <td valign="middle" nowrap class="list">
 						    <table border="0" cellspacing="0" cellpadding="1" summary="button pane">
 							<tr>
-							  <td><input name="move_<?=$i;?>" type="image" src="left.gif" width="17" height="17" title="move selected rules before this rule" onMouseOver="fr_insline(<?=$i;?>, true)" onMouseOut="fr_insline(<?=$i;?>, false)"></td>
-							  <td><a href="firewall_shaper_edit.php?id=<?=$i;?><?=$typelink;?>"><img src="e.gif" title="edit rule" width="17" height="17" border="0" alt="edit rule"></a></td>
+							  <td><input name="move_<?=$i;?>" type="image" src="in.png" width="17" height="17" title="move selected rules before this rule" onMouseOver="fr_insline(<?=$i;?>, true)" onMouseOut="fr_insline(<?=$i;?>, false)"></td>
+							  <td><a href="firewall_shaper_edit.php?id=<?=$i;?><?=$typelink;?>"><img src="e.png" title="edit rule" width="17" height="17" border="0" alt="edit rule"></a></td>
 							</tr>
 							<tr>
 							  <td align="center" valign="middle"></td>
-							  <td><a href="firewall_shaper_edit.php?dup=<?=$i;?><?=$typelink;?>"><img src="plus.gif" title="add a new rule based on this one" width="17" height="17" border="0" alt="add a new rule based on this one"></a></td>
+							  <td><a href="firewall_shaper_edit.php?dup=<?=$i;?><?=$typelink;?>"><img src="plus.png" title="add a new rule based on this one" width="17" height="17" border="0" alt="add a new rule based on this one"></a></td>
 							</tr>
 							</table>
                         </td>
@@ -315,27 +315,27 @@ function fr_insline(id, on) {
                       <tr> 
                         <td class="list" colspan="7"></td>
                         <td class="list">
-							<?php if ($i == 0): ?><img src="x_d.gif" width="17" height="17" title="delete selected rules" border="0" alt="delete selected rules"><?php else: ?><input name="del" type="image" src="x.gif" width="17" height="17" title="delete selected rules" alt="delete selected rules" onclick="return confirm('Do you really want to delete the selected rules?')"><?php endif; ?>
-							<a href="firewall_shaper_edit.php"><img src="plus.gif" title="add rule" width="17" height="17" border="0" alt="add rule"></a></td>
+							<?php if ($i == 0): ?><img src="x_d.png" width="17" height="17" title="delete selected rules" border="0" alt="delete selected rules"><?php else: ?><input name="del" type="image" src="x.png" width="17" height="17" title="delete selected rules" alt="delete selected rules" onclick="return confirm('Do you really want to delete the selected rules?')"><?php endif; ?>
+							<a href="firewall_shaper_edit.php"><img src="plus.png" title="add rule" width="17" height="17" border="0" alt="add rule"></a></td>
                       </tr>
                     </table>
 					  
                     <table border="0" cellspacing="0" cellpadding="0" summary="info pane">
                       <tr> 
-                        <td width="16"><img src="in.gif" width="11" height="11" alt=""></td>
+                        <td width="16"><img src="in.png" width="11" height="11" alt=""></td>
                         <td>incoming (as seen by firewall)</td>
                         <td width="14"></td>
-                        <td width="16"><img src="out.gif" width="11" height="11" alt=""></td>
+                        <td width="16"><img src="out.png" width="11" height="11" alt=""></td>
                         <td>outgoing (as seen by firewall)</td>
                       </tr>
                       <tr> 
                         <td colspan="5" height="4"></td>
                       </tr>
                       <tr> 
-                        <td><img src="in_d.gif" width="11" height="11" alt=""></td>
+                        <td><img src="in_d.png" width="11" height="11" alt=""></td>
                         <td>incoming (disabled)</td>
                         <td width="14"></td>
-                        <td><img src="out_d.gif" width="11" height="11" alt=""></td>
+                        <td><img src="out_d.png" width="11" height="11" alt=""></td>
                         <td>outgoing (disabled)</td>
                       </tr>
                     </table><br>

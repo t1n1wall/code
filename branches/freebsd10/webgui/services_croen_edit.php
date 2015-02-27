@@ -515,7 +515,7 @@
 		if ($last_id != -1) {
 			echo '
 							<td class="listr">
-								<input type="image" name="del_job['.$last_id.'][]" src="x.gif" title="delete job" width="17" height="17" border="0" alt="delete job">
+								<input type="image" name="del_job['.$last_id.'][]" src="x.png" title="delete job" width="17" height="17" border="0" alt="delete job">
 							</td>
 						</tr>';
 		}
@@ -526,7 +526,7 @@
 	}
 	echo '
 							<td class="listr" style="border-bottom:1px solid #999999;">
-								<input type="image" name="add_job[]" src="plus.gif" title="add job" width="17" height="17" border="0" alt="add job">
+								<input type="image" name="add_job[]" src="plus.png" title="add job" width="17" height="17" border="0" alt="add job">
 							</td>
 						</tr>
 					</table>

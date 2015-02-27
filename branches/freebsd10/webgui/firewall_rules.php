@@ -271,12 +271,12 @@ function fr_insline(id, on) {
                   <td valign="middle" nowrap class="list">
 				    <table border="0" cellspacing="0" cellpadding="1" summary="rule table">
 					<tr>
-					  <td><img src="left_d.gif" width="17" height="17" title="move selected rules before this rule" alt="move selected rules before this rule"></td>
-					  <td><a href="interfaces_wan.php#rfc1918"><img src="e.gif" title="edit rule" width="17" height="17" border="0" alt="edit rule"></a></td>
+					  <td><img src="in_d.png" width="17" height="17" title="move selected rules before this rule" alt="move selected rules before this rule"></td>
+					  <td><a href="interfaces_wan.php#rfc1918"><img src="e.png" title="edit rule" width="17" height="17" border="0" alt="edit rule"></a></td>
 					</tr>
 					<tr>
 					  <td align="center" valign="middle"></td>
-					  <td><img src="plus_d.gif" title="add a new rule based on this one" width="17" height="17" border="0" alt="add a new rule based on this one"></td>
+					  <td><img src="plus_d.png" title="add a new rule based on this one" width="17" height="17" border="0" alt="add a new rule based on this one"></td>
 					</tr>
 					</table>
 				  </td>
@@ -337,12 +337,12 @@ function fr_insline(id, on) {
                   <td valign="middle" nowrap class="list">
 				    <table border="0" cellspacing="0" cellpadding="1" summary="button pane">
 					<tr>
-					  <td><input name="move_<?=$i;?>" type="image" src="left.gif" width="17" height="17" title="move selected rules before this rule" onMouseOver="fr_insline(<?=$nrules;?>, true)" onMouseOut="fr_insline(<?=$nrules;?>, false)"></td>
-					  <td><a href="firewall_rules_edit.php?id=<?=$i;?><?=$typelink;?>"><img src="e.gif" title="edit rule" width="17" height="17" border="0" alt="edit rule"></a></td>
+					  <td><input name="move_<?=$i;?>" type="image" src="in.png" width="17" height="17" title="move selected rules before this rule" onMouseOver="fr_insline(<?=$nrules;?>, true)" onMouseOut="fr_insline(<?=$nrules;?>, false)"></td>
+					  <td><a href="firewall_rules_edit.php?id=<?=$i;?><?=$typelink;?>"><img src="e.png" title="edit rule" width="17" height="17" border="0" alt="edit rule"></a></td>
 					</tr>
 					<tr>
 					  <td align="center" valign="middle"></td>
-					  <td><a href="firewall_rules_edit.php?dup=<?=$i;?><?=$typelink;?>"><img src="plus.gif" title="add a new rule based on this one" width="17" height="17" border="0" alt="add a new rule based on this one"></a></td>
+					  <td><a href="firewall_rules_edit.php?dup=<?=$i;?><?=$typelink;?>"><img src="plus.png" title="add a new rule based on this one" width="17" height="17" border="0" alt="add a new rule based on this one"></a></td>
 					</tr>
 					</table>
 				  </td>
@@ -355,7 +355,7 @@ function fr_insline(id, on) {
 			  <span class="gray">
 			  No rules are currently defined for this interface.<br>
 			  All incoming connections on this interface will be blocked until you add pass rules.<br><br>
-			  Click the <a href="firewall_rules_edit.php?if=<?=htmlspecialchars($if);?><?=$typelink;?>"><img src="plus.gif" title="add new rule" border="0" width="17" height="17" align="middle" alt="add new rule"></a> button to add a new rule.</span>
+			  Click the <a href="firewall_rules_edit.php?if=<?=htmlspecialchars($if);?><?=$typelink;?>"><img src="plus.png" title="add new rule" border="0" width="17" height="17" align="middle" alt="add new rule"></a> button to add a new rule.</span>
 			  </td>
 			  <?php endif; ?>
                 <tr id="fr<?=$nrules;?>"> 
@@ -371,12 +371,12 @@ function fr_insline(id, on) {
 				    <table border="0" cellspacing="0" cellpadding="1" summary="button pane">
 					<tr>
 				      <td>
-					  <?php if ($nrules == 0): ?><img src="left_d.gif" width="17" height="17" title="move selected rules to end" border="0" alt="move selected rules to end"><?php else: ?><input name="move_<?=$i;?>" type="image" src="left.gif" width="17" height="17" title="move selected rules to end" onMouseOver="fr_insline(<?=$nrules;?>, true)" onMouseOut="fr_insline(<?=$nrules;?>, false)"><?php endif; ?></td>
+					  <?php if ($nrules == 0): ?><img src="in_d.png" width="17" height="17" title="move selected rules to end" border="0" alt="move selected rules to end"><?php else: ?><input name="move_<?=$i;?>" type="image" src="in.png" width="17" height="17" title="move selected rules to end" onMouseOver="fr_insline(<?=$nrules;?>, true)" onMouseOut="fr_insline(<?=$nrules;?>, false)"><?php endif; ?></td>
 					  <td></td>
 				    </tr>
 					<tr>
-					  <td><?php if ($nrules == 0): ?><img src="x_d.gif" width="17" height="17" title="delete selected rules" border="0" alt="delete selected rules"><?php else: ?><input name="del" type="image" src="x.gif" width="17" height="17" title="delete selected rules" alt="delete selected rules" onclick="return confirm('Do you really want to delete the selected rules?')"><?php endif; ?></td>
-					  <td><a href="firewall_rules_edit.php?if=<?=htmlspecialchars($if);?><?=$typelink;?>"><img src="plus.gif" title="add new rule" width="17" height="17" border="0" alt="add new rule"></a></td>
+					  <td><?php if ($nrules == 0): ?><img src="x_d.png" width="17" height="17" title="delete selected rules" border="0" alt="delete selected rules"><?php else: ?><input name="del" type="image" src="x.png" width="17" height="17" title="delete selected rules" alt="delete selected rules" onclick="return confirm('Do you really want to delete the selected rules?')"><?php endif; ?></td>
+					  <td><a href="firewall_rules_edit.php?if=<?=htmlspecialchars($if);?><?=$typelink;?>"><img src="plus.png" title="add new rule" width="17" height="17" border="0" alt="add new rule"></a></td>
 					</tr>
 				    </table>
 				  </td>

@@ -274,8 +274,8 @@ function enable_change(enable_change) {
                   </td>
                   <td valign="middle" nowrap class="list"> 
                   <?php if ($pconfig['enable']): ?> 
-                    <a href="services_captiveportal_vouchers_edit.php?id=<?=$i; ?>"><img src="e.gif" title="edit voucher" width="17" height="17" border="0" alt="edit voucher"></a>
-					<input name="del_<?=$i;?>" type="image" src="x.gif" width="17" height="17" title="delete voucher roll" alt="delete voucher roll" onclick="return confirm('Do you really want to delete this voucher roll and render all vouchers from this roll invalid?')">
+                    <a href="services_captiveportal_vouchers_edit.php?id=<?=$i; ?>"><img src="e.png" title="edit voucher" width="17" height="17" border="0" alt="edit voucher"></a>
+					<input name="del_<?=$i;?>" type="image" src="x.png" width="17" height="17" title="delete voucher roll" alt="delete voucher roll" onclick="return confirm('Do you really want to delete this voucher roll and render all vouchers from this roll invalid?')">
                     <a href="services_captiveportal_vouchers.php?act=csv&amp;id=<?=$i; ?>"><img src="log_s.gif" title="generate vouchers for this roll to CSV file" width="11" height="15" border="0" alt="generate vouchers for this roll to CSV file"></a>
                     <?php endif;?>
                   </td>
@@ -284,7 +284,7 @@ function enable_change(enable_change) {
 		<tr> 
 			  <td class="list" colspan="4"></td>
               <?php if ($pconfig['enable']): ?> 
-			  <td class="list"> <a href="services_captiveportal_vouchers_edit.php"><img src="plus.gif" title="add voucher" width="17" height="17" border="0" alt="add voucher"></a></td>
+			  <td class="list"> <a href="services_captiveportal_vouchers_edit.php"><img src="plus.png" title="add voucher" width="17" height="17" border="0" alt="add voucher"></a></td>
               <?php endif;?>
 		      </tr>
         </table>     

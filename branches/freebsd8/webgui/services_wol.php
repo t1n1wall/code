@@ -143,13 +143,13 @@ Click the MAC address to wake up a computer. <br>
                   <td class="listbg">
                     <?=htmlspecialchars($wolent['descr']);?>&nbsp;
                   </td>
-                  <td valign="middle" nowrap class="list"> <a href="services_wol_edit.php?id=<?=$i;?>"><img src="e.gif" title="edit entry" width="17" height="17" border="0" alt="edit entry"></a>
-                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.gif" width="17" height="17" title="delete entry" alt="delete entry" onclick="return confirm('Do you really want to delete this entry?')"></td>
+                  <td valign="middle" nowrap class="list"> <a href="services_wol_edit.php?id=<?=$i;?>"><img src="e.png" title="edit entry" width="17" height="17" border="0" alt="edit entry"></a>
+                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.png" width="17" height="17" title="delete entry" alt="delete entry" onclick="return confirm('Do you really want to delete this entry?')"></td>
 				</tr>
 			  <?php $i++; endforeach; ?>
                 <tr> 
                   <td class="list" colspan="3"></td>
-                  <td class="list"> <a href="services_wol_edit.php"><img src="plus.gif" title="add entry" width="17" height="17" border="0" alt="edd entry"></a></td>
+                  <td class="list"> <a href="services_wol_edit.php"><img src="plus.png" title="add entry" width="17" height="17" border="0" alt="edd entry"></a></td>
 				</tr>
               </table>
 </form>

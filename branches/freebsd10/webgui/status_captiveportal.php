@@ -136,7 +136,7 @@ $tabs = array('Users' => 'status_captiveportal.php',
     <?php endif; ?>
     <td class="listr"><?=$cpent[4];?>&nbsp;</td>
     <td valign="middle" class="list" nowrap>
-	<input name="del_<?=$cpent[1];?>" type="image" src="x.gif" width="17" height="17" title="disconnect client" alt="disconnect client" onclick="return confirm('Do you really want to disconnect this client?')">
+	<input name="del_<?=$cpent[1];?>" type="image" src="x.png" width="17" height="17" title="disconnect client" alt="disconnect client" onclick="return confirm('Do you really want to disconnect this client?')">
   </tr>
 <?php endforeach; ?>
 </table>
