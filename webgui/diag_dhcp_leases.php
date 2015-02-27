@@ -171,7 +171,7 @@ foreach ($leases as $data) {
 			htmlentities($data['hostname']) . "{$fspane}&nbsp;</td>\n";
 		echo "<td class=\"listr\">{$fspans}" . adjust_gmt($data['start']) . "{$fspane}&nbsp;</td>\n";
 		echo "<td class=\"listr\">{$fspans}" . adjust_gmt($data['end']) . "{$fspane}&nbsp;</td>\n";
-		echo "<td class=\"list\" valign=\"middle\"><a href=\"services_dhcp_edit.php?if={$data['if']}&amp;mac={$data['mac']}\"><img src=\"plus.gif\" width=\"17\" height=\"17\" border=\"0\" title=\"add a static mapping for this MAC address\" alt=\"add a static mapping for this MAC address\"></a></td>\n";
+		echo "<td class=\"list\" valign=\"middle\"><a href=\"services_dhcp_edit.php?if={$data['if']}&amp;mac={$data['mac']}\"><img src=\"plus.png\" width=\"17\" height=\"17\" border=\"0\" title=\"add a static mapping for this MAC address\" alt=\"add a static mapping for this MAC address\"></a></td>\n";
 		echo "</tr>\n";
 	}
 }

@@ -154,14 +154,14 @@ if (isset($_POST['del_x']) && is_array($_POST['entries'])) {
                   <td class="listbg"> 
                     <?=htmlspecialchars($natent['descr']);?>&nbsp;
                   </td>
-                  <td valign="middle" class="list" nowrap> <a href="firewall_nat_edit.php?id=<?=$i;?>"><img src="e.gif" title="edit rule" width="17" height="17" border="0" alt="edit rule"></a></td>
+                  <td valign="middle" class="list" nowrap> <a href="firewall_nat_edit.php?id=<?=$i;?>"><img src="e.png" title="edit rule" width="17" height="17" border="0" alt="edit rule"></a></td>
 				</tr>
 			  <?php $i++; endforeach; ?>
                 <tr> 
                   <td class="list" colspan="7"></td>
                   <td class="list">
-					<input name="del" type="image" src="x.gif" width="17" height="17" title="delete selected rules" alt="delete selected rules" onclick="return confirm('Do you really want to delete the selected rules?')">
-					<a href="firewall_nat_edit.php"><img src="plus.gif" title="add rule" width="17" height="17" border="0" alt="add rule"></a></td>
+					<input name="del" type="image" src="x.png" width="17" height="17" title="delete selected rules" alt="delete selected rules" onclick="return confirm('Do you really want to delete the selected rules?')">
+					<a href="firewall_nat_edit.php"><img src="plus.png" title="add rule" width="17" height="17" border="0" alt="add rule"></a></td>
 				</tr>
               </table><br>
                     <span class="vexpl"><span class="red"><strong>Note:<br>

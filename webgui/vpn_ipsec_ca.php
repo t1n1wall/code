@@ -87,13 +87,13 @@ if ($_POST) {
                   <td class="listlr">
                     <?=htmlspecialchars($cacertent['ident']);?>
                   </td>
-                  <td class="list" nowrap> <a href="vpn_ipsec_ca_edit.php?id=<?=$i;?>"><img src="e.gif" title="edit certificate" width="17" height="17" border="0" alt="certificate"></a>
-                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.gif" width="17" height="17" title="delete certificate" alt="delete certificate" onclick="return confirm('Do you really want to delete this certificate?')"></td>
+                  <td class="list" nowrap> <a href="vpn_ipsec_ca_edit.php?id=<?=$i;?>"><img src="e.png" title="edit certificate" width="17" height="17" border="0" alt="certificate"></a>
+                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.png" width="17" height="17" title="delete certificate" alt="delete certificate" onclick="return confirm('Do you really want to delete this certificate?')"></td>
 				</tr>
 			  <?php $i++; endforeach; ?>
                 <tr> 
                   <td class="list"></td>
-                  <td class="list"> <a href="vpn_ipsec_ca_edit.php"><img src="plus.gif" width="17" height="17" border="0" alt=""></a></td>
+                  <td class="list"> <a href="vpn_ipsec_ca_edit.php"><img src="plus.png" width="17" height="17" border="0" alt=""></a></td>
 				</tr>
               </table>
 			 </td>

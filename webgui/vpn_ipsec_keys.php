@@ -91,13 +91,13 @@ if ($_POST) {
                   <td class="listr">
                     <?=htmlspecialchars($mobilekeyent['pre-shared-key']);?>
                   </td>
-                  <td class="list" nowrap> <a href="vpn_ipsec_keys_edit.php?id=<?=$i;?>"><img src="e.gif" title="edit key" width="17" height="17" border="0" alt="edit key"></a>
-                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.gif" width="17" height="17" title="delete key" alt="delete key" onclick="return confirm('Do you really want to delete this key?')"></td>
+                  <td class="list" nowrap> <a href="vpn_ipsec_keys_edit.php?id=<?=$i;?>"><img src="e.png" title="edit key" width="17" height="17" border="0" alt="edit key"></a>
+                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.png" width="17" height="17" title="delete key" alt="delete key" onclick="return confirm('Do you really want to delete this key?')"></td>
 				</tr>
 			  <?php $i++; endforeach; ?>
                 <tr> 
                   <td class="list" colspan="2"></td>
-                  <td class="list"> <a href="vpn_ipsec_keys_edit.php"><img src="plus.gif" title="add key" width="17" height="17" border="0" alt="add key"></a></td>
+                  <td class="list"> <a href="vpn_ipsec_keys_edit.php"><img src="plus.png" title="add key" width="17" height="17" border="0" alt="add key"></a></td>
 				</tr>
               </table>
 			 </td>

@@ -84,14 +84,14 @@ if ($_POST) {
                   <td class="listbg">
                     <?=htmlspecialchars($secondary['descr']);?>&nbsp;
                   </td>
-                  <td valign="middle" nowrap class="list"> <a href="interfaces_secondaries_edit.php?id=<?=$i;?>&amp;if=<?=urlencode($_GET['if'])?>&amp;ifname=<?=urlencode($_GET['ifname'])?>"><img src="e.gif" title="edit IP Address" width="17" height="17" border="0" alt="edit IP Address"></a>
-                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.gif" width="17" height="17" title="delete address" alt="delete address" onclick="return confirm('Do you really want to delete this IP address?')"></td>
+                  <td valign="middle" nowrap class="list"> <a href="interfaces_secondaries_edit.php?id=<?=$i;?>&amp;if=<?=urlencode($_GET['if'])?>&amp;ifname=<?=urlencode($_GET['ifname'])?>"><img src="e.png" title="edit IP Address" width="17" height="17" border="0" alt="edit IP Address"></a>
+                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.png" width="17" height="17" title="delete address" alt="delete address" onclick="return confirm('Do you really want to delete this IP address?')"></td>
 				</tr>
 				
 			  <?php } ; $i++; endforeach; ?>
                 <tr> 
                   <td class="list" colspan="2">&nbsp;</td>
-                  <td class="list"> <a href="interfaces_secondaries_edit.php?if=<?=urlencode($_GET['if'])?>&amp;ifname=<?=urlencode($_GET['ifname'])?>"><img src="plus.gif" title="add IP Address" width="17" height="17" border="0" alt="add IP Address"></a></td>
+                  <td class="list"> <a href="interfaces_secondaries_edit.php?if=<?=urlencode($_GET['if'])?>&amp;ifname=<?=urlencode($_GET['ifname'])?>"><img src="plus.png" title="add IP Address" width="17" height="17" border="0" alt="add IP Address"></a></td>
 				</tr>
 				<tr>
 				<td colspan="2" class="list"><span class="vexpl"><span class="red"><strong>
