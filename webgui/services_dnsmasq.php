@@ -201,13 +201,13 @@ if ($_POST) {
                   <td class="listbg">
                     <?=htmlspecialchars($hostent['descr']);?>&nbsp;
                   </td>
-                  <td valign="middle" nowrap class="list"> <a href="services_dnsmasq_edit.php?id=<?=$i;?>"><img src="e.gif" title="edit host" width="17" height="17" border="0" alt="edit host"></a>
-                     &nbsp;<input name="del_host:<?=$i;?>" type="image" src="x.gif" width="17" height="17" title="delete host" alt="delete host" onclick="return confirm('Do you really want to delete this host?')"></td>
+                  <td valign="middle" nowrap class="list"> <a href="services_dnsmasq_edit.php?id=<?=$i;?>"><img src="e.png" title="edit host" width="17" height="17" border="0" alt="edit host"></a>
+                     &nbsp;<input name="del_host:<?=$i;?>" type="image" src="x.png" width="17" height="17" title="delete host" alt="delete host" onclick="return confirm('Do you really want to delete this host?')"></td>
 				</tr>
 			  <?php $i++; endforeach; ?>
                 <tr> 
                   <td class="list" colspan="4"></td>
-                  <td class="list"> <a href="services_dnsmasq_edit.php"><img src="plus.gif" title="add host" width="17" height="17" border="0" alt="add host"></a></td>
+                  <td class="list"> <a href="services_dnsmasq_edit.php"><img src="plus.png" title="add host" width="17" height="17" border="0" alt="add host"></a></td>
 				</tr>
               </table>
 			  <table width="100%" border="0" cellpadding="6" cellspacing="0" summary="auth-dns-server widget">
@@ -234,13 +234,13 @@ if ($_POST) {
                   <td class="listbg">
                     <?=htmlspecialchars($doment['descr']);?>&nbsp;
                   </td>
-                  <td valign="middle" nowrap class="list"> <a href="services_dnsmasq_domainoverride_edit.php?id=<?=$i;?>"><img src="e.gif" width="17" height="17" border="0" alt=""></a>
-                     &nbsp;<input name="del_doverride:<?=$i;?>" type="image" src="x.gif" width="17" height="17" title="delete domain override" alt="delete domain override" onclick="return confirm('Do you really want to delete this domain override?')"></td>
+                  <td valign="middle" nowrap class="list"> <a href="services_dnsmasq_domainoverride_edit.php?id=<?=$i;?>"><img src="e.png" width="17" height="17" border="0" alt=""></a>
+                     &nbsp;<input name="del_doverride:<?=$i;?>" type="image" src="x.png" width="17" height="17" title="delete domain override" alt="delete domain override" onclick="return confirm('Do you really want to delete this domain override?')"></td>
 				</tr>
 			  <?php $i++; endforeach; ?>
                 <tr> 
                   <td class="list" colspan="3"></td>
-                  <td class="list"> <a href="services_dnsmasq_domainoverride_edit.php"><img src="plus.gif" width="17" height="17" border="0" alt=""></a></td>
+                  <td class="list"> <a href="services_dnsmasq_domainoverride_edit.php"><img src="plus.png" width="17" height="17" border="0" alt=""></a></td>
 				</tr>
 			  </table>
             </form>

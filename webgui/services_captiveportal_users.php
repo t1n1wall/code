@@ -105,13 +105,13 @@ if ($changed) {
                   <td class="listbg">
                     <?=$userent['expirationdate']; ?>&nbsp;
                   </td>
-                  <td valign="middle" nowrap class="list"> <a href="services_captiveportal_users_edit.php?id=<?=$i; ?>"><img src="e.gif" title="edit user" width="17" height="17" border="0" alt="edit user"></a>
-                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.gif" width="17" height="17" title="delete user" alt="delete user" onclick="return confirm('Do you really want to delete this user?')"></td>
+                  <td valign="middle" nowrap class="list"> <a href="services_captiveportal_users_edit.php?id=<?=$i; ?>"><img src="e.png" title="edit user" width="17" height="17" border="0" alt="edit user"></a>
+                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.png" width="17" height="17" title="delete user" alt="delete user" onclick="return confirm('Do you really want to delete this user?')"></td>
 		</tr>
 	<?php $i++; endforeach; ?>
 		<tr> 
 			  <td class="list" colspan="3"></td>
-			  <td class="list"> <a href="services_captiveportal_users_edit.php"><img src="plus.gif" title="add user" width="17" height="17" border="0" alt="add users"></a></td>
+			  <td class="list"> <a href="services_captiveportal_users_edit.php"><img src="plus.png" title="add user" width="17" height="17" border="0" alt="add users"></a></td>
 		</tr>
  </table>     
 </td>

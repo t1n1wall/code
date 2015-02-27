@@ -230,7 +230,7 @@ if ($_POST) {
 		</td>
 		<td valign="middle" class="list"> 
 		  <?php if (($ifname != 'lan') && ($ifname != 'wan')): ?>
-		  <input name="del_<?=$ifname;?>" type="image" src="x.gif" width="17" height="17" title="delete interface" alt="delete interface" onclick="return confirm('Do you really want to delete this interface?')">
+		  <input name="del_<?=$ifname;?>" type="image" src="x.png" width="17" height="17" title="delete interface" alt="delete interface" onclick="return confirm('Do you really want to delete this interface?')">
 		  <?php endif; ?>
 		</td>
   </tr>
@@ -239,7 +239,7 @@ if ($_POST) {
   <tr>
 	<td class="list" colspan="2"></td>
 	<td class="list" nowrap>
-	<input name="add" type="image" src="plus.gif" width="17" height="17" title="add interface" alt="add interface">
+	<input name="add" type="image" src="plus.png" width="17" height="17" title="add interface" alt="add interface">
 	</td>
   </tr>
   <?php else: ?>

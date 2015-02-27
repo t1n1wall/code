@@ -122,13 +122,13 @@ if ($_POST) {
                   <td class="listbg">
                     <?=htmlspecialchars($vlan['descr']);?>&nbsp;
                   </td>
-                  <td valign="middle" nowrap class="list"> <a href="interfaces_vlan_edit.php?id=<?=$i;?>"><img src="e.gif" title="edit VLAN" width="17" height="17" border="0" alt="edit VLAN"></a>
-                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.gif" width="17" height="17" title="delete VLAN" alt="delete VLAN" onclick="return confirm('Do you really want to delete this VLAN?')"></td>
+                  <td valign="middle" nowrap class="list"> <a href="interfaces_vlan_edit.php?id=<?=$i;?>"><img src="e.png" title="edit VLAN" width="17" height="17" border="0" alt="edit VLAN"></a>
+                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.png" width="17" height="17" title="delete VLAN" alt="delete VLAN" onclick="return confirm('Do you really want to delete this VLAN?')"></td>
 				</tr>
 			  <?php $i++; endforeach; ?>
                 <tr> 
                   <td class="list" colspan="3">&nbsp;</td>
-                  <td class="list"> <a href="interfaces_vlan_edit.php"><img src="plus.gif" title="add VLAN" width="17" height="17" border="0" alt="add VLAN"></a></td>
+                  <td class="list"> <a href="interfaces_vlan_edit.php"><img src="plus.png" title="add VLAN" width="17" height="17" border="0" alt="add VLAN"></a></td>
 				</tr>
 				<tr>
 				<td colspan="3" class="list"><span class="vexpl"><span class="red"><strong>
