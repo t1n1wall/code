@@ -166,14 +166,14 @@ if ($_POST) {
                   <td class="listbg"> 
                     <?=htmlspecialchars($natent['descr']);?>&nbsp;
                   </td>
-                  <td class="list" nowrap> <a href="firewall_nat_out_edit.php?id=<?=$i;?>"><img src="e.gif" title="edit mapping" width="17" height="17" border="0" alt="edit mapping"></a></td>
+                  <td class="list" nowrap> <a href="firewall_nat_out_edit.php?id=<?=$i;?>"><img src="e.png" title="edit mapping" width="17" height="17" border="0" alt="edit mapping"></a></td>
                 </tr>
               <?php $i++; endforeach; ?>
                 <tr> 
                   <td class="list" colspan="6"></td>
                   <td class="list">
-					<input name="del" type="image" src="x.gif" width="17" height="17" title="delete selected mappings" alt="delete selected mappings" onclick="return confirm('Do you really want to delete the selected mappings?')">
-					<a href="firewall_nat_out_edit.php"><img src="plus.gif" title="add mapping" width="17" height="17" border="0" alt="add mapping"></a></td>
+					<input name="del" type="image" src="x.png" width="17" height="17" title="delete selected mappings" alt="delete selected mappings" onclick="return confirm('Do you really want to delete the selected mappings?')">
+					<a href="firewall_nat_out_edit.php"><img src="plus.png" title="add mapping" width="17" height="17" border="0" alt="add mapping"></a></td>
                 </tr>
               </table>
 </td>

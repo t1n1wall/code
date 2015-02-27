@@ -434,13 +434,13 @@ function enable_change(enable_over) {
                   <td class="listbg">
                     <?=htmlspecialchars($mapent['descr']);?>&nbsp;
                   </td>
-                  <td valign="middle" nowrap class="list"> <a href="services_dhcp_edit.php?if=<?=urlencode($if);?>&amp;id=<?=$i;?>"><img src="e.gif" title="edit mapping" width="17" height="17" border="0" alt="edit mapping"></a>
-                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.gif" width="17" height="17" title="delete mapping" alt="delete mapping" onclick="return confirm('Do you really want to delete this mapping?')"></td>
+                  <td valign="middle" nowrap class="list"> <a href="services_dhcp_edit.php?if=<?=urlencode($if);?>&amp;id=<?=$i;?>"><img src="e.png" title="edit mapping" width="17" height="17" border="0" alt="edit mapping"></a>
+                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.png" width="17" height="17" title="delete mapping" alt="delete mapping" onclick="return confirm('Do you really want to delete this mapping?')"></td>
 				</tr>
 			  <?php $i++; endforeach; ?>
                 <tr> 
                   <td class="list" colspan="3"></td>
-                  <td class="list"> <a href="services_dhcp_edit.php?if=<?=urlencode($if);?>"><img src="plus.gif" title="add mapping" width="17" height="17" border="0" alt="add mapping"></a></td>
+                  <td class="list"> <a href="services_dhcp_edit.php?if=<?=urlencode($if);?>"><img src="plus.png" title="add mapping" width="17" height="17" border="0" alt="add mapping"></a></td>
 				</tr>
               </table>
     </td>

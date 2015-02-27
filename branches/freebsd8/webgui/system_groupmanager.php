@@ -290,13 +290,13 @@ if($_GET['act']=="new" || $_GET['act']=="edit"){
                   <td class="listbg">
                     <?=count($group['pages']);?>&nbsp;
                   </td>
-                  <td valign="middle" nowrap class="list"> <a href="system_groupmanager.php?act=edit&amp;id=<?=$i; ?>"><img src="e.gif" title="edit group" width="17" height="17" border="0" alt="edit group"></a>
-                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.gif" width="17" height="17" title="delete group" alt="delete group" onclick="return confirm('Do you really want to delete this group?')"></td>
+                  <td valign="middle" nowrap class="list"> <a href="system_groupmanager.php?act=edit&amp;id=<?=$i; ?>"><img src="e.png" title="edit group" width="17" height="17" border="0" alt="edit group"></a>
+                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.png" width="17" height="17" title="delete group" alt="delete group" onclick="return confirm('Do you really want to delete this group?')"></td>
 		</tr>
 	<?php $i++; endforeach; ?>
 	    <tr> 
 			<td class="list" colspan="3"></td>
-			<td class="list"> <a href="system_groupmanager.php?act=new"><img src="plus.gif" title="add group" width="17" height="17" border="0" alt="add group"></a></td>
+			<td class="list"> <a href="system_groupmanager.php?act=new"><img src="plus.png" title="add group" width="17" height="17" border="0" alt="add group"></a></td>
 		</tr>
 		<tr>
 			<td colspan="3">

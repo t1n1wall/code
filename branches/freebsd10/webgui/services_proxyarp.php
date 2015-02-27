@@ -112,13 +112,13 @@ if ($_POST) {
                   <td class="listbg">
                     <?=htmlspecialchars($arpent['descr']);?>&nbsp;
                   </td>
-                  <td valign="middle" nowrap class="list"> <a href="services_proxyarp_edit.php?id=<?=$i;?>"><img src="e.gif" title="edit network" width="17" height="17" border="0" alt="edit network"></a>
-                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.gif" width="17" height="17" title="delete network" alt="delete network" onclick="return confirm('Do you really want to delete this network?')"></td>
+                  <td valign="middle" nowrap class="list"> <a href="services_proxyarp_edit.php?id=<?=$i;?>"><img src="e.png" title="edit network" width="17" height="17" border="0" alt="edit network"></a>
+                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.png" width="17" height="17" title="delete network" alt="delete network" onclick="return confirm('Do you really want to delete this network?')"></td>
 				</tr>
 			  <?php $i++; endforeach; ?>
                 <tr> 
                   <td class="list" colspan="3"></td>
-                  <td class="list"> <a href="services_proxyarp_edit.php"><img src="plus.gif" title="add network" width="17" height="17" border="0" alt="add network"></a></td>
+                  <td class="list"> <a href="services_proxyarp_edit.php"><img src="plus.png" title="add network" width="17" height="17" border="0" alt="add network"></a></td>
 				</tr>
               </table>
             </form>

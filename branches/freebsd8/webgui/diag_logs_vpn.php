@@ -58,9 +58,9 @@ function dump_clog($logfile, $tail) {
 		echo "<td class=\"listlr\" nowrap>" . htmlspecialchars(join(" ", array_slice($logent, 0, 3))) . "</td>\n";
 		
 		if ($llent[0] == "login")
-			echo "<td class=\"listr\"><img src=\"in.gif\" width=\"11\" height=\"11\" title=\"login\"></td>\n";
+			echo "<td class=\"listr\"><img src=\"in.png\" width=\"11\" height=\"11\" title=\"login\"></td>\n";
 		else
-			echo "<td class=\"listr\"><img src=\"out.gif\" width=\"11\" height=\"11\" title=\"logout\"></td>\n";
+			echo "<td class=\"listr\"><img src=\"out.png\" width=\"11\" height=\"11\" title=\"logout\"></td>\n";
 		
 		echo "<td class=\"listr\">" . htmlspecialchars($llent[3]) . "</td>\n";
 		echo "<td class=\"listr\">" . htmlspecialchars($llent[2]) . "&nbsp;</td>\n";

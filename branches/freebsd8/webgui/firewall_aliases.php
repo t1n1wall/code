@@ -96,14 +96,14 @@ if (isset($_POST['del_x']) && is_array($_POST['entries'])) {
                   <td class="listbg">
                     <?=htmlspecialchars($alias['descr']);?>&nbsp;
                   </td>
-                  <td valign="middle" nowrap class="list"> <a href="firewall_aliases_edit.php?id=<?=$i;?>"><img src="e.gif" title="edit alias" width="17" height="17" border="0" alt="edit alias"></a></td>
+                  <td valign="middle" nowrap class="list"> <a href="firewall_aliases_edit.php?id=<?=$i;?>"><img src="e.png" title="edit alias" width="17" height="17" border="0" alt="edit alias"></a></td>
 				</tr>
 			  <?php $i++; endforeach; ?>
                 <tr> 
                   <td class="list" colspan="4"></td>
                   <td class="list">
-					<input name="del" type="image" src="x.gif" width="17" height="17" title="delete selected aliases" alt="delete selected aliases" onclick="return confirm('Do you really want to delete the selected aliases? All elements that still use them will become invalid (e.g. filter rules)!')">
-					<a href="firewall_aliases_edit.php"><img src="plus.gif" title="add alias" width="17" height="17" border="0" alt="add alias"></a></td>
+					<input name="del" type="image" src="x.png" width="17" height="17" title="delete selected aliases" alt="delete selected aliases" onclick="return confirm('Do you really want to delete the selected aliases? All elements that still use them will become invalid (e.g. filter rules)!')">
+					<a href="firewall_aliases_edit.php"><img src="plus.png" title="add alias" width="17" height="17" border="0" alt="add alias"></a></td>
 				</tr>
               </table>
             </form>
