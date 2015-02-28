@@ -196,7 +196,7 @@
 	foreach ($pconfig['jobset'] AS $job_id => $jobset) {
 		echo '
 						<tr>
-							<td><input name="toggle_'.$job_id.'" type="image" src="enable'.(isset($jobset['disabled']) ? '_d' : '').'.png" width="11" height="11" title="click to toggle enabled/disabled status">&nbsp;&nbsp;'.(isset($jobset['syslog']) ? '<img src="log'.(isset($jobset['disabled']) ? '_d' : '').'.png" width="11" height="11" border="0">' : '&nbsp;').'</td>
+							<td><input name="toggle_'.$job_id.'" type="image" src="enable'.(isset($jobset['disabled']) ? '_d' : '').'.png" width="11" height="11" title="click to toggle enabled/disabled status">&nbsp;&nbsp;'.(isset($jobset['syslog']) ? '<img src="log'.(isset($jobset['disabled']) ? '_d' : '').'.gif" width="11" height="11" border="0">' : '&nbsp;').'</td>
 							<td class="listlr">'.
 								($jobset['repeat'] == 'x_minute' ? str_replace("x minute", ($jobset['minute'] > 1 ? $jobset['minute']." minutes" : "minute"), $data['repeat'][$jobset['repeat']]) : $data['repeat'][$jobset['repeat']].',<br>').
 								($jobset['repeat'] == 'once' ? date($data['date_once'], strtotime(htmlspecialchars($jobset['date']).' '.htmlspecialchars($jobset['time']))) : 
