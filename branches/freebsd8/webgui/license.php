@@ -2,7 +2,7 @@
 <?php
 /*
 	$Id: license.php 560 2014-01-14 16:11:20Z mkasper $
-	part of m0n0wall (http://m0n0.ch/wall)
+	part of t1n1wall (http://t1n1wall.com)
 	
 	Copyright (C) 2003-2008 Manuel Kasper <mk@neon1.net>.
 	All rights reserved.
@@ -33,7 +33,12 @@ $pgtitle = array("License");
 require("guiconfig.inc"); 
 ?>
 <?php include("fbegin.inc"); ?>
-            <p><strong>m0n0wall&reg; is Copyright &copy; 2002-2014 by Manuel Kasper 
+            <p><strong>t1n1wall&reg; is Copyright &copy; 2015 by Andrew White 
+              (<a href="mailto:mk@neon1.net">andywhite@t1n1wall.com</a>).<br>
+              All rights reserved.</strong></p>
+            <p><strong>t1n1wall&reg; is a fork of m0n0wall&reg 
+              </strong></p>
+            <p><strong>m0n0wall&reg; is Copyright &copy; 2002-2015 by Manuel Kasper 
               (<a href="mailto:mk@neon1.net">mk@neon1.net</a>).<br>
               All rights reserved.</strong></p>
             <p> Redistribution and use in source and binary forms, with or without<br>
@@ -68,7 +73,11 @@ require("guiconfig.inc");
               POSSIBILITY OF SUCH DAMAGE</strong>.</p>
             <p>m0n0wall is a registered trademark of Manuel Kasper.</p>
             <hr size="1">
-            <p>The following persons have contributed code to m0n0wall:</p>
+            <p>The following persons have contributed code to m0n0wall, and therefore t1n1wall:</p>
+            <p>Manuel Kasper (<a href="mailto:mk@neon1.net">mk@neon1.net</a>)<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;<em><font color="#666666"> m0n0wall itself !
+              And thats too big a deal to list everything here.</font></em><br>
+              <br>
             <p>Bob Zoller (<a href="mailto:bob@kludgebox.com">bob@kludgebox.com</a>)<br>
               &nbsp;&nbsp;&nbsp;&nbsp;<em><font color="#666666">Diagnostics: Ping 
               function; WLAN channel auto-select; DNS forwarder</font></em><br>
