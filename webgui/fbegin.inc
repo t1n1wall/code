@@ -249,7 +249,7 @@ function showhide(tspan, tri) {
 </script>
 <table width="750" border="0" cellspacing="0" cellpadding="2" summary="outer first pane">
   <tr valign="bottom"> 
-    <td width="150" height="65" align="center" valign="middle"> <strong><a href="http://m0n0.ch/wall" target="_blank"><img src="/logo.png" width="150" height="47" border="0" alt=""></a></strong></td>
+    <td width="150" height="65" align="center" valign="middle"> <strong><a href="http://t1n1wall.com" target="_blank"><img src="/logo.png" width="150" height="47" border="0" alt=""></a></strong></td>
     <td height="65" bgcolor="#228b22">
 	<table border="0" cellspacing="0" cellpadding="0" width="100%" summary="header pane">
 	<tr><td align="left" valign="bottom"><span class="tfrtitle">&nbsp;webGUI 
@@ -260,7 +260,7 @@ function showhide(tspan, tri) {
 	</td>
   </tr>
   <tr valign="top"> 
-    <td width="150" bgcolor="#9D9D9D">
+    <td width="150" bgcolor="#597A59">
 	<table width="100%" border="0" cellpadding="6" cellspacing="0" summary="menu panel">
         <tr>
           <td><span class="navlnk"><font color="#FFFFFF"> 
