@@ -163,7 +163,7 @@ defCmd("ls /conf");
 defCmd("ls /var/run");
 defCmdT("config.xml","dumpconfigxml");
 
-$pageTitle = "m0n0wall: status";
+$pageTitle = "t1n1wall: status";
 
 exec("/bin/date", $dateOutput, $dateStatus);
 $currentDate = $dateOutput[0];
