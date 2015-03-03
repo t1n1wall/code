@@ -37,7 +37,7 @@ fi
  
 # set permissions
 	chmod -R 0755 usr/local/www/* usr/local/captiveportal/* etc/rc*
- 
+	chmod -R 0755 etc/dhcp6c-exit-hooks
 # create links
 	ln -s /cf/conf conf
 	ln -s /var/run/htpasswd usr/local/www/.htpasswd
