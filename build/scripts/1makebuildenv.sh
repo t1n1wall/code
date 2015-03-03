@@ -34,7 +34,6 @@ fi
  
 # insert svn files to filesystem
 	cp -r $MW_BUILDPATH/freebsd10/phpconf/rc.* etc/
-	chmod a+rx etc/rc.*
 	cp -r $MW_BUILDPATH/freebsd10/phpconf/inc etc/
 	cp -r $MW_BUILDPATH/freebsd10/etc/* etc
 	cp -r $MW_BUILDPATH/freebsd10/webgui/ usr/local/www/
@@ -42,7 +41,7 @@ fi
  
 # set permissions
 	chmod -R 0755 usr/local/www/* usr/local/captiveportal/* etc/rc*
- 
+	chmod -R 0755 etc/dhcp6c-exit-hooks
 # create links
 	ln -s /cf/conf conf
 	ln -s /var/run/htpasswd usr/local/www/.htpasswd

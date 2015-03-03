@@ -1,6 +1,6 @@
 <?php
 /*
-	$Id: fbegin.inc 563 2014-01-15 20:24:33Z lgrahl $
+	$Id: fbegin.inc 576 2015-02-18 00:44:44Z awhite $
 	part of m0n0wall (http://m0n0.ch/wall)
 	
 	Copyright (C) 2003-2007 Manuel Kasper <mk@neon1.net>.
@@ -154,6 +154,8 @@ $menu['VPN']['IPsec']  				= array('vpn_ipsec.php',
 											'vpn_ipsec_mobile.php',
 							  				'vpn_ipsec_keys.php',
 											'vpn_ipsec_ca.php');
+$menu['VPN']['L2TP/IPsec']  		= array('vpn_ipsec_l2tp.php',
+											'vpn_l2tp_users.php');
 $menu['VPN']['PPTP']  				= array('vpn_pptp.php',
 											'vpn_pptp_users.php');
 											
@@ -247,7 +249,7 @@ function showhide(tspan, tri) {
 </script>
 <table width="750" border="0" cellspacing="0" cellpadding="2" summary="outer first pane">
   <tr valign="bottom"> 
-    <td width="150" height="65" align="center" valign="middle"> <strong><a href="http://m0n0.ch/wall" target="_blank"><img src="/logo.png" width="150" height="47" border="0" alt=""></a></strong></td>
+    <td width="150" height="65" align="center" valign="middle"> <strong><a href="http://t1n1wall.com" target="_blank"><img src="/logo.png" width="150" height="47" border="0" alt=""></a></strong></td>
     <td height="65" bgcolor="#228b22">
 	<table border="0" cellspacing="0" cellpadding="0" width="100%" summary="header pane">
 	<tr><td align="left" valign="bottom"><span class="tfrtitle">&nbsp;webGUI 
@@ -258,7 +260,7 @@ function showhide(tspan, tri) {
 	</td>
   </tr>
   <tr valign="top"> 
-    <td width="150" bgcolor="#9D9D9D">
+    <td width="150" bgcolor="#597A59">
 	<table width="100%" border="0" cellpadding="6" cellspacing="0" summary="menu panel">
         <tr>
           <td><span class="navlnk"><font color="#FFFFFF"> 

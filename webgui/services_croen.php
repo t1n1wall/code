@@ -251,7 +251,7 @@
 							<td width="16"><img src="enable.png" width="11" height="11" alt=""></td>
 							<td>enabled</td>
 							<td width="14"></td>
-							<td width="16"><img src="log.png" width="11" height="11" alt=""></td>
+							<td width="16"><img src="log.gif" width="11" height="11" alt=""></td>
 							<td>log</td>
 						</tr>
 						<tr>
@@ -261,7 +261,7 @@
 							<td><img src="enable_d.png" width="11" height="11" alt=""></td>
 							<td>disabled</td>
 							<td></td>
-							<td><img src="log_d.png" width="11" height="11" alt=""></td>
+							<td><img src="log_d.gif" width="11" height="11" alt=""></td>
 							<td>log (disabled)</td>
 						</tr>
 					</table>
