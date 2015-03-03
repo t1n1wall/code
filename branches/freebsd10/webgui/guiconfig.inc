@@ -189,7 +189,7 @@ function verify_gzip_file($fname) {
 
 function print_info_box_np($msg) {
 	echo "<table border=\"0\" cellspacing=\"0\" cellpadding=\"4\" width=\"100%\">\n";
-	echo "<tr><td bgcolor=\"#52BB52\" align=\"center\" valign=\"top\" width=\"36\"><img src=\"/exclam.gif\" width=\"28\" height=\"32\" alt=\"\"></td>\n";
+	echo "<tr><td bgcolor=\"#52BB52\" align=\"center\" valign=\"top\" width=\"36\"><img src=\"/exclam.png\" width=\"28\" height=\"32\" alt=\"\"></td>\n";
 	echo "<td bgcolor=\"#CAE0CA\" style=\"padding-left: 8px\">";
 	echo $msg;
 	echo "</td></tr></table>";
