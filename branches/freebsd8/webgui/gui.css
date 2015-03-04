@@ -39,7 +39,7 @@ p {
 }
 .pgtitle {
 	font-size: 18px;
-	color: #777777;
+	color: #195019;
 	font-weight: bold;
 }
 .tfrtitle {
@@ -319,7 +319,7 @@ ul#tabnav {
 }
 ul#tabnav li.tabinact1 {
 	float: left;
-	background-color: #777777;
+	background-color: #195019;
 	color: #FFFFFF;
 	padding: 0;
 	white-space: nowrap;
@@ -327,7 +327,7 @@ ul#tabnav li.tabinact1 {
 ul#tabnav li.tabinact {
 	float: left;
 	border-left: 1px solid #999999;
-	background-color: #777777;
+	background-color: #195019;
 	color: #FFFFFF;
 	padding: 0;
 	white-space: nowrap;
