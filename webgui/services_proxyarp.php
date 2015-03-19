@@ -123,7 +123,7 @@ if ($_POST) {
               </table>
             </form>
             <p class="vexpl"><span class="red"><strong>Note:<br>
-                      </strong></span>Proxy ARP can be used if you need m0n0wall to send ARP
+                      </strong></span>Proxy ARP can be used if you need t1n1wall to send ARP
 					  replies on an interface for other IP addresses than its own (e.g. for 1:1, advanced outbound or server NAT). It is not
 					  necessary on the WAN interface if you have a subnet routed to you or if you use PPPoE/PPTP, and it only works on the WAN interface if it's configured with a static IP address or DHCP.</p>
             <?php include("fend.inc"); ?>
