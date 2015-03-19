@@ -23,7 +23,7 @@ bin/sync
 
 # contents of /sbin
 sbin/adjkerntz
-sbin/atacontrol
+sbin/camcontrol
 sbin/dmesg
 sbin/fastboot:sbin/fasthalt:sbin/halt:sbin/reboot
 sbin/init
