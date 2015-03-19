@@ -86,11 +86,11 @@ function captiveportal_configure() {
             $htmltext = <<<EOD
 <html>
 <head>
-<title>m0n0wall captive portal</title>
+<title>t1n1wall captive portal</title>
 </head>
 <body>
-<h2>m0n0wall captive portal</h2>
-<p>This is the default captive portal page. Please upload your own custom HTML file on the <em>Services: Captive portal</em> screen in the m0n0wall webGUI.</p>
+<h2>t1n1wall captive portal</h2>
+<p>This is the default captive portal page. Please upload your own custom HTML file on the <em>Services: Captive portal</em> screen in the t1n1wall webGUI.</p>
 <form method="post" action="\$PORTAL_ACTION\$">
   <input name="accept" type="submit" value="Continue">
   <input name="redirurl" type="hidden" value="\$PORTAL_REDIRURL\$">
