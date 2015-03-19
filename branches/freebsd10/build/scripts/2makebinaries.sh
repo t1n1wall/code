@@ -89,6 +89,14 @@ export CC=gcc46
         make COPTS+=-DNO_TFTP COPTS+=-DNO_AUTH
         install -s src/dnsmasq $MW_BUILDPATH/m0n0fs/usr/local/sbin
         rm patch-dnsmasq-iscreader.patch
+# dudders
+        cd $MW_BUILDPATH/tmp
+        rm -Rf dudders-1.04
+        tar -zxf $MW_BUILDPATH/freebsd10/build/local-sources/dudders-1.04.tar.bz2
+        cd dudders-1.04
+        ./configure --with-crypto=openssl
+        make
+        install -s dudders $MW_BUILDPATH/m0n0fs/usr/local/bin
         
 ######## FreeBSD ports ########
 # ISC dhcp-server
