@@ -15,7 +15,7 @@ if  ( $status != 1 ) then
 	echo "Found existing working copy"
 else
 	echo "No working copy found; checking out current version from repository"
-	/usr/bin/svnlite checkout /usr/local/bin/svn checkout http://t1n1wall.googlecode.com/svn/branches/freebsd10
+	/usr/bin/svnlite checkout https://svn.code.sf.net/p/t1n1wall/code/HEAD/tree/branches/freebsd10/
 endif
 
 cd freebsd10
