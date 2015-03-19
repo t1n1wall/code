@@ -373,7 +373,7 @@ to access after they've authenticated.</td>
         <input name="nomacfilter" type="checkbox" class="formfld" id="nomacfilter" value="yes" <?php if ($pconfig['nomacfilter']) echo "checked"; ?>>
         <strong>Disable MAC filtering</strong><br>
     If this option is set, no attempts will be made to ensure that the MAC address of clients stays the same while they're logged in.
-    This is required when the MAC address of the client cannot be determined (usually because there are routers between m0n0wall and the clients).</td>
+    This is required when the MAC address of the client cannot be determined (usually because there are routers between t1n1wall and the clients).</td>
 	</tr>
     <tr>
       <td valign="top" class="vncell">Per-user bandwidth restriction</td>
@@ -530,7 +530,7 @@ to access after they've authenticated.</td>
 				}
 				?></select><br>
 				If RADIUS type is set to Cisco, in RADIUS requests (Authentication/Accounting) the value of Calling-Station-Id will be set to the client's IP address and
-				the Called-Station-Id to the client's MAC address. Default behaviour is Calling-Station-Id = client's MAC address and Called-Station-Id = m0n0wall's WAN MAC address.</td>
+				the Called-Station-Id to the client's MAC address. Default behaviour is Calling-Station-Id = client's MAC address and Called-Station-Id = t1n1wall's WAN MAC address.</td>
 			</tr>
             <tr>
                 <td class="vncell" valign="top">MAC address format</td>

@@ -247,7 +247,7 @@ if ($_POST) {
                   <td class="vtable">
                     <input name="allowipsecfrags" type="checkbox" id="allowipsecfrags" value="yes" <?php if ($pconfig['allowipsecfrags']) echo "checked"; ?>>
                     <strong>Allow fragmented IPsec packets</strong><span class="vexpl"><br>
-    This will cause m0n0wall to allow fragmented IP packets that are encapsulated in IPsec ESP packets.</span></td>
+    This will cause t1n1wall to allow fragmented IP packets that are encapsulated in IPsec ESP packets.</span></td>
 			    </tr>
 				<tr>
                   <td valign="top" class="vncell">Outbound NAT port range</td>
@@ -292,7 +292,7 @@ if ($_POST) {
                   <td class="vtable">
                     <input name="disablefirmwarecheck" type="checkbox" id="disablefirmwarecheck" value="yes" <?php if ($pconfig['disablefirmwarecheck']) echo "checked"; ?>>
                     <strong>Disable firmware version check</strong><span class="vexpl"><br>
-    This will cause m0n0wall not to check for newer firmware versions when the <a href="system_firmware.php">System: Firmware</a> page is viewed.</span></td>
+    This will cause t1n1wall not to check for newer firmware versions when the <a href="system_firmware.php">System: Firmware</a> page is viewed.</span></td>
 			    </tr>
 				<tr>
                   <td valign="top" class="vncell">IPsec DNS check interval</td>
@@ -351,7 +351,7 @@ if ($_POST) {
 					Device polling is a technique that lets the system periodically poll network devices for new
 					data instead of relying on interrupts. This can reduce CPU load and therefore increase
 					throughput, at the expense of a slightly higher forwarding delay (the devices are polled 1000 times
-					per second). Not all NICs support polling; see the m0n0wall homepage for a list of supported cards.
+					per second). Not all NICs support polling; see the t1n1wall homepage for a list of supported cards.
 					</td>
                 </tr>
 				<tr>
