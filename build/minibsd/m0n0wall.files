@@ -53,7 +53,6 @@ usr/bin/gzip:usr/bin/gunzip
 usr/bin/killall
 usr/bin/logger
 usr/bin/netstat
-usr/bin/nsupdate
 usr/bin/nohup
 usr/bin/su
 usr/bin/tail
