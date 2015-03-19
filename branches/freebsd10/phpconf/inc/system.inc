@@ -697,7 +697,7 @@ function system_set_harddisk_standby() {
 		// Check for a numeric value
 		if (is_numeric($standby)) {
 			$device = trim(file_get_contents("{$g['varetc_path']}/cfdevice"));
-			mwexec("/sbin/atacontrol spindown $device " . ($standby*60));
+			mwexec("/sbin/camcontrol standby $device -t" . ($standby*60));
 			mwexec("/bin/dd if=/dev/$device of=/dev/null count=1");
 			if ($g['booting']) {
 				echo "done\n";
