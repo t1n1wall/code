@@ -45,10 +45,10 @@ export CC=gcc46
         make
         install -s sapi/cgi/php $MW_BUILDPATH/m0n0fs/usr/local/bin/
 # mini httpd
-	cd $MW_BUILDPATH/tmp
-	rm -Rf mini_httpd-1.19
-        tar -zxf $MW_BUILDPATH/freebsd10/build/local-sources/mini_httpd-1.19.tar.gz
-        cd mini_httpd-1.19/
+        cd $MW_BUILDPATH/tmp
+        rm -Rf mini_httpd-1.21
+        tar -zxf $MW_BUILDPATH/freebsd10/build/local-sources/mini_httpd-1.21.tar.gz
+        cd mini_httpd-1.21/
         patch < $MW_BUILDPATH/freebsd10/build/patches/packages/mini_httpd.patch
         make
         install -s mini_httpd $MW_BUILDPATH/m0n0fs/usr/local/sbin
@@ -66,11 +66,14 @@ export CC=gcc46
         cd /sbin
         cp ipf ipfs ipmon ipnat ippool $MW_BUILDPATH/m0n0fs/sbin
         cd /usr/src/contrib/ipfilter/tools/
+        cp ipfstat.c ipfstat.c.original
         patch < $MW_BUILDPATH/freebsd10/build/patches/user/ipfstat.c.patch
         cd /usr/src/sbin/ipf/
         make libipf ipfstat
         cp /usr/src/sbin/ipf/ipfstat/ipfstat $MW_BUILDPATH/m0n0fs/sbin
         make clean
+        cd /usr/src/contrib/ipfilter/tools/
+        cp ipfstat.c.original ipfstat.c
         export CC=gcc46
 # modem-stats
 	cd $MW_BUILDPATH/tmp
@@ -139,10 +142,10 @@ export CC=gcc46
 	cd $PORTSDIR/net/mpd5
         make
 	install -s $WRKDIRPREFIX/$PORTSDIR/net/mpd5/work/mpd-*/src/mpd5 $MW_BUILDPATH/m0n0fs/usr/local/sbin/
-# mbmon
-	cd $PORTSDIR/sysutils/mbmon
+# xmbmon
+	cd $PORTSDIR/sysutils/xmbmon
         make
-	install -s $WRKDIRPREFIX/$PORTSDIR/sysutils/mbmon/work/xmbmon*/mbmon $MW_BUILDPATH/m0n0fs/usr/local/bin/
+	install -s $WRKDIRPREFIX/$PORTSDIR/sysutils/xmbmon/work/xmbmon*/mbmon $MW_BUILDPATH/m0n0fs/usr/local/bin/
 # wol
 	cd $PORTSDIR/net/wol
 	make WITHOUT_NLS=true
