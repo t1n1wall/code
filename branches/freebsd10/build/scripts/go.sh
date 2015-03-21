@@ -6,7 +6,7 @@ setenv MW_ARCH `uname -m`
 
 # ensure prerequisite tools are installed
 if ( ! -x /usr/local/bin/bash ) then
-	pkg install -y -g 'bash-4.2.*'
+	pkg install -y -g 'bash-4.*'
 endif
 
 # figure out if we're already running from within a repository
@@ -15,7 +15,7 @@ if  ( $status != 1 ) then
 	echo "Found existing working copy"
 else
 	echo "No working copy found; checking out current version from repository"
-	/usr/bin/svnlite checkout https://svn.code.sf.net/p/t1n1wall/code/HEAD/tree/branches/freebsd10/
+	/usr/bin/svnlite checkout https://svn.code.sf.net/p/t1n1wall/code/branches/freebsd10/
 endif
 
 cd freebsd10
@@ -36,10 +36,10 @@ echo "Updating ports to correct versions: 2013-12-20"
 /usr/bin/svnlite checkout --depth empty svn://svn.freebsd.org/ports/head  $MW_BUILDPATH/tmp/ports/tree
 cd $MW_BUILDPATH/tmp/ports/tree
 
-/usr/bin/svnlite update -r '{2013-12-20}' --set-depth files Templates Tools net dns security sysutils devel
-/usr/bin/svnlite update -r '{2013-12-20}' Mk net/isc-dhcp41-server/ net/isc-dhcp41-relay/ net/isc-dhcp41-client/ net/mpd5/ net/dhcp6 net/wol sysutils/mbmon
-/usr/bin/svnlite update -r '{2013-12-20}' security/ipsec-tools devel/libtool 
-/usr/bin/svnlite update -r '{2013-12-20}' net/sixxs-aiccu devel/gmake security/gnutls
+/usr/bin/svnlite update -r '{2015-03-19}' --set-depth files Templates Tools net dns security sysutils devel GIDs UIDs Keywords
+/usr/bin/svnlite update -r '{2015-03-19}' Mk net/isc-dhcp41-server/ net/isc-dhcp41-relay/ net/isc-dhcp41-client/ net/mpd5/ net/dhcp6 net/wol sysutils/xmbmon
+/usr/bin/svnlite update -r '{2015-03-19}' security/ipsec-tools devel/libtool
+/usr/bin/svnlite update -r '{2015-03-19}' net/sixxs-aiccu devel/gmake security/gnutls
 
 cd $MW_BUILDPATH/freebsd10/build/scripts
 
