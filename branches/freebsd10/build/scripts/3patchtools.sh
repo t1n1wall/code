@@ -10,20 +10,20 @@ fi
 export CC=gcc46
 
 # syslogd circular logging support and ipv6 support
-#	rm -Rf /usr/obj/usr/src/usr.sbin/syslogd
-#	rm -Rf /usr/obj/usr/src/usr.sbin/clog
-#	cd /usr/src/usr.sbin
-#	tar xfvz $MW_BUILDPATH/freebsd10/build/patches/user/clog-1.0.1.tar.gz
-#	cd syslogd
-#	patch < $MW_BUILDPATH/freebsd10/build/patches/user/syslogd.c.patch
-#	make obj && make
-#	install -s /usr/obj/usr/src/usr.sbin/syslogd/syslogd $MW_BUILDPATH/m0n0fs/usr/sbin/
-#	mv syslogd.c.orig syslogd.c
-#	cd ../clog
-#	make obj && make
-#	install -s /usr/obj/usr/src/usr.sbin/clog/clog $MW_BUILDPATH/m0n0fs/usr/sbin/
-#	cd ..
-#	rm -Rf clog
+	rm -Rf /usr/obj/usr/src/usr.sbin/syslogd
+	rm -Rf /usr/obj/usr/src/usr.sbin/clog
+	cd /usr/src/usr.sbin
+	tar xfvz $MW_BUILDPATH/freebsd10/build/patches/user/clog-1.0.1.tar.gz
+	cd syslogd
+	patch < $MW_BUILDPATH/freebsd10/build/patches/user/syslogd.c.patch
+	make obj && make
+	install -s /usr/obj/usr/src/usr.sbin/syslogd/syslogd $MW_BUILDPATH/m0n0fs/usr/sbin/
+	mv syslogd.c.orig syslogd.c
+	cd ../clog
+	make obj && make
+	install -s /usr/obj/usr/src/usr.sbin/clog/clog $MW_BUILDPATH/m0n0fs/usr/sbin/
+	cd ..
+	rm -Rf clog
 # dhclient-script
 	cp $MW_BUILDPATH/freebsd10/build/tools/dhclient-script $MW_BUILDPATH/m0n0fs/sbin
 	chmod a+rx $MW_BUILDPATH/m0n0fs/sbin/dhclient-script
