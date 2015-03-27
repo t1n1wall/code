@@ -56,6 +56,7 @@ $pconfig['range_to'] = $config['dhcpd'][$if]['range']['to'];
 $pconfig['deftime'] = $config['dhcpd'][$if]['defaultleasetime'];
 $pconfig['maxtime'] = $config['dhcpd'][$if]['maxleasetime'];
 list($pconfig['wins1'],$pconfig['wins2']) = $config['dhcpd'][$if]['winsserver'];
+list($pconfig['dns1'],$pconfig['dns2']) = $config['dhcpd'][$if]['dnsserver'];
 $pconfig['enable'] = isset($config['dhcpd'][$if]['enable']);
 $pconfig['denyunknown'] = isset($config['dhcpd'][$if]['denyunknown']);
 $pconfig['nextserver'] = $config['dhcpd'][$if]['next-server'];
@@ -118,6 +119,9 @@ if ($_POST) {
 		}
 		if (($_POST['wins1'] && !is_ipaddr($_POST['wins1'])) || ($_POST['wins2'] && !is_ipaddr($_POST['wins2']))) {
 			$input_errors[] = "A valid IP address must be specified for the primary/secondary WINS server.";
+		}
+		if (($_POST['dns1'] && !is_ipaddr($_POST['dns1'])) || ($_POST['dns2'] && !is_ipaddr($_POST['dns2']))) {
+			$input_errors[] = "A valid IP address must be specified for the primary/secondary DNS server.";
 		}
 		if ($_POST['deftime'] && (!is_numericint($_POST['deftime']))) {
 			$input_errors[] = "The default lease time must be an integer.";
@@ -192,6 +196,12 @@ if ($_POST) {
 		if ($_POST['wins2'])
 			$config['dhcpd'][$if]['winsserver'][] = $_POST['wins2'];
 			
+		unset($config['dhcpd'][$if]['dnsserver']);
+		if ($_POST['dns1'])
+			$config['dhcpd'][$if]['dnsserver'][] = $_POST['dns1'];
+		if ($_POST['dns2'])
+			$config['dhcpd'][$if]['dnsserver'][] = $_POST['dns2'];
+			
 		write_config();
 		
 		$retval = 0;
@@ -222,6 +232,8 @@ function enable_change(enable_over) {
 	document.iform.range_to.disabled = endis;
 	document.iform.wins1.disabled = endis;
 	document.iform.wins2.disabled = endis;
+	document.iform.dns1.disabled = endis;
+	document.iform.dns2.disabled = endis;
 	document.iform.deftime.disabled = endis;
 	document.iform.maxtime.disabled = endis;
 	document.iform.nextserver.disabled = endis;
@@ -309,6 +321,14 @@ function enable_change(enable_over) {
                         <td width="78%" class="vtable"> 
                           <input name="wins1" type="text" class="formfld" id="wins1" size="20" value="<?=htmlspecialchars($pconfig['wins1']);?>"><br>
                           <input name="wins2" type="text" class="formfld" id="wins2" size="20" value="<?=htmlspecialchars($pconfig['wins2']);?>"></td>
+                      </tr>
+                      <tr> 
+                        <td width="22%" valign="top" class="vncell">DNS servers</td>
+                        <td width="78%" class="vtable"> 
+                          <input name="dns1" type="text" class="formfld" id="dns1" size="20" value="<?=htmlspecialchars($pconfig['dns1']);?>"><br>
+                          <input name="dns2" type="text" class="formfld" id="dns2" size="20" value="<?=htmlspecialchars($pconfig['dns2']);?>"><br>
+                           This is normally left blank to use t1n1wall as the DNS server.
+                       </td>
                       </tr>
                       <tr> 
                         <td width="22%" valign="top" class="vncell">Default lease 
