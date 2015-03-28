@@ -433,7 +433,7 @@ function type_change() {
                 </tr>
                 <tr> 
                   <td valign="top" class="vncell">MTU</td>
-                  <td class="vtable"> <input name="MTU" type="text" class="formfld" id="mtu" size="30" value="<?=htmlspecialchars($pconfig['mtu']);?>"> 
+                  <td class="vtable"> <input name="mtu" type="text" class="formfld" id="mtu" size="4" value="<?=htmlspecialchars($pconfig['mtu']);?>"> 
                     <br>
                     This field can be used to modify the MTU size
                     of the WAN interface<br>
