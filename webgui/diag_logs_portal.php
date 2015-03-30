@@ -81,6 +81,9 @@ function dump_clog($logfile, $tail) {
 		  <tr> 
 			<td colspan="2" class="listtopic"> 
 			  Last <?=$nentries;?> captive portal log entries</td>
+			 <form action="diag_logs_portal.php" method="post">
+			<input name="clear" type="submit" class="formbtn" value="Clear log">
+			<br><br></form>
 		  </tr>
 		  <?php dump_clog("/var/log/portalauth.log", $nentries); ?>
 		</table>

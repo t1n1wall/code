@@ -38,8 +38,6 @@ if (!is_array($config['ipsec']['tunnel'])) {
 $a_ipsec = &$config['ipsec']['tunnel'];
 $wancfg = &$config['interfaces']['wan'];
 
-sksort($a_ipsec,"description",true);
-
 $pconfig['enable'] = isset($config['ipsec']['enable']);
 
 if ($_POST) {
@@ -132,7 +130,10 @@ if ($_POST) {
                   <td class="listhdr">Description</td>
                   <td class="list"></td>
 				</tr>
-                <?php $i = 0; foreach ($a_ipsec as $ipsecent):
+                <?php $i = 0;
+                 if (!empty($a_ipsec)) {
+                  sksort($a_ipsec,"description",true);
+                  foreach ($a_ipsec as $ipsecent):
 					if (isset($ipsecent['disabled'])) {
 						$spans = "<span class=\"gray\">";
 						$spane = "</span>";
@@ -177,7 +178,7 @@ if ($_POST) {
                   <td valign="middle" nowrap class="list"> <a href="vpn_ipsec_edit.php?id=<?=$i;?>"><img src="e.png" title="edit tunnel" width="17" height="17" border="0" alt="edit tunnel"></a> 
                     &nbsp;<input name="del_<?=$i;?>" type="image" src="x.png" width="17" height="17" title="delete tunnel" alt="delete tunnel" onclick="return confirm('Do you really want to delete this tunnel?')"></td>
 				</tr>
-			  <?php $i++; endforeach; ?>
+			  <?php $i++; endforeach; } ?>
                 <tr> 
                   <td class="list" colspan="6"></td>
                   <td class="list"> <a href="vpn_ipsec_edit.php"><img src="plus.png" title="add tunnel" width="17" height="17" border="0" alt="add tunnel"></a></td>
