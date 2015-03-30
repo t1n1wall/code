@@ -7,7 +7,7 @@ if [ -z "$MW_BUILDPATH" -o ! -d "$MW_BUILDPATH" ]; then
 	exit 1
 fi
 
-VERSION=`cat $MW_BUILDPATH/m0n0fs/etc/version`
+VERSION=`cat $MW_BUILDPATH/t1n1fs/etc/version`
 if [ $MW_ARCH = "amd64" ]; then
 	VERSION=$VERSION.$MW_ARCH	
 fi
@@ -18,15 +18,15 @@ makemfsroot() {
 	
 	echo -n "Making mfsroot for $PLATFORM..."
 	
-	echo $PLATFORM > $MW_BUILDPATH/m0n0fs/etc/platform
+	echo $PLATFORM > $MW_BUILDPATH/t1n1fs/etc/platform
 	cd $MW_BUILDPATH/tmp
-	dd if=/dev/zero of=mfsroot-$PLATFORM bs=1k count=`du -d0 $MW_BUILDPATH/m0n0fs | cut -b1-5 | tr " " "+" | xargs -I {} echo "($SPARESPACE)+{}" | bc` > /dev/null 2>&1
+	dd if=/dev/zero of=mfsroot-$PLATFORM bs=1k count=`du -d0 $MW_BUILDPATH/t1n1fs | cut -b1-5 | tr " " "+" | xargs -I {} echo "($SPARESPACE)+{}" | bc` > /dev/null 2>&1
 	mdconfig -a -t vnode -f mfsroot-$PLATFORM -u 20
 	disklabel -rw /dev/md20 auto
 	newfs -b 8192 -f 1024 -o space -m 0 /dev/md20 > /dev/null
 	mount /dev/md20 /mnt
 	cd /mnt
-	tar -cf - -C $MW_BUILDPATH/m0n0fs ./ | tar -xpf -
+	tar -cf - -C $MW_BUILDPATH/t1n1fs ./ | tar -xpf -
 	cd $MW_BUILDPATH/tmp
 	umount /mnt
 	mdconfig -d -u 20
@@ -47,7 +47,7 @@ makeimage() {
 	cp $MW_BUILDPATH/tmp/kernel.gz $MW_BUILDPATH/tmp/firmwaretmp
 	cp $MW_BUILDPATH/tmp/mfsroot-$PLATFORM.gz $MW_BUILDPATH/tmp/firmwaretmp/mfsroot.gz
 	cp /boot/{loader,loader.rc} $MW_BUILDPATH/tmp/firmwaretmp
-	cp $MW_BUILDPATH/m0n0fs/conf.default/config.xml $MW_BUILDPATH/tmp/firmwaretmp
+	cp $MW_BUILDPATH/t1n1fs/conf.default/config.xml $MW_BUILDPATH/tmp/firmwaretmp
 
 	cd $MW_BUILDPATH/tmp
 	dd if=/dev/zero of=image.bin bs=1k count=`du -d0 $MW_BUILDPATH/tmp/firmwaretmp  | cut -b1-5 | tr " " "+" | xargs -I {} echo "($SPARESPACE)+{}" | bc` > /dev/null 2>&1
@@ -70,7 +70,7 @@ makeimage() {
 	fi
 
 	mkdir /mnt/conf
-	cp $MW_BUILDPATH/m0n0fs/conf.default/config.xml /mnt/conf
+	cp $MW_BUILDPATH/t1n1fs/conf.default/config.xml /mnt/conf
 	cd $MW_BUILDPATH/tmp
 	umount /mnt
 	mdconfig -d -u 30

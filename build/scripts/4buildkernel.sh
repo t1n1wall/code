@@ -45,21 +45,16 @@ fi
 		
 # kernel compile
         cd $MW_BUILDPATH/tmp/sys/$MW_ARCH/conf
-        cp $MW_BUILDPATH/freebsd10/build/kernelconfigs/M0N0WALL_GENERIC.$MW_ARCH $MW_BUILDPATH/tmp/sys/$MW_ARCH/conf/M0N0WALL_GENERIC
-		cp $MW_BUILDPATH/freebsd10/build/kernelconfigs/M0N0WALL_GENERIC.hints $MW_BUILDPATH/tmp/sys/$MW_ARCH/conf/
-        config M0N0WALL_GENERIC
-        cd $MW_BUILDPATH/tmp/sys/$MW_ARCH/compile/M0N0WALL_GENERIC/
+        cp $MW_BUILDPATH/freebsd10/build/kernelconfigs/T1N1WALL_GENERIC.$MW_ARCH $MW_BUILDPATH/tmp/sys/$MW_ARCH/conf/T1N1WALL_GENERIC
+		cp $MW_BUILDPATH/freebsd10/build/kernelconfigs/T1N1WALL_GENERIC.hints $MW_BUILDPATH/tmp/sys/$MW_ARCH/conf/
+        config T1N1WALL_GENERIC
+        cd $MW_BUILDPATH/tmp/sys/$MW_ARCH/compile/T1N1WALL_GENERIC/
         make depend && make
         strip kernel
         strip --remove-section=.note --remove-section=.comment kernel
         gzip -9 kernel
         mv kernel.gz $MW_BUILDPATH/tmp/
         cd modules/$MW_BUILDPATH/tmp/sys/modules
-        cp aesni/aesni.ko glxsb/glxsb.ko padlock/padlock.ko if_tap/if_tap.ko if_vlan/if_vlan.ko dummynet/dummynet.ko ipfw/ipfw.ko $MW_BUILDPATH/m0n0fs/boot/kernel
-
-# make libs
-		cd $MW_BUILDPATH/tmp
-		perl $MW_BUILDPATH/freebsd10/build/minibsd/mklibs.pl $MW_BUILDPATH/m0n0fs > m0n0wall.libs
-		perl $MW_BUILDPATH/freebsd10/build/minibsd/mkmini.pl m0n0wall.libs / $MW_BUILDPATH/m0n0fs
+        cp -v aesni/aesni.ko glxsb/glxsb.ko padlock/padlock.ko if_tap/if_tap.ko if_vlan/if_vlan.ko dummynet/dummynet.ko ipfw/ipfw.ko $MW_BUILDPATH/t1n1fs/boot/kernel
 
 echo "Finished Stage 4"

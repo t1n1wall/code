@@ -28,16 +28,16 @@ fi
 	pgrep ntpd > /dev/null || ntpdate pool.ntp.org
 
 # make filesystem structure for image
-	mkdir  m0n0fs images
-	cd m0n0fs
+	mkdir  t1n1fs images
+	cd t1n1fs
 	mkdir -p etc/rc.d/ bin cf conf.default dev etc/mpd-modem ftmp mnt proc root sbin tmp libexec lib /var/etc/dnsmasq usr/bin usr/lib usr/libexec usr/local usr/sbin usr/share usr/local/bin usr/local/captiveportal usr/local/lib usr/local/sbin/.libs usr/local/www usr/share/misc boot/kernel
  
 # insert svn files to filesystem
-	cp -r $MW_BUILDPATH/freebsd10/phpconf/rc.* etc/
-	cp -r $MW_BUILDPATH/freebsd10/phpconf/inc etc/
-	cp -r $MW_BUILDPATH/freebsd10/etc/* etc
-	cp -r $MW_BUILDPATH/freebsd10/webgui/ usr/local/www/
-	cp -r $MW_BUILDPATH/freebsd10/captiveportal usr/local/
+	cp -v -r $MW_BUILDPATH/freebsd10/phpconf/rc.* etc/
+	cp -v -r $MW_BUILDPATH/freebsd10/phpconf/inc etc/
+	cp -v -r $MW_BUILDPATH/freebsd10/etc/* etc
+	cp -v -r $MW_BUILDPATH/freebsd10/webgui/ usr/local/www/
+	cp -v -r $MW_BUILDPATH/freebsd10/captiveportal usr/local/
  
 # set permissions
 	chmod -R 0755 usr/local/www/* usr/local/captiveportal/* etc/rc*
@@ -60,24 +60,20 @@ fi
 	echo $VERSION > etc/version
  
 # get and set current default configuration
-	cp $MW_BUILDPATH/freebsd10/phpconf/config.xml conf.default/config.xml
+	cp -v $MW_BUILDPATH/freebsd10/phpconf/config.xml conf.default/config.xml
  
 # insert termcap and zoneinfo files
-	cp /usr/share/misc/termcap usr/share/misc
+	cp -v /usr/share/misc/termcap usr/share/misc
  
 # do zoneinfo.tgz and dev fs
 	cd tmp 
-	cp $MW_BUILDPATH/freebsd10/build/files/zoneinfo.tgz $MW_BUILDPATH/m0n0fs/usr/share
-	perl $MW_BUILDPATH/freebsd10/build/minibsd/mkmini.pl $MW_BUILDPATH/freebsd10/build/minibsd/m0n0wall.files  / $MW_BUILDPATH/m0n0fs/
-
+	cp -v $MW_BUILDPATH/freebsd10/build/files/zoneinfo.tgz $MW_BUILDPATH/t1n1fs/usr/share
 # create php.ini	
-	cp $MW_BUILDPATH/freebsd10/build/files/php.ini $MW_BUILDPATH/m0n0fs/usr/local/lib/php.ini
-
+	cp -v $MW_BUILDPATH/freebsd10/build/files/php.ini $MW_BUILDPATH/t1n1fs/usr/local/lib/php.ini
 # create login.conf
-	cp $MW_BUILDPATH/freebsd10/build/files/login.conf $MW_BUILDPATH/m0n0fs/etc/
-	
+	cp -v $MW_BUILDPATH/freebsd10/build/files/login.conf $MW_BUILDPATH/t1n1fs/etc/
 # create missing etc files
-	tar -xzf $MW_BUILDPATH/freebsd10/build/files/etcadditional.tgz -C $MW_BUILDPATH/m0n0fs/
-	cp $MW_BUILDPATH/freebsd10/build/files/mpd-modem.script $MW_BUILDPATH/m0n0fs/etc/mpd-modem/mpd.script
+	tar -xzf $MW_BUILDPATH/freebsd10/build/files/etcadditional.tgz -C $MW_BUILDPATH/t1n1fs/
+	cp -v $MW_BUILDPATH/freebsd10/build/files/mpd-modem.script $MW_BUILDPATH/t1n1fs/etc/mpd-modem/mpd.script
 
 echo "Finished Stage 1"
