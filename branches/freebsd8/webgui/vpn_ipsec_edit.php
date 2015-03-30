@@ -37,7 +37,8 @@ if (!is_array($config['ipsec']['tunnel'])) {
 }
 $a_ipsec = &$config['ipsec']['tunnel'];
 
-if (!empty($a_ipsec)) sksort($a_ipsec,"description",true);
+/* sort ipsec tunnels by description, descr is sub array value  , sortdescr is function */
+if (!empty($a_ipsec)) usort($a_ipsec, "sortdescr");
 
 $specialsrcdst = explode(" ", "lan");
 
