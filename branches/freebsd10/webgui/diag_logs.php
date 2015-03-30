@@ -1,7 +1,7 @@
 #!/usr/local/bin/php
 <?php 
 /*
-	$Id: diag_logs.php 288 2008-07-26 20:10:05Z mwiget $
+	$Id: diag_logs.php 576 2015-02-18 00:44:44Z awhite $
 	part of m0n0wall (http://m0n0.ch/wall)
 	
 	Copyright (C) 2003-2007 Manuel Kasper <mk@neon1.net>.
@@ -74,7 +74,7 @@ function dump_clog($logfile, $tail, $withorig = true) {
            		  'Firewall' => 'diag_logs_filter.php',
            		  'DHCP' => 'diag_logs_dhcp.php',
            		  'Captive portal' => 'diag_logs_portal.php',
-           		  'PPTP VPN' => 'diag_logs_vpn.php',
+           		  'PPTP/L2TP VPN' => 'diag_logs_vpn.php',
            		  'Settings' => 'diag_logs_settings.php');
 	dynamic_tab_menu($tabs);
 ?> 
@@ -86,12 +86,12 @@ function dump_clog($logfile, $tail, $withorig = true) {
 		  <tr> 
 			<td colspan="2" class="listtopic"> 
 			  Last <?=$nentries;?> system log entries</td>
+			<form action="diag_logs.php" method="post">
+			<input name="clear" type="submit" class="formbtn" value="Clear log">
+			<br><br></form>
 		  </tr>
 		  <?php dump_clog("/var/log/system.log", $nentries); ?>
 		</table>
-		<br><form action="diag_logs.php" method="post">
-<input name="clear" type="submit" class="formbtn" value="Clear log">
-</form>
 	</td>
   </tr>
 </table>

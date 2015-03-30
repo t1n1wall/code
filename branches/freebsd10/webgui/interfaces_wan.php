@@ -70,6 +70,7 @@ if ($wancfg['ipaddr'] == "dhcp") {
 
 $pconfig['blockpriv'] = isset($wancfg['blockpriv']);
 $pconfig['spoofmac'] = $wancfg['spoofmac'];
+$pconfig['mtu'] = $wancfg['mtu'];
 
 if (ipv6enabled()) {
 
@@ -154,6 +155,9 @@ if ($_POST) {
 	}
 	if (($_POST['spoofmac'] && !is_macaddr($_POST['spoofmac']))) {
 		$input_errors[] = "A valid MAC address must be specified.";
+	}
+	if (($_POST['mtu'] && !(is_numeric($_POST['mtu']) && $_POST['mtu'] >= 512 && $_POST['mtu'] <= 1500))) {
+		$input_errors[] = "A valid MTU must be between 512 and 1500 bytes.";
 	}
 	if (($_POST['pppoemtu'] && !(is_numeric($_POST['pppoemtu']) && $_POST['pppoemtu'] >= 512 && $_POST['pppoemtu'] <= 1492))) {
 		$input_errors[] = "The PPPoE MTU must be between 512 and 1492 bytes.";
@@ -242,6 +246,7 @@ if ($_POST) {
 		
 		$wancfg['blockpriv'] = $_POST['blockpriv'] ? true : false;
 		$wancfg['spoofmac'] = $_POST['spoofmac'];
+		$wancfg['mtu'] = $_POST['mtu'];
 		
 		if (ipv6enabled()) {
 
@@ -427,6 +432,14 @@ function type_change() {
                     or leave blank</td>
                 </tr>
                 <tr> 
+                  <td valign="top" class="vncell">MTU</td>
+                  <td class="vtable"> <input name="mtu" type="text" class="formfld" id="mtu" size="4" value="<?=htmlspecialchars($pconfig['mtu']);?>"> 
+                    <br>
+                    This field can be used to modify the MTU size
+                    of the WAN interface<br>
+                    </td>
+                </tr>
+                <tr> 
                   <td colspan="2" valign="top" height="16"></td>
                 </tr>
                 <tr> 
@@ -584,7 +597,9 @@ function type_change() {
                 <tr> 
                   <td valign="top" class="vncell">MTU</td>
                   <td class="vtable"><input name="pppoemtu" type="text" class="formfld" id="pppoemtu" size="6" value="<?=htmlspecialchars($pconfig['pppoemtu']);?>"> bytes 
-                    <br><span class="vexpl">Usually, the maximum MTU value of 1492 bytes (which is used by default) works fine, but if you
+                    <br><span class="vexpl">This is the size of the largest single PPP frame (minus PPP header) that this link will transmit, 
+                    	unless the peer requests an even lower value. <br>
+                    	Usually, the maximum MTU value of 1492 bytes (which is used by default) works fine, but if you
 						have problems with some sites not loading properly, you can try a smaller value (e.g. 1400) here.</span></td>
                 </tr>
                 <tr> 

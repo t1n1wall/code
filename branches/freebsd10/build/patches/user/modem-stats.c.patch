@@ -1,0 +1,60 @@
+--- modem-stats.c.orig	2015-03-25 22:09:50.000000000 +0000
++++ modem-stats.c	2015-03-25 22:13:11.000000000 +0000
+@@ -13,6 +13,7 @@
+  *	kjh@usc.edu, kjh@seas.smu.edu
+  */
+ 
++#include <stdlib.h> 
+ #include <stdio.h>
+ #include <string.h>
+ #include <unistd.h>
+@@ -27,7 +28,7 @@
+ char	response[STRLEN+1];		/* response from modem */
+ 
+ char	*progname;			/* this program */
+-char	*devname;			/* the modem name */
++char	*devicename;			/* the modem name */
+ FILE	*device;			/* the modem itself */
+ 
+ #define	ALARM		5		/* modem must respond in ALARM secs */
+@@ -69,18 +70,18 @@
+ 		}
+ 	}
+ 
+-	devname = argv[optind];		/* set the device name */
+-	if (!devname) {
++	devicename = argv[optind];		/* set the device name */
++	if (!devicename) {
+ 		/* No device file was specified.  Give usage message. */
+ 		fprintf(stderr, USAGE, progname);
+ 		exit(1);
+ 	}
+ 
+ 	/* Can we read and write to the device file? */
+-	if ((device = fopen(devname, "r+")) == NULL) {
++	if ((device = fopen(devicename, "r+")) == NULL) {
+ 		fprintf(stderr,
+ 			"%s: Can't open %s for reading and writing.\n",
+-			progname, devname);
++			progname, devicename);
+ 		fprintf(stderr, USAGE, progname);
+ 		exit(1);
+ 	}
+@@ -106,7 +107,7 @@
+ 	/* Output the command to the device. */
+ 	if (fputs(command, device) == EOF) {
+ 		fprintf(stderr,
+-			"%s: Failure writing to %s.\n", progname, devname);
++			"%s: Failure writing to %s.\n", progname, devicename);
+ 		exit(1);
+ 	}
+ 	fflush(device);
+@@ -184,7 +185,7 @@
+ 	} else {
+ 		/* We failed too many times. */
+ 		fprintf(stdout,
+-			"%s: No response from %s.\n", progname, devname);
++			"%s: No response from %s.\n", progname, devicename);
+ 		exit(3);
+ 	}
+ }
