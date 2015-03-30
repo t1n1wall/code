@@ -231,6 +231,9 @@ function format_ipf_ip($ipfip,$uport) {
 		<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="content pane"><tr>
 		  <td colspan="6" class="listtopic"> 
 			    Last <?=$nentries;?> firewall log entries</td>
+			<form action="diag_logs_filter.php" method="post">
+			<input name="clear" type="submit" class="formbtn" value="Clear log">
+			<br><br></form>
 			</tr>
 			<tr>
 			  <td width="10%" class="listhdrr"><a href="?<?=substr($actstring, 1);?>" style="color:black" title="reset action and reload firewall logs page">Act</a></td>

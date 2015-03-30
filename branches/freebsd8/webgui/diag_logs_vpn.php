@@ -89,6 +89,9 @@ function dump_clog($logfile, $tail) {
 		<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="content pane"><tr>
 		  <td colspan="4" class="listtopic"> 
 			    Last <?=$nentries;?> PPTP/L2TP VPN log entries</td>
+			    <form action="diag_logs_vpn.php" method="post">
+				<input name="clear" type="submit" class="formbtn" value="Clear log">
+				<br><br></form>
 			</tr>
 			<tr>
 			  <td class="listhdrr">Time</td>

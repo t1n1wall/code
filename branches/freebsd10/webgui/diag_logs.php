@@ -92,6 +92,9 @@ function dump_clog($logfile, $tail, $withorig = true) {
 		  </tr>
 		  <?php dump_clog("/var/log/system.log", $nentries); ?>
 		</table>
+		<form action="diag_logs.php" method="post">
+		<input name="clear" type="submit" class="formbtn" value="Clear log">
+		<br><br></form>
 	</td>
   </tr>
 </table>
