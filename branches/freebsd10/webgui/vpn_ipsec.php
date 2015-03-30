@@ -132,7 +132,8 @@ if ($_POST) {
 				</tr>
                 <?php $i = 0; 
                  if (!empty($a_ipsec)) {
-                  sksort($a_ipsec,"description",true);
+                 /* sort ipsec tunnels by description, descr is sub array value  , sortdescr is function */
+                  usort($a_ipsec, "sortdescr");
                   foreach ($a_ipsec as $ipsecent):
 					if (isset($ipsecent['disabled'])) {
 						$spans = "<span class=\"gray\">";
