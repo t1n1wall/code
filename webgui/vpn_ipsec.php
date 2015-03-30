@@ -38,6 +38,8 @@ if (!is_array($config['ipsec']['tunnel'])) {
 $a_ipsec = &$config['ipsec']['tunnel'];
 $wancfg = &$config['interfaces']['wan'];
 
+sksort($a_ipsec,"description",true);
+
 $pconfig['enable'] = isset($config['ipsec']['enable']);
 
 if ($_POST) {
