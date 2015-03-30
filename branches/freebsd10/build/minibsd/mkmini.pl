@@ -39,7 +39,7 @@ sub populate_tree {
 			if (link($args[2] . "/" . $srcfile, $args[2] . "/" . $lnfile)) {
 				print "Link $args[2]/$srcfile -> $args[2]/$lnfile\n";
 			} else {
-				print "ERROR while linking file $args[2]/$srcfile\n";
+				print "ERROR while linking file $args[2]/$srcfile -> $args[2]/$lnfile\n";
 			}
 		}
 	}

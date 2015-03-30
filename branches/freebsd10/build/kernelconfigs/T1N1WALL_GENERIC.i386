@@ -2,13 +2,13 @@ machine		i386
 cpu		I486_CPU
 cpu		I586_CPU
 cpu		I686_CPU
-ident		M0N0WALL_GENERIC
+ident		T1N1WALL_GENERIC
 
 makeoptions	MODULES_OVERRIDE="dummynet glxsb aesni padlock ipfw acpi if_tap if_vlan"
 
 options		HZ=1000
 
-hints		"M0N0WALL_GENERIC.hints"
+hints		"T1N1WALL_GENERIC.hints"
 
 options 	SCHED_ULE		# ULE scheduler
 options 	PREEMPTION		# Enable kernel thread preemption
