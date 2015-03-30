@@ -86,6 +86,9 @@ function dump_clog($logfile, $tail, $withorig = true) {
 		  <tr> 
 			<td colspan="2" class="listtopic"> 
 			  Last <?=$nentries;?> DHCP service log entries</td>
+			<form action="diag_logs_dhcp.php" method="post">
+			<input name="clear" type="submit" class="formbtn" value="Clear log">
+			<br><br></form>
 		  </tr>
 		  <?php dump_clog("/var/log/dhcpd.log", $nentries); ?>
 		</table>
