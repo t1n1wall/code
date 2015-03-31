@@ -190,6 +190,7 @@ function filter_nat_rules_generate() {
 	$lancfg = $config['interfaces']['lan'];
 	
 	$pptpdcfg = $config['pptpd'];
+	$l2tpdcfg = $config['l2tp'];
 	$wanif = get_real_wan_interface();
 	
 	$lansa = gen_subnet($lancfg['ipaddr'], $lancfg['subnet']);
@@ -364,6 +365,7 @@ function filter_rules_generate($ipv6 = false) {
 	$wancfg = $config['interfaces']['wan'];
 	$lancfg = $config['interfaces']['lan'];
 	$pptpdcfg = $config['pptpd'];
+	$l2tpdcfg = $config['l2tp'];
 	
 	$lanif = $lancfg['if'];
 	$wanif = get_real_wan_interface($ipv6);
@@ -457,6 +459,12 @@ function filter_rules_generate($ipv6 = false) {
 		$pptpip = $pptpdcfg['localip'];
 		$pptpsa = $pptpdcfg['remoteip'];
 		$pptpsn = subnet_size_to_cidr($pptpdcfg['nunits'] ? $pptpdcfg['nunits'] : 16);
+	}
+
+	if ($l2tpdcfg['mode'] == "server" && !$ipv6) {
+		$l2tpip = $l2tpdcfg['localip'];
+		$l2tpsa = $l2tpdcfg['remoteip'];
+		$l2tpsn = subnet_size_to_cidr($l2tpdcfg['nunits'] ? $l2tpdcfg['nunits'] : 16);
 	}
 	
 	if ($ipv6) {
@@ -800,10 +808,10 @@ EOD;
 	}
 	
 	/* IPsec enabled? */
-	if ( isset($config['ipsec']['enable']) && 
+	if (( isset($config['ipsec']['enable']) && 
 		((is_array($config['ipsec']['tunnel']) &&
 		count($config['ipsec']['tunnel'])) ||
-			isset($config['ipsec']['mobileclients']['enable']))) {
+			isset($config['ipsec']['mobileclients']['enable']) )) || ($l2tpdcfg['mode'] == "server") ) {
 		
 		if ($curwanip)
 			$ipfrules .= filter_rules_ipsec_generate($wanif, $curwanip);
@@ -868,7 +876,7 @@ EOD;
 	
 	}
 	
-	if (isset($config['ipsec']['enable'])) {
+	if (isset($config['ipsec']['enable']) || ($l2tpdcfg['mode'] == "server") ) {
 		$ipfrules .= <<<EOD
 
 # always pass outgoing IPsec encapsulated packets
@@ -918,7 +926,7 @@ EOD;
 		if (isset($rule['disabled']))
 			continue;
 		
-		/* does the rule deal with a PPTP or IPsec interface? */
+		/* does the rule deal with a PPTP, L2TP or IPsec interface? */
 		if ($rule['interface'] == "pptp") {
 		
 			if ($pptpdcfg['mode'] != "server")
@@ -928,6 +936,7 @@ EOD;
 			if (!$nif)
 				$nif = 16;
 			$ispptp = true;
+			$isl2tp = false;
 			$isipsec = false;
 		} else if ($rule['interface'] == "ipsec") {
 		
@@ -936,7 +945,19 @@ EOD;
 		
 			$nif = 1;
 			$ispptp = false;
+			$isl2tp = false;
 			$isipsec = true;
+		} else if ($rule['interface'] == "l2tp") {
+		
+			if ($l2tpdcfg['mode'] != "server")
+				continue;
+				
+			$nif = $l2tpdcfg['nunits'];
+			if (!$nif)
+				$nif = 16;
+			$ispptp = false;
+			$isl2tp = true;
+			$isipsec = false;
 		} else {
 			
 			if (strstr($rule['interface'], "opt")) {
@@ -952,6 +973,11 @@ EOD;
 		if ($pptpdcfg['mode'] != "server") {
 			if (($rule['source']['network'] == "pptp") ||
 				($rule['destination']['network'] == "pptp"))
+					continue;
+		}
+		if ($l2tpdcfg['mode'] != "server") {
+			if (($rule['source']['network'] == "l2tp") ||
+				($rule['destination']['network'] == "l2tp"))
 					continue;
 		}
 		
@@ -972,7 +998,7 @@ EOD;
 		
 		for ($iif = 0; $iif < $nif; $iif++) {
 			
-			if (!$ispptp && !$isipsec) {
+			if (!$ispptp && !$isipsec && !$isl2tp) {
 			
 				$groupnum = $ifgroups[$rule['interface']];
 				
@@ -1012,6 +1038,8 @@ EOD;
 				$line .= "on ng$iif ";
 			else if ($isipsec)
 				$line .= "on enc0 ";
+			else if ($isl2tp)
+				$line .= "on l2tp$iif ";
 			
 			$line .= "family $inetfamily ";
 
@@ -1037,6 +1065,9 @@ EOD;
 							break;
 						case 'pptp':
 							$src = "$pptpsa/$pptpsn";
+							break;
+						case 'l2tp':
+							$src = "$l2tpsa/$l2tpsn";
 							break;
 					}
 				}
@@ -1095,6 +1126,9 @@ EOD;
 						case 'pptp':
 							$dst = "$pptpsa/$pptpsn";
 							break;
+						case 'l2tp':
+							$src = "$l2tpsa/$l2tpsn";
+							break;
 					}
 				}
 			} else if ($rule['destination']['address']) {
@@ -1149,7 +1183,7 @@ EOD;
 				$line .= "flags S/SA ";
 			}
 				
-			if (!$ispptp && !$isipsec) {
+			if (!$ispptp && !$isipsec && !$isl2tp) {
 				$line .= "group $groupnum ";
 			}
 			
