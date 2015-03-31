@@ -133,7 +133,7 @@ if ($_POST) {
                 <?php $i = 0;
                  if (!empty($a_ipsec)) {
                  /* sort ipsec tunnels by description, descr is sub array value  , sortdescr is function */
-                  sort($a_ipsec, "sortdescr");
+                  usort($a_ipsec, "sortdescr");
                   foreach ($a_ipsec as $ipsecent):
 					if (isset($ipsecent['disabled'])) {
 						$spans = "<span class=\"gray\">";
