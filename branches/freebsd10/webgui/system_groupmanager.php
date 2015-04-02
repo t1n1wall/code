@@ -194,6 +194,14 @@ if ($_POST) {
 <?php include("fbegin.inc"); ?>
 <?php if ($input_errors) print_input_errors($input_errors); ?>
 <?php if ($savemsg) print_info_box($savemsg); ?>
+<script language="JavaScript">
+function toggle(source) {
+  checkboxes = document.getElementsByName('setperms');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+</script>
 <form action="system_groupmanager.php" method="post" name="iform" id="iform">
 <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="tab pane">
   <tr><td class="tabnavtbl">
@@ -241,7 +249,7 @@ if($_GET['act']=="new" || $_GET['act']=="edit"){
               <td colspan="2">
               <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="page permission pane">
               <tr>
-                <td class="listhdrr">&nbsp;</td>
+                <td class="listhdrr"><input type="checkbox" onClick="toggle(this)"></td>
                 <td class="listhdrr">Page Description</td>
                 <td class="listhdr">Filename</td>
               </tr>
@@ -250,7 +258,7 @@ if($_GET['act']=="new" || $_GET['act']=="edit"){
               	$identifier = str_replace('.php','',$fname);
               	?>
               	<tr><td class="listlr">
-              	<input name="<?=$identifier?>" type="checkbox" id="<?=$identifier?>" value="yes" <?php if (in_array($fname,$pconfig['pages'])) echo "checked"; ?>></td>
+              	<input name="setperms" type="checkbox" id="<?=$identifier?>" value="yes" <?php if (in_array($fname,$pconfig['pages'])) echo "checked"; ?>></td>
               	<td class="listr"><?=$title?></td>
               	<td class="listr"><?=$fname?></td>
               	</tr>
