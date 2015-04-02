@@ -35,7 +35,7 @@
 	
 	$fp = fopen('php://stdin', 'r');
 	
-	echo "\nEnter a host name or IP address: ";
+	echo "\nEnter an IPv4 host name or IPv4 address: ";
 
 	$pinghost = chop(fgets($fp));
 	if ($pinghost) {

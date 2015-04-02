@@ -1,7 +1,7 @@
 #!/usr/local/bin/php -f
 <?php
 /*
-	$Id: rc.initial.password 75 2006-02-10 11:42:01Z jdegraeve $
+	$Id: rc.initial.ping 75 2006-02-10 11:42:01Z jdegraeve $
 	part of m0n0wall (http://m0n0.ch/wall)
 	
 	Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
@@ -35,31 +35,13 @@
 	
 	$fp = fopen('php://stdin', 'r');
 	
-	echo <<<EOD
-	
-The webGUI password will be reset to the default (which is 't1n1').
+	echo "\nEnter an IPv6 host name or IPv6 address: ";
 
-Do you want to proceed? (y/n) 
-EOD;
-
-	if (strcasecmp(chop(fgets($fp)), "y") == 0) {
-	
-		$config['system']['password'] = crypt("t1n1");
-		
-		write_config();
-		system_password_configure();
-		
-		echo <<<EOD
-
-The password for the webGUI has been reset.
-
-Remember to set the password to something else than
-the default as soon as you have logged into the webGUI.
-
-Press ENTER to continue.
-
-EOD;
-	
+	$pinghost = chop(fgets($fp));
+	if ($pinghost) {
+		echo "\n";
+		passthru("/sbin/ping6 -c 3 -n " . escapeshellarg($pinghost));
+		echo "\nPress ENTER to continue.\n";
 		fgets($fp);
 	}
 ?>
