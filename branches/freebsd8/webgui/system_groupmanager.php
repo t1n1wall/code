@@ -196,9 +196,11 @@ if ($_POST) {
 <?php if ($savemsg) print_info_box($savemsg); ?>
 <script language="JavaScript">
 function toggle(source) {
-  checkboxes = document.getElementsByName('setperms');
+  checkboxes = document.getElementsByTagName('input')
   for(var i=0, n=checkboxes.length;i<n;i++) {
-    checkboxes[i].checked = source.checked;
+  	if(checkboxes[i].type=='checkbox') {
+     checkboxes[i].checked = source.checked;
+    }
   }
 }
 </script>
@@ -258,7 +260,7 @@ if($_GET['act']=="new" || $_GET['act']=="edit"){
               	$identifier = str_replace('.php','',$fname);
               	?>
               	<tr><td class="listlr">
-              	<input name="setperms" type="checkbox" id="<?=$identifier?>" value="yes" <?php if (in_array($fname,$pconfig['pages'])) echo "checked"; ?>></td>
+              	<input name="<?=$identifier?>" type="checkbox" id="<?=$identifier?>" value="yes" <?php if (in_array($fname,$pconfig['pages'])) echo "checked"; ?>></td>
               	<td class="listr"><?=$title?></td>
               	<td class="listr"><?=$fname?></td>
               	</tr>
