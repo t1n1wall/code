@@ -1,24 +1,14 @@
---- sys/netipsec/esp_var.h.orig	2010-04-30 19:42:06.000000000 +0400
-+++ sys/netipsec/esp_var.h	2010-04-30 12:12:23.000000000 +0400
-@@ -76,5 +76,7 @@
- #define	V_esp_enable	VNET(esp_enable)
- VNET_DECLARE(struct espstat, espstat);
- #define	V_espstat	VNET(espstat)
-+VNET_DECLARE(int, esp_ignore_natt_cksum);
-+#define V_esp_ignore_natt_cksum	    VNET(esp_ignore_natt_cksum)
- #endif /* _KERNEL */
- #endif /*_NETIPSEC_ESP_VAR_H_*/
---- sys/netipsec/ipsec.c.orig	2010-04-30 19:42:35.000000000 +0400
-+++ sys/netipsec/ipsec.c	2010-04-30 13:11:12.000000000 +0400
-@@ -592,7 +592,7 @@
- 	IPSEC_ASSERT(m->m_pkthdr.len >= sizeof(struct ip),("packet too short"));
+--- sys/netipsec/esp_var.h.orig	2015-04-13 20:19:58.000000000 +0100
++++ sys/netipsec/esp_var.h	2015-04-13 20:20:01.000000000 +0100
+@@ -76,6 +76,8 @@
  
- 	/* NB: ip_input() flips it into host endian. XXX Need more checking. */
--	if (m->m_len < sizeof (struct ip)) {
-+	if (m->m_len >= sizeof (struct ip)) {
- 		struct ip *ip = mtod(m, struct ip *);
- 		if (ip->ip_off & (IP_MF | IP_OFFMASK))
- 			goto done;
+ VNET_DECLARE(int, esp_enable);
+ VNET_PCPUSTAT_DECLARE(struct espstat, espstat);
++VNET_DECLARE(int, esp_ignore_natt_cksum);
++#define V_esp_ignore_natt_cksum            VNET(esp_ignore_natt_cksum)
+ 
+ #define	ESPSTAT_ADD(name, val)	\
+     VNET_PCPUSTAT_ADD(struct espstat, espstat, name, (val))
 --- sys/netipsec/ipsec_input.c.orig	2009-08-03 12:13:06.000000000 +0400
 +++ sys/netipsec/ipsec_input.c	2010-04-30 12:23:24.000000000 +0400
 @@ -76,6 +76,11 @@
