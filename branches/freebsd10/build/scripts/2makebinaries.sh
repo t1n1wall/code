@@ -119,12 +119,16 @@ export CC=gcc46
         install -s $WRKDIRPREFIX/$PORTSDIR/net/isc-dhcp41-relay/work/dhcp-*/relay/dhcrelay $MW_BUILDPATH/t1n1fs/usr/local/sbin/
 # ipsec-tools
         cd $PORTSDIR/security/ipsec-tools
-	patch < $MW_BUILDPATH/freebsd10/build/patches/packages/ipsec-tools.Makefile.patch
+        patch < $MW_BUILDPATH/freebsd10/build/patches/packages/ipsec-tools.Makefile.patch
+        cp $MW_BUILDPATH/freebsd10/build/patches/packages/ipsec-tools.wildcard.patch $PORTSDIR/security/ipsec-tools/files
+        cp $MW_BUILDPATH/freebsd10/build/patches/packages/ipsec-tools.fqdn.patch $PORTSDIR/security/ipsec-tools/files
+        cp $MW_BUILDPATH/freebsd10/build/patches/packages/ipsec-tools.patch-zz-local-3.diff $PORTSDIR/security/ipsec-tools/files
+        cp $MW_BUILDPATH/freebsd10/build/patches/packages/ipsec-tools.kern146190_NATOa.patch $PORTSDIR/security/ipsec-tools/files        
         make
         install -s $WRKDIRPREFIX/$PORTSDIR/security/ipsec-tools/work/ipsec-tools-*/src/racoon/.libs/racoon $MW_BUILDPATH/t1n1fs/usr/local/sbin
         install -s $WRKDIRPREFIX/$PORTSDIR/security/ipsec-tools/work/ipsec-tools-*/src/setkey/.libs/setkey $MW_BUILDPATH/t1n1fs/usr/local/sbin
         install -s $WRKDIRPREFIX/$PORTSDIR/security/ipsec-tools/work/ipsec-tools-*/src/libipsec/.libs/libipsec.so.0 $MW_BUILDPATH/t1n1fs/usr/local/lib
-	mv Makefile.orig Makefile
+        mv Makefile.orig Makefile
 # dhcp6
 	cd $PORTSDIR/net/dhcp6
         make
