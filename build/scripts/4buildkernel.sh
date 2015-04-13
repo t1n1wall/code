@@ -42,6 +42,8 @@ fi
 		patch < $MW_BUILDPATH/freebsd10/build/patches/kernel/if_fxp.c.patch
 # glxsb crypto speed increase kern/132622
 		patch < $MW_BUILDPATH/freebsd10/build/patches/kernel/glxsb.c.orig.patch
+# ipsec patch for l2tp to work
+		patch < $MW_BUILDPATH/freebsd10/build/patches/kernel/ipsec-tools.kern146190.patch
 		
 # kernel compile
         cd $MW_BUILDPATH/tmp/sys/$MW_ARCH/conf

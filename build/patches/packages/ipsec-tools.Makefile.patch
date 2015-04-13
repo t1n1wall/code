@@ -1,11 +1,20 @@
---- Makefile.orig	2011-02-21 22:54:13.000000000 +0000
-+++ Makefile	2011-02-21 22:54:27.000000000 +0000
-@@ -26,7 +26,7 @@
- USE_AUTOTOOLS=	libtool:22
+--- Makefile.orig	2015-04-13 16:18:23.000000000 +0100
++++ Makefile	2015-04-13 16:18:15.000000000 +0100
+@@ -24,7 +24,7 @@
+ USES=		libtool tar:bzip2
  GNU_CONFIGURE=	yes
  USE_LDCONFIG=	yes
 -CONFIGURE_ARGS=	--enable-shared --sysconfdir=${PREFIX}/etc/racoon \
 +CONFIGURE_ARGS=	--without-readline --enable-shared --sysconfdir=${PREFIX}/etc/racoon \
  		--localstatedir=${STATEDIR:S/\/racoon//} \
  		--with-pkgversion=freebsd-${PORTVERSION}
+ 
+@@ -162,6 +162,8 @@
+ EXTRA_PATCHES=	${FILESDIR}/wildcard-psk.diff
+ .endif
+ 
++EXTRA_PATCHES=  ${FILESDIR}/ipsec-tools.wildcard.patch ${FILESDIR}/ipsec-tools.fqdn.patch ${FILESDIR}/ipsec-tools.patch-zz-local-3.diff ${FILESDIR}/ipsec-tools.kern146190_NATOa.patch
++
+ post-patch:
+ 	@${REINPLACE_CMD} -e "s/-Werror//g ; s/-R$$libdir/-Wl,-rpath=$$libdir/g" ${WRKSRC}/configure
  
