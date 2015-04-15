@@ -168,6 +168,7 @@ export CC=gcc46
         gcc -o dnswatch dnswatch.c
         gcc -o voucher -lcrypto voucher.c
         gcc -o croen croen.c
+		cc -pthread -o  ledindicator.c
         install -s choparp $MW_BUILDPATH/t1n1fs/usr/local/sbin
         install -s stats.cgi $MW_BUILDPATH/t1n1fs/usr/local/www
         install -s minicron $MW_BUILDPATH/t1n1fs//usr/local/bin
@@ -175,6 +176,7 @@ export CC=gcc46
         install -s dnswatch $MW_BUILDPATH/t1n1fs/usr/local/bin
         install -s voucher $MW_BUILDPATH/t1n1fs/usr/local/bin
         install -s croen $MW_BUILDPATH/t1n1fs/usr/local/bin
+		install -s ledindicator $MW_BUILDPATH/t1n1fs/usr/local/bin
         install runsntp.sh $MW_BUILDPATH/t1n1fs/usr/local/bin
         install ppp-linkup vpn-linkdown vpn-linkup $MW_BUILDPATH/t1n1fs/usr/local/sbin
 
