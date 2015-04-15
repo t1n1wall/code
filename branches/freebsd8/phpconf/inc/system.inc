@@ -786,6 +786,12 @@ EOD;
 	return 0;
 }
 
+function ledindicator() {
+	if (is_dir("/dev/led")) {
+		mwexec("/usr/local/sbin/ledindicator");
+	}
+}
+
 function system_check_reset_button() {
 	$specplatform = system_identify_specific_platform();
 
