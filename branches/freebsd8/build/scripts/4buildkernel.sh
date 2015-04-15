@@ -34,7 +34,8 @@ fi
 		patch < $MW_BUILDPATH/freebsd8/build/patches/kernel/if_em.c.patch
 		patch < $MW_BUILDPATH/freebsd8/build/patches/kernel/if_fxp.c.patch
 		patch < $MW_BUILDPATH/freebsd8/build/patches/kernel/ipsec-tools.kern146190.patch
-		
+		patch < $MW_BUILDPATH/freebsd8/build/patches/FreeBSD-SA/FreeBSD-SA-1509-ipv6.patch
+
 # kernel compile
         cd $MW_BUILDPATH/tmp/sys/$MW_ARCH/conf
         cp $MW_BUILDPATH/freebsd8/build/kernelconfigs/M0N0WALL_GENERIC.$MW_ARCH $MW_BUILDPATH/tmp/sys/$MW_ARCH/conf/M0N0WALL_GENERIC
