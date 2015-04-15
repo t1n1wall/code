@@ -41,6 +41,9 @@
 	
 	/* check whether config reset is desired (via hardware button on WRAP/ALIX) */
 	system_check_reset_button();
+
+	/* flash some lights */
+	ledindicator();
 		
 	/* convert configuration, if necessary */
 	convert_config();
