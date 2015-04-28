@@ -787,6 +787,7 @@ EOD;
 }
 
 function ledindicator() {
+	global $config;
 	if (isset($config['system']['ledindicator'])) {
 		if (is_dir("/dev/led")) {
 			mwexec("/usr/local/sbin/ledindicator");
