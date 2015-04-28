@@ -47,6 +47,7 @@ sbin/sysctl
 sbin/umount
 
 # contents of /usr/bin
+usr/bin/fetch
 usr/bin/gzip:usr/bin/gunzip
 usr/bin/killall
 usr/bin/logger
