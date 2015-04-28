@@ -15,12 +15,12 @@ fi
 rm -rf $MW_BUILDPATH/microfs
 mkdir $MW_BUILDPATH/microfs
 cd  $MW_BUILDPATH/microfs
-mkdir -p lib libexec bin sbin etc dev usr/sbin mnt/m0n0wall
+mkdir -p lib libexec bin sbin etc dev usr/sbin mnt/t1n1wall
 
 # Populate microfs
 perl $MW_BUILDPATH/freebsd8/build/minibsd/mkmini.pl $MW_BUILDPATH/freebsd8/build/minibsd/micro.files /  $MW_BUILDPATH/microfs
-perl $MW_BUILDPATH/freebsd8/build/minibsd/mklibs.pl $MW_BUILDPATH/microfs > /tmp/m0n0wallmicro.libs
-perl $MW_BUILDPATH/freebsd8/build/minibsd/mkmini.pl /tmp/m0n0wallmicro.libs / $MW_BUILDPATH/microfs
+perl $MW_BUILDPATH/freebsd8/build/minibsd/mklibs.pl $MW_BUILDPATH/microfs > /tmp/t1n1wallmicro.libs
+perl $MW_BUILDPATH/freebsd8/build/minibsd/mkmini.pl /tmp/t1n1wallmicro.libs / $MW_BUILDPATH/microfs
 
 cp  $MW_BUILDPATH/freebsd8/build/files/rc.microfs $MW_BUILDPATH/microfs/etc/rc
 cp $MW_BUILDPATH/freebsd8/build/files/ttys.microfs $MW_BUILDPATH/microfs/etc/ttys
@@ -35,7 +35,7 @@ makeminimfsroot() {
 		
 		echo -n "Making Micro mfsroot for $PLATFORM..."
 		
-		echo $PLATFORM > $MW_BUILDPATH/m0n0fs/etc/platform
+		echo $PLATFORM > $MW_BUILDPATH/t1n1fs/etc/platform
 		cd $MW_BUILDPATH/tmp
 		dd if=/dev/zero of=mfsroot-$PLATFORM bs=1k count=`du -d0 $MW_BUILDPATH/microfs | cut -d "/" -f 1 | tr " " "+" | xargs -I {} echo "($SPARESPACE)+{}" | bc` > /dev/null 2>&1
 		mdconfig -a -t vnode -f mfsroot-$PLATFORM -u 20
@@ -67,7 +67,7 @@ makeimage() {
 		if [ $MW_ARCH = "i386" ]; then
 		        cp $MW_BUILDPATH/tmp/acpi.ko $MW_BUILDPATH/tmp/firmwaretmp
 		fi
-		cp $MW_BUILDPATH/m0n0fs/conf.default/config.xml $MW_BUILDPATH/tmp/firmwaretmp
+		cp $MW_BUILDPATH/t1n1fs/conf.default/config.xml $MW_BUILDPATH/tmp/firmwaretmp
 		
 		cd $MW_BUILDPATH/tmp
 		dd if=/dev/zero of=image.bin bs=1k count=`du -d0 $MW_BUILDPATH/tmp/firmwaretmp  | cut -b1-5 | tr " " "+" | xargs -I {} echo "($SPARESPACE)+{}" | bc` > /dev/null 2>&1
@@ -91,7 +91,7 @@ makeimage() {
 		        cp $MW_BUILDPATH/tmp/acpi.ko /mnt/boot/kernel
 		fi
 		mkdir /mnt/conf
-		cp $MW_BUILDPATH/m0n0fs/conf.default/config.xml /mnt/conf
+		cp $MW_BUILDPATH/t1n1fs/conf.default/config.xml /mnt/conf
 		cd $MW_BUILDPATH/tmp
 		umount /mnt
 		mdconfig -d -u 30
@@ -112,21 +112,21 @@ makeimage() {
 		mkdir -p $MW_BUILDPATH/tmp/syslinux
 		cd $MW_BUILDPATH/tmp/syslinux
 		
-		echo "default M0n0wall" > $MW_BUILDPATH/tmp/syslinux/syslinux.cfg
-		echo "label M0n0wall" >> $MW_BUILDPATH/tmp/syslinux/syslinux.cfg
+		echo "default T1n1wall" > $MW_BUILDPATH/tmp/syslinux/syslinux.cfg
+		echo "label T1n1wall" >> $MW_BUILDPATH/tmp/syslinux/syslinux.cfg
 		echo "linux memdisk" >> $MW_BUILDPATH/tmp/syslinux/syslinux.cfg
 		echo "initrd generic-pc-syslinux-$VERSION.img" >> $MW_BUILDPATH/tmp/syslinux/syslinux.cfg
 		echo "append raw ro noedd" >> $MW_BUILDPATH/tmp/syslinux/syslinux.cfg
 		
-		cp -R $MW_BUILDPATH/m0n0fs $MW_BUILDPATH/tmp/syslinux
-		rm  $MW_BUILDPATH/tmp/syslinux/m0n0fs/conf
-		mkdir $MW_BUILDPATH/tmp/syslinux/m0n0fs/conf
-		mkdir -p $MW_BUILDPATH/tmp/syslinux/m0n0fs/cf/conf
+		cp -R $MW_BUILDPATH/t1n1fs $MW_BUILDPATH/tmp/syslinux
+		rm  $MW_BUILDPATH/tmp/syslinux/t1n1fs/conf
+		mkdir $MW_BUILDPATH/tmp/syslinux/t1n1fs/conf
+		mkdir -p $MW_BUILDPATH/tmp/syslinux/t1n1fs/cf/conf
 		
-		cp $MW_BUILDPATH/m0n0fs/conf.default/config.xml $MW_BUILDPATH/tmp/syslinux/m0n0fs/conf
-		cp $MW_BUILDPATH/m0n0fs/conf.default/config.xml  $MW_BUILDPATH/tmp/syslinux/m0n0fs/cf/conf
+		cp $MW_BUILDPATH/t1n1fs/conf.default/config.xml $MW_BUILDPATH/tmp/syslinux/t1n1fs/conf
+		cp $MW_BUILDPATH/t1n1fs/conf.default/config.xml  $MW_BUILDPATH/tmp/syslinux/t1n1fs/cf/conf
 		mv $MW_BUILDPATH/images/generic-pc-syslinux-$VERSION.img $MW_BUILDPATH/tmp/syslinux
-		tar -zcf generic-pc-syslinux-$VERSION.tgz m0n0fs syslinux.cfg generic-pc-syslinux-$VERSION.img 
+		tar -zcf generic-pc-syslinux-$VERSION.tgz t1n1fs syslinux.cfg generic-pc-syslinux-$VERSION.img 
 		mv generic-pc-syslinux-$VERSION.tgz $MW_BUILDPATH/images/
 		rm -rf $MW_BUILDPATH/tmp/syslinux
 		
