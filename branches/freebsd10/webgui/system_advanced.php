@@ -35,6 +35,7 @@ $pconfig['nospoofcheck'] = isset($config['bridge']['nospoofcheck']);
 $pconfig['mbmon'] = isset($config['system']['webgui']['mbmon']['enable']);
 $pconfig['cert'] = base64_decode($config['system']['webgui']['certificate']);
 $pconfig['key'] = base64_decode($config['system']['webgui']['private-key']);
+$pconfig['ledindicator'] = isset($config['system']['ledindicator']);
 $pconfig['disableconsolemenu'] = isset($config['system']['disableconsolemenu']);
 $pconfig['disablefirmwarecheck'] = isset($config['system']['disablefirmwarecheck']);
 $pconfig['allowipsecfrags'] = isset($config['filter']['allowipsecfrags']);
@@ -102,6 +103,7 @@ if ($_POST) {
 		$oldkey = $config['system']['webgui']['private-key'];
 		$config['system']['webgui']['certificate'] = base64_encode($_POST['cert']);
 		$config['system']['webgui']['private-key'] = base64_encode($_POST['key']);
+		$config['system']['ledindicator'] = $_POST['ledindicator'] ? true : false;
 		$config['system']['disableconsolemenu'] = $_POST['disableconsolemenu'] ? true : false;
 		$config['system']['disablefirmwarecheck'] = $_POST['disablefirmwarecheck'] ? true : false;
 		$config['filter']['allowipsecfrags'] = $_POST['allowipsecfrags'] ? true : false;
@@ -286,6 +288,17 @@ if ($_POST) {
                     <input name="disableconsolemenu" type="checkbox" id="disableconsolemenu" value="yes" <?php if ($pconfig['disableconsolemenu']) echo "checked"; ?>>
                     <strong>Disable console menu</strong><span class="vexpl"><br>
                     Changes to this option will take effect after a reboot.</span></td>
+                </tr>
+				<tr> 
+                  <td width="22%" valign="top" class="vncell">LED lights </td>
+                  <td width="78%" class="vtable"> 
+                    <input name="ledindicator" type="checkbox" id="ledindicator" value="yes" <?php if ($pconfig['ledindicator']) echo "checked"; ?>>
+                    <strong>Enabled LEDindicator</strong><span class="vexpl"><br>
+                    If t1n1wall finds LEDs on your system, this option will make; 
+                    LED 1 flash slow, medium or fast, for packet forwarding rate.
+                	LED 2 flash slow, medium or fast for CPU utilisation.
+                	LED 3 flash to indicate system is functioning and not stalled.
+                </span></td>
                 </tr>
 				<tr>
                   <td valign="top" class="vncell">Firmware version check </td>
