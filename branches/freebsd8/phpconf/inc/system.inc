@@ -787,8 +787,10 @@ EOD;
 }
 
 function ledindicator() {
-	if (is_dir("/dev/led")) {
-		mwexec("/usr/local/sbin/ledindicator");
+	if (isset($config['system']['ledindicator'])) {
+		if (is_dir("/dev/led")) {
+			mwexec("/usr/local/sbin/ledindicator");
+		}
 	}
 }
 

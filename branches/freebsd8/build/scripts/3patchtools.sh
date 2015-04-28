@@ -15,16 +15,16 @@ fi
 	cd syslogd
 	patch < $MW_BUILDPATH/freebsd8/build/patches/user/syslogd.c.patch
 	make obj && make
-	install -s /usr/obj/usr/src/usr.sbin/syslogd/syslogd $MW_BUILDPATH/m0n0fs/usr/sbin/
+	install -s /usr/obj/usr/src/usr.sbin/syslogd/syslogd $MW_BUILDPATH/t1n1fs/usr/sbin/
 	mv syslogd.c.orig syslogd.c
 	cd ../clog
 	make obj && make
-	install -s /usr/obj/usr/src/usr.sbin/clog/clog $MW_BUILDPATH/m0n0fs/usr/sbin/
+	install -s /usr/obj/usr/src/usr.sbin/clog/clog $MW_BUILDPATH/t1n1fs/usr/sbin/
 	cd ..
 	rm -Rf clog
 # dhclient-script
-	cp $MW_BUILDPATH/freebsd8/build/tools/dhclient-script $MW_BUILDPATH/m0n0fs/sbin
-	chmod a+rx $MW_BUILDPATH/m0n0fs/sbin/dhclient-script
+	cp $MW_BUILDPATH/freebsd8/build/tools/dhclient-script $MW_BUILDPATH/t1n1fs/sbin
+	chmod a+rx $MW_BUILDPATH/t1n1fs/sbin/dhclient-script
 # ifconfig for r222728
 	rm -Rf /usr/obj/usr/src/sbin/ifconfig
 	rm -Rf $MW_BUILDPATH/tmp/netinet6
@@ -35,7 +35,7 @@ fi
 	patch < $MW_BUILDPATH/freebsd8/build/patches/user/ifconfig.r222728.patch
 	patch < $MW_BUILDPATH/freebsd8/build/patches/user/ifconfig.Makefile.patch
 	make obj && make
-	install -s /usr/obj/usr/src/sbin/ifconfig/ifconfig $MW_BUILDPATH/m0n0fs/sbin/
+	install -s /usr/obj/usr/src/sbin/ifconfig/ifconfig $MW_BUILDPATH/t1n1fs/sbin/
 	mv Makefile.orig Makefile
 	mv af_inet6.c.orig af_inet6.c
 	mv af_nd6.c.orig af_nd6.c
@@ -44,9 +44,9 @@ fi
 	cd /usr/src/usr.sbin/rtadvd
 	patch < $MW_BUILDPATH/freebsd8/build/patches/user/rtadvd.dhcppd.patch
 	make obj && make
-	install -s /usr/obj/usr/src/usr.sbin/rtadvd/rtadvd $MW_BUILDPATH/m0n0fs/usr/sbin/
+	install -s /usr/obj/usr/src/usr.sbin/rtadvd/rtadvd $MW_BUILDPATH/t1n1fs/usr/sbin/
 	mv rtadvd.c.orig rtadvd.c
 # lets strip out any missed symbols lazy way , lots of harmless errors to dev null
 	set +e
-	find $MW_BUILDPATH/m0n0fs/ | xargs strip -s 2> /dev/null
+	find $MW_BUILDPATH/t1n1fs/ | xargs strip -s 2> /dev/null
 	echo "Finished Stage 3"

@@ -1,7 +1,7 @@
 #!/bin/csh 
 
 
-set MW_BUILDPATH=/usr/m0n0wall/build84
+set MW_BUILDPATH=/usr/t1n1wall/build84
 setenv MW_BUILDPATH $MW_BUILDPATH
 setenv MW_ARCH `uname -m`
 
@@ -51,5 +51,5 @@ echo
 echo "----- Build environment prepared -----"
 echo "I will leave you in a bash shell now"
 echo "To start the build, execute doall.sh or run 1makebuildenv.sh , then 2makebinaries.sh, then 3patchtools.sh etc"
-setenv PS1 "m0n0wall-build# "
+setenv PS1 "t1n1wall-build# "
 /usr/local/bin/bash
