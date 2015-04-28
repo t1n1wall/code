@@ -204,7 +204,9 @@ function enable_change(enable_over) {
                   <td width="22%" valign="top" class="vtable">&nbsp;</td>
                   <td width="78%" class="vtable">
 <input type="radio" name="mode" value="server" onclick="enable_change(false)" <?php if ($pconfig['mode'] == "server") echo "checked"; ?>>
-                    Enable IPsec/L2TP server</td>
+                    Enable IPsec/L2TP server. <font color='red'>
+				  !Bug Warning! Ipsec tunnels configured in aggressive mode will break.
+				  </font></td>
                 </tr>
                 <tr> 
                   <td width="22%" valign="top" class="vncellreq">IPSEC PSK</td>
