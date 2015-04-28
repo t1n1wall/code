@@ -569,10 +569,15 @@ function ip_in_subnet($addr,$subnet) {
 function verify_digital_signature($fname) {
 
 	global $g;
-
-	return mwexec("/usr/local/bin/verifysig " .
-		escapeshellarg("{$g['etc_path']}/pubkey.pem") . " " .
+	$returncode = mwexec("/usr/local/bin/verifysig " .
+		escapeshellarg("{$g['etc_path']}/t1n1pubkey.pem") . " " .
 		escapeshellarg($fname));
+	if ($returncode == 3) {
+		$returncode = mwexec("/usr/local/bin/verifysig " .
+		escapeshellarg("{$g['etc_path']}/m0n0pubkey.pem") . " " .
+		escapeshellarg($fname));
+	}
+	return $returncode;
 }
 
 /* obtain MAC address given an IP address by looking at the ARP table */
