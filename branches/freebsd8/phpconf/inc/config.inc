@@ -734,7 +734,7 @@ function convert_config() {
 
 	/* choose a random NTP server (first time startup)? */
 	if (isset($config['system']['timeservers-randomize'])) {
-		$config['system']['timeservers'] = rand(0, 3) . ".pool.ntp.t1n1wall.com";
+		$config['system']['timeservers'] = rand(0, 3) . ".t1n1wall.pool.ntp.org";
 		unset($config['system']['timeservers-randomize']);
 	}
 	
