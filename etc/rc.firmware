@@ -33,9 +33,9 @@ upgrade)
 	# unmount /cf
 	/sbin/umount -f /cf
 
-	# dd image onto card
+	# dd image onto card, bytes 512, soekris 6501 with msata fails upgrades otherwise
 	if [ -r $2 ]; then
-		/usr/bin/gunzip -S "" -c $2 | dd of=/dev/$CFDEVICE ibs=64k obs=64k > /dev/null 2>&1
+		/usr/bin/gunzip -S "" -c $2 | dd of=/dev/$CFDEVICE ibs=512 obs=512 > /dev/null 2>&1
 		echo "Image installed."
 	fi
 
