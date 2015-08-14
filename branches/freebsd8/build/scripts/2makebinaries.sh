@@ -172,7 +172,7 @@ fi
 	rm -Rf net-snmp-5.7.3
         tar -zxf $MW_BUILDPATH/freebsd8/build/local-sources/net-snmp-5.7.3.tar.gz
         cd net-snmp-5.7.3
-	./configure  --with-default-snmp-version="2" --with-sys-contact="contact" --with-sys-location="location"--without-openssl --disable-snmpv1  --with-default-snmp-version="2" \
+	./configure  --with-default-snmp-version="2" --with-sys-contact="contact" --with-sys-location="location"--without-openssl --with-default-snmp-version="2" \
 	--enable-ipv6    --disable-set-support --disable-des   --disable-privacy   --disable-md5  --disable-debugging --enable-static  --enable-mini-agent --disable-testing-code \
 	--disable-shared-version --disable-shared '--with-out-transports=TCP Unix TCPIPv6 Callback'  '--with-mib-modules=if-mib host mibII/var_route ucd_snmp' \
 	--enable-mfd-rewrites --with-defaults
