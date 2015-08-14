@@ -169,19 +169,14 @@ fi
 		export AUTOCONF_VERSION=2.62
 # ucd-snmp
         cd $MW_BUILDPATH/tmp
-		rm -Rf ucd-snmp-4.2.7.1
-        tar -zxf $MW_BUILDPATH/freebsd8/build/local-sources/ucd-snmp-4.2.7.1.tar.gz
-        cd ucd-snmp-4.2.7.1
-        ./configure  --without-openssl --disable-debugging --enable-static \
-        --enable-mini-agent --disable-privacy --disable-testing-code \
-        --disable-shared-version --disable-shared --target=i386-unknown-freebsd6.4 \
-        '--with-out-transports=TCP Unix' \
-        '--with-mib-modules=host mibII/interfaces mibII/var_route ucd-snmp/vmstat_freebsd2' \
-		--with-defaults
-		patch < $MW_BUILDPATH/freebsd8/build/patches/packages/ucd-snmp.patch
-		patch < $MW_BUILDPATH/freebsd8/build/patches/packages/ucd-snmp.config.h.patch
-                patch < $MW_BUILDPATH/freebsd8/build/patches/packages/vmstat_freebsd2.c.patch
-	    make
+	rm -Rf net-snmp-5.7.3
+        tar -zxf $MW_BUILDPATH/freebsd8/build/local-sources/net-snmp-5.7.3.tar.gz
+        cd net-snmp-5.7.3
+	./configure  --with-default-snmp-version="2" --with-sys-contact="contact" --with-sys-location="location"--without-openssl --disable-snmpv1  --with-default-snmp-version="2" \
+	--enable-ipv6    --disable-set-support --disable-des   --disable-privacy   --disable-md5  --disable-debugging --enable-static  --enable-mini-agent --disable-testing-code \
+	--disable-shared-version --disable-shared '--with-out-transports=TCP Unix TCPIPv6 Callback'  '--with-mib-modules=if-mib host mibII/var_route ucd_snmp' \
+	--enable-mfd-rewrites --with-defaults
+	make
         install -s agent/snmpd $MW_BUILDPATH/t1n1fs/usr/local/sbin
 
 echo "Finished Stage 2"
