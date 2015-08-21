@@ -80,7 +80,7 @@ fi
         cd dnsmasq-2.66
         cp $MW_BUILDPATH/freebsd8/build/patches/packages/patch-dnsmasq-iscreader.patch .
         patch < patch-dnsmasq-iscreader.patch
-        make COPTS+=-DNO_TFTP COPTS+=-DNO_AUTH
+        make COPTS=-DNO_DHCPv6 COPTS+=-DNO_AUTH COPTS+=-DNO_TFTP COPTS+=-DNO_SCRIPT COPTS+=-DNO_LARGEFILE COPTS+=-DNO_DHCP6
         install -s src/dnsmasq $MW_BUILDPATH/t1n1fs/usr/local/sbin
         rm patch-dnsmasq-iscreader.patch
         
@@ -167,13 +167,13 @@ fi
 
 # select Autoconf version 2.62
 		export AUTOCONF_VERSION=2.62
-# ucd-snmp
+# net-snmp
         cd $MW_BUILDPATH/tmp
 	rm -Rf net-snmp-5.7.3
         tar -zxf $MW_BUILDPATH/freebsd8/build/local-sources/net-snmp-5.7.3.tar.gz
         cd net-snmp-5.7.3
-	./configure  --with-default-snmp-version="2" --with-sys-contact="contact" --with-sys-location="location"--without-openssl --with-default-snmp-version="2" \
-	--enable-ipv6    --disable-set-support --disable-des   --disable-privacy   --disable-md5  --disable-debugging --enable-static  --enable-mini-agent --disable-testing-code \
+	./configure --with-sys-contact="contact" --with-sys-location="location" --without-openssl --with-default-snmp-version="2" \
+	--enable-ipv6 --disable-set-support --disable-des --disable-privacy --disable-md5  --disable-debugging --enable-mini-agent --disable-testing-code \
 	--disable-shared-version --disable-shared '--with-out-transports=TCP Unix TCPIPv6 Callback'  '--with-mib-modules=if-mib host mibII/var_route ucd_snmp' \
 	--enable-mfd-rewrites --with-defaults
 	make
