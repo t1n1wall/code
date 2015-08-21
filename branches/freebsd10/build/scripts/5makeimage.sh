@@ -64,7 +64,6 @@ makeimage() {
 	mkdir -p /mnt/boot/kernel
 	cp /boot/loader /mnt/boot
 	cp $MW_BUILDPATH/freebsd10/build/boot/$PLATFORM/loader.rc /mnt/boot
-	cp $MW_BUILDPATH/freebsd10/build/boot/loader.conf /mnt/boot
 	if [ -r $MW_BUILDPATH/freebsd10/build/boot/$PLATFORM/boot.config ]; then
 		cp $MW_BUILDPATH/freebsd10/build/boot/$PLATFORM/boot.config /mnt
 	fi
