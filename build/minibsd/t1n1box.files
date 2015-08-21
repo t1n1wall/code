@@ -79,10 +79,10 @@ bin/t1n1box:usr/local/bin/ez-ipupdate
 bin/t1n1box:sbin/modem-stats
 
 # ipf userland tools
-bin/t1n1ipf:sbin/ipf
-bin/t1n1ipf:sbin/ipfs
-bin/t1n1ipf:sbin/ipmon
-bin/t1n1ipf:sbin/ipnat
-bin/t1n1ipf:sbin/ippool
+#bin/t1n1ipf:sbin/ipf
+#bin/t1n1ipf:sbin/ipfs
+#bin/t1n1ipf:sbin/ipmon
+#bin/t1n1ipf:sbin/ipnat
+#bin/t1n1ipf:sbin/ippool
 
 

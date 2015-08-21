@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <sys/dkstat.h>
+#include <string.h>
 
 void cpu_stats() {
 
