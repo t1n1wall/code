@@ -13,6 +13,7 @@ export CC=cc
 	# patch dnsmasq Makefile, consider a Makefile header ?
 	cp $MW_BUILDPATH/tmp/dnsmasq-2.66/Makefile /usr/t1n1wall/build10/tmp/dnsmasq-2.66/src/
 	echo "depend:" >> $MW_BUILDPATH/tmp/dnsmasq-2.66/src/Makefile
+	echo "depend:" >> $MW_BUILDPATH/tmp/msntp-1.6/Makefile
 	echo "depend:" >> $MW_BUILDPATH/tmp/ports/work/usr/t1n1wall/build10/tmp/ports/tree/security/ipsec-tools/work/ipsec-tools-0.8.2/src/setkey/Makefile
 	echo "depend:" >> $MW_BUILDPATH/tmp/ports/work/usr/t1n1wall/build10/tmp/ports/tree/security/ipsec-tools/work/ipsec-tools-0.8.2/src/racoon/Makefile
 	echo "depend:" >> $MW_BUILDPATH/tmp/modem-stats-1.0.1/Makefile

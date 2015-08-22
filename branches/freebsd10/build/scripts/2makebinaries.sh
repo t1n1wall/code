@@ -74,7 +74,16 @@ export CC=gcc46
         make clean
         cd /usr/src/contrib/ipfilter/tools/
         cp ipfstat.c.original ipfstat.c
-        export CC=gcc46
+	export CC=gcc46
+# msntp
+	export LIBS=-lm
+	cd $MW_BUILDPATH/tmp
+        rm -Rf msntp-1.6
+        tar -zxf $MW_BUILDPATH/freebsd10/build/local-sources/msntp-1.6.tar.gz
+        cd msntp-1.6
+        make
+	#don't install, t1n1wall expects sntp, not msntp, and crunchgen will alias it
+        #install -s msntp $MW_BUILDPATH/t1n1fs/sbin
 # modem-stats
 	cd $MW_BUILDPATH/tmp
 	rm -Rf modem-stats-1.0.1
@@ -181,7 +190,7 @@ export CC=gcc46
         install ppp-linkup vpn-linkdown vpn-linkup $MW_BUILDPATH/t1n1fs/usr/local/sbin
 
 # select Autoconf version 2.62
-		export AUTOCONF_VERSION=2.62
+#		export AUTOCONF_VERSION=2.62
 # net-snmp
         cd $MW_BUILDPATH/tmp
         rm -Rf net-snmp-5.7.3
@@ -193,5 +202,15 @@ export CC=gcc46
         --enable-mfd-rewrites --with-defaults
 	make
         install -s agent/snmpd $MW_BUILDPATH/t1n1fs/usr/local/sbin
+
+# msntp
+        export LIBS=-lm
+        cd $MW_BUILDPATH/tmp
+        rm -Rf msntp-1.6
+        tar -zxf $MW_BUILDPATH/freebsd10/build/local-sources/msntp-1.6.tar.gz
+        cd msntp-1.6
+        make
+        #don't install, t1n1wall expects sntp, not msntp, and crunchgen will alias it
+        #install -s msntp $MW_BUILDPATH/t1n1fs/sbin
 
 echo "Finished Stage 2"
