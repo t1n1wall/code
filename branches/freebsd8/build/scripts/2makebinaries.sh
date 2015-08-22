@@ -138,7 +138,7 @@ fi
 	install -s $WRKDIRPREFIX/$PORTSDIR/sysutils/mbmon/work/xmbmon*/mbmon $MW_BUILDPATH/t1n1fs/usr/local/bin/
 # wol
 	cd $PORTSDIR/net/wol
-	make WITHOUT_NLS=true
+	make WITHOUT=NLS
         install -s $WRKDIRPREFIX/$PORTSDIR/net/wol/work/wol-*/src/wol $MW_BUILDPATH/t1n1fs/usr/local/bin/
 
 
