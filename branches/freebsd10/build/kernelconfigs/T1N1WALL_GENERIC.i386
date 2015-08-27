@@ -4,7 +4,7 @@ cpu		I586_CPU
 cpu		I686_CPU
 ident		T1N1WALL_GENERIC
 
-makeoptions	MODULES_OVERRIDE="dummynet glxsb aesni padlock ipfw acpi if_tap if_vlan"
+makeoptions	MODULES_OVERRIDE="dummynet glxsb aesni padlock ipfw if_tap if_vlan"
 
 options		HZ=1000
 
@@ -56,6 +56,7 @@ options		IPSTEALTH
 # Bus support.
 device		eisa
 device		pci
+device		acpi
 
 # Floppy drives
 device		fdc
@@ -95,7 +96,7 @@ device			ncv			# NCR 53C500
 device			nsp			# Workbit Ninja SCSI-3
 device			stg			# TMC 18C30/18C50
 device			isci			  # Intel C600 SAS controller
-
+options 	CAM_BOOT_DELAY=4000
 
 # RAID controllers
 device		aac				# Adaptec FSA RAID
