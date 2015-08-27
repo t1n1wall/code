@@ -44,10 +44,14 @@ Valid disks are:
 
 EOD;
 
+	$cfdevice = trim(file_get_contents("/var/etc/cfdevice"));
+
 	foreach ($disks as $disk) {
-		$info = storage_read_diskinfo($disk);
-		$name = storage_disk_get_name($disk);
-		echo $disk . "\t$name\t" . format_bytes($info['sizeinbytes']) . "\n";
+		if ($disk != $cfdevice) {
+			$info = storage_read_diskinfo($disk);
+			$name = storage_disk_get_name($disk);
+			echo $disk . "\t$name\t" . format_bytes($info['sizeinbytes']) . "\n";
+		}
 	}
 
 	do {
@@ -56,7 +60,7 @@ EOD;
 		if ($target_disk === "") {
 			exit(0);
 		}
-	} while (!in_array($target_disk, $disks));
+	} while (!in_array($target_disk, $disks) && ($target_disk != $cfdevice));
 	
 	
 	echo <<<EOD
@@ -79,13 +83,17 @@ EOD;
 		
 		/* mount CD-ROM */
 		@mkdir("/cdrom");
-		if (mwexec("/sbin/mount -r -t cd9660 /dev/acd0 /cdrom") != 0 && mwexec("/sbin/mount -r -t cd9660 /dev/cd0 /cdrom") != 0) {
+		if (mwexec("/sbin/mount -r -t cd9660 /dev/acd0 /cdrom") != 0 && mwexec("/sbin/mount -r -t cd9660 /dev/cd0 /cdrom") != 0 && !file_exists("/cf/firmware.img")) {
 			echo "failed! (cannot mount CD-ROM)";
-		} else if (!file_exists("/cdrom/firmware.img")) {
+		} else if (!file_exists("/cdrom/firmware.img") && !file_exists("/cf/firmware.img")) {
 			echo "failed! (firmware not found)\n";
 		} else {
 			echo "Applying image to disk .... ";
-			mwexec("/usr/bin/gunzip -S \"\" -c /cdrom/firmware.img | dd of=/dev/$target_disk ibs=64k obs=64k");
+			if (file_exists("/cf/firmware.img")) {
+				mwexec("/usr/bin/gunzip -S \"\" -c /cf/firmware.img | dd of=/dev/$target_disk ibs=64k obs=64k");
+			} else {
+				mwexec("/usr/bin/gunzip -S \"\" -c /cdrom/firmware.img | dd of=/dev/$target_disk ibs=64k obs=64k");
+			}
 			echo "done\n";
 			
 			/* copy existing configuration */

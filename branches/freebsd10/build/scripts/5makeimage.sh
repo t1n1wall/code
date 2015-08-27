@@ -38,9 +38,14 @@ makemfsroot() {
 makeimage() {
 	PLATFORM=$1
 	SPARESPACE=$2
+	FIRMWAREIMG=$3
 	
-	echo -n "Making image for $PLATFORM..."
-	
+	if [ $FIRMWAREIMG ]; then
+		echo -n "Making image for $PLATFORM with $FIRMWAREIMG firmware..."
+	else 
+		echo -n "Making image for $PLATFORM..."
+	fi
+
 	# Make staging area to help calc space
 	mkdir $MW_BUILDPATH/tmp/firmwaretmp
 	
@@ -48,6 +53,10 @@ makeimage() {
 	cp $MW_BUILDPATH/tmp/mfsroot-$PLATFORM.gz $MW_BUILDPATH/tmp/firmwaretmp/mfsroot.gz
 	cp /boot/{loader,loader.rc} $MW_BUILDPATH/tmp/firmwaretmp
 	cp $MW_BUILDPATH/t1n1fs/conf.default/config.xml $MW_BUILDPATH/tmp/firmwaretmp
+
+	if [ $FIRMWAREIMG ]; then
+		cp $MW_BUILDPATH/images/$FIRMWAREIMG-$VERSION.img $MW_BUILDPATH/tmp/firmwaretmp
+	fi
 
 	cd $MW_BUILDPATH/tmp
 	dd if=/dev/zero of=image.bin bs=1k count=`du -d0 $MW_BUILDPATH/tmp/firmwaretmp  | cut -b1-5 | tr " " "+" | xargs -I {} echo "($SPARESPACE)+{}" | bc` > /dev/null 2>&1
@@ -68,14 +77,22 @@ makeimage() {
 		cp $MW_BUILDPATH/freebsd10/build/boot/$PLATFORM/boot.config /mnt
 	fi
 
+	
+	if [ $FIRMWAREIMG ]; then
+		cp $MW_BUILDPATH/images/$FIRMWAREIMG-$VERSION.img /mnt/firmware.img
+	fi
+	
 	mkdir /mnt/conf
 	cp $MW_BUILDPATH/t1n1fs/conf.default/config.xml /mnt/conf
 	cd $MW_BUILDPATH/tmp
 	umount /mnt
 	mdconfig -d -u 30
 	gzip -9f image.bin
-	mv image.bin.gz $MW_BUILDPATH/images/$PLATFORM-$VERSION.img
-	
+	if [ $FIRMWAREIMG ]; then
+		mv image.bin.gz $MW_BUILDPATH/images/$PLATFORM-installer-$VERSION.img
+	else
+		mv image.bin.gz $MW_BUILDPATH/images/$PLATFORM-$VERSION.img
+	fi
 	echo " done"
 }
 
@@ -87,6 +104,8 @@ makeimage() {
 # Make firmware img with 2MB space 	
 	makeimage generic-pc 2048
 	makeimage generic-pc-serial 2048
+	makeimage generic-pc 2048 generic-pc
+	makeimage generic-pc-serial 2048 generic-pc-serial
 	
 # Make ISO
 	echo -n "Making ISO..."
@@ -104,5 +123,9 @@ makeimage() {
         -quiet $MW_BUILDPATH/tmp/cdroot
 	mv t1n1wall.iso $MW_BUILDPATH/images/generic-pc-$VERSION.iso
 	echo " done"
+
+# Make installer images (serial and generic)
+	#Make firmware image that contains a firmware image
+
 
 echo "Finished Stage 5"
