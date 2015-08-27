@@ -293,3 +293,25 @@ device		rum		# Ralink Technology RT2501USB wireless NICs
 device		ural		# Ralink Technology RT2500USB wireless NICs
 device		zyd		# ZyDAS zb1211/zb1211b wireless NICs
 device		run		# Ralink Technology RT2700U/RT2800U/RT3000U wireless NICs
+
+# VirtIO support
+device          virtio                  # Generic VirtIO bus (required)
+device          virtio_pci              # VirtIO PCI device
+device          vtnet                   # VirtIO Ethernet device
+device          virtio_blk              # VirtIO Block device
+device          virtio_scsi             # VirtIO SCSI device
+device          virtio_balloon          # VirtIO Memory Balloon device
+
+# HyperV drivers and enchancement support
+# NOTE: HYPERV depends on hyperv.  They must be added or removed together.
+options         HYPERV                  # Hyper-V kernel infrastructure
+device          hyperv                  # HyperV drivers
+
+# Xen HVM Guest Optimizations
+# NOTE: XENHVM depends on xenpci.  They must be added or removed together.
+options         XENHVM                  # Xen HVM kernel infrastructure
+device          xenpci                  # Xen HVM Hypervisor services driver
+
+# VMware support
+device          vmx                     # VMware VMXNET3 Ethernet
+
