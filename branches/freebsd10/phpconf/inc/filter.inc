@@ -346,8 +346,8 @@ function filter_rules_generate_ipv6() {
 		return filter_rules_generate(true);
 	} else {
 		return <<<EOD
-block in quick family $inetfamily all
-block out quick family $inetfamily all
+block in quick family $inetfamily from any to any 
+block out quick family $inetfamily from any to any 
 
 EOD;
 	}
@@ -482,18 +482,18 @@ function filter_rules_generate($ipv6 = false) {
 	
 	$ipfrules = <<<EOD
 # loopback
-pass in quick on lo0 family $inetfamily all
-pass out quick on lo0 family $inetfamily all
+pass in quick on lo0 family $inetfamily from any to any 
+pass out quick on lo0 family $inetfamily from any to any 
 
 EOD;
 
 	if (!$ipv6) {
 		$ipfrules .= <<<EOD
 # block short packets
-block in $log quick family $inetfamily all with short
+block in $log quick family $inetfamily from any to any with short
 
 # block IP options
-block in $log quick family $inetfamily all with ipopts
+block in $log quick family $inetfamily from any to any with ipopts
 
 # allow access to DHCP server on LAN
 pass in quick on $lanif family $inetfamily proto udp from any port = 68 to 255.255.255.255 port = 67
@@ -836,24 +836,24 @@ EOD;
 	$ipfrules .= <<<EOD
 
 # Block TCP packets that do not mark the start of a connection
-skip 1 in family $inetfamily proto tcp all flags S/SAFR
+skip 1 in family $inetfamily proto tcp from any to any flags S/SAFR
 block in $log quick family $inetfamily proto tcp all
 
 #---------------------------------------------------------------------------
 # group head {$ifgroups['lan']} - LAN interface
 #---------------------------------------------------------------------------
-block in $log quick on $lanif family $inetfamily all head {$ifgroups['lan']}
+block in $log quick on $lanif family $inetfamily from any to any head {$ifgroups['lan']}
 
 # let out anything from the firewall host itself and decrypted IPsec traffic
-pass out quick on $lanif family $inetfamily all keep state $out_kf
+pass out quick on $lanif family $inetfamily from any to any keep state $out_kf
 
 #---------------------------------------------------------------------------
 # group head {$ifgroups['wan']} - WAN interface
 #---------------------------------------------------------------------------
-block in $log quick on $wanif family $inetfamily all head {$ifgroups['wan']}
+block in $log quick on $wanif family $inetfamily from any to any head {$ifgroups['wan']}
 
 # let out anything from the firewall host itself and decrypted IPsec traffic
-pass out quick on $wanif family $inetfamily all keep state $out_kf
+pass out quick on $wanif family $inetfamily from any to any keep state $out_kf
 
 EOD;
 
@@ -867,10 +867,10 @@ EOD;
 #---------------------------------------------------------------------------
 # group head {$ingroup} - {$on} interface
 #---------------------------------------------------------------------------
-block in $log quick on {$oc['if']} family $inetfamily all head {$ingroup}
+block in $log quick on {$oc['if']} family $inetfamily from any to any head {$ingroup}
 
 # let out anything from the firewall host itself and decrypted IPsec traffic
-pass out quick on {$oc['if']} family $inetfamily all keep state $out_kf
+pass out quick on {$oc['if']} family $inetfamily from any to any keep state $out_kf
 
 EOD;
 	
@@ -880,7 +880,7 @@ EOD;
 		$ipfrules .= <<<EOD
 
 # always pass outgoing IPsec encapsulated packets
-pass out quick on enc0 family $inetfamily all keep state $out_kf
+pass out quick on enc0 family $inetfamily from any to any keep state $out_kf
 
 EOD;
 	}
@@ -1198,8 +1198,8 @@ EOD;
 #---------------------------------------------------------------------------
 # default rules (just to be sure)
 #---------------------------------------------------------------------------
-block in $log quick family $inetfamily all
-block out $log quick family $inetfamily all
+block in $log quick family $inetfamily from any to any
+block out $log quick family $inetfamily from any to any 
 
 EOD;
 	
@@ -1235,7 +1235,7 @@ function filter_rules_spoofcheck_generate($ifname, $if, $sa, $sn, $log, $ipv6 = 
 		}
 
 		$ipfrules .= "skip 1 in on family $inetfamily $if from $sa/$sn to any\n";
-		$ipfrules .= "block in $log quick on $if family $inetfamily  all\n";
+		$ipfrules .= "block in $log quick on $if family $inetfamily  from any to any\n";
 	} else {
 		$ipfrules .= "block in $log quick on $if family $inetfamily  from ! $sa/$sn to any\n";
 	}
