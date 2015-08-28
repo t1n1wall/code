@@ -15,6 +15,17 @@ fi
 
 # patch kernel / sources
 		cd $MW_BUILDPATH/tmp
+# apuled kern/189772
+		mkdir apuled
+		cd apuled
+		tar -zxf $MW_BUILDPATH/freebsd10/build/local-sources/apuled.tgz
+		mkdir $MW_BUILDPATH/tmp/sys/dev/apuled
+		mkdir $MW_BUILDPATH/tmp/sys/modules/apuled 
+		cp apuled.c $MW_BUILDPATH/tmp/sys/dev/apuled
+		cp Makefile $MW_BUILDPATH/tmp/sys/modules/apuled
+		echo "dev/apuled/apuled.c             optional apuled" >> $MW_BUILDPATH/tmp/sys/conf/files.i386
+		cd $MW_BUILDPATH/tmp
+		rm -rf apuled
 #  6RD support
 #		patch -p0 < $MW_BUILDPATH/freebsd10/build/patches/kernel/stf_6rd_20100923-1.diff , 6RD not used yet
 		patch < $MW_BUILDPATH/freebsd10/build/patches/kernel/Makefile.orig.patch

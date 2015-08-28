@@ -67,7 +67,7 @@ EOD;
 
 *******************************************************************************
 * WARNING!                                                                    *
-* m0n0wall is about to be installed onto the $target_disk device.                      *
+* t1n1wall is about to be installed onto the $target_disk device.                      *
 * - everything on this device will be erased!                                 *
 * - this cannot be undone!                                                    *
 *******************************************************************************
