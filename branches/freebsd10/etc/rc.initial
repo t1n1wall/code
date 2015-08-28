@@ -78,7 +78,7 @@ case ${opmode} in
 	/etc/rc.initial.ping6
 	;;
 8)
-	if [ "$PLATFORM" = "generic-pc-cdrom" ]; then
+	if [ "$PLATFORM" = "generic-pc-cdrom" ] || [ -s /cf/firmware.img ] ; then
 		/etc/rc.initial.install
 	fi
 	;;
