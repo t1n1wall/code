@@ -33,6 +33,132 @@
 
 /* include all configuration functions */
 require_once("functions.inc");
+
+function fahrenheit_to_celsius($fahrenheit)
+{
+    $celsius=($fahrenheit-32)/1.8;
+    return $celsius;
+}
+
+function celsius_to_fahrenheit($celsius)
+{
+    $fahrenheit=($celsius*1.8)+32;
+    return $fahrenheit;
+}
+
+function get_system_temp_amdtemp() {
+ global $config;
+ $amdtemps=array();
+ if (mwexec("/sbin/sysctl dev.amdtemp.0.%desc") == 0) {
+  exec("/sbin/sysctl dev.amdtemp", $amdtemp, $error);
+    foreach ($amdtemp as $amdtempival) {
+      # find all descriptions as a key to instances
+        if (preg_match('/desc:/', $amdtempival)) {
+          # should match lines like dev.amdtemp.0.%desc: AMD CPU On-Die Thermal Sensors
+            $amdtemp_parts     = explode('.', $amdtempival);
+            $amdtempinstance   = $amdtemp_parts[2];
+            $sensor_desc_parts = explode(':', $amdtempival, 2);
+            $sensor_desc       = $sensor_desc_parts[1];
+            foreach ($amdtemp as $amdtempi) {
+              # find all values for the found instance, look for sensors
+              $amdregex = "/^dev\.amdtemp\." . $amdtempinstance . "\..*sensor\d:/";
+              if (preg_match($amdregex, $amdtempi)) {
+                # should match lines like dev.amdtemp.0.core0.sensor0: 53.0C
+                  $amdtemp_parts_2 = explode(':', $amdtempi, 2);
+                  $amdtempi_parts  = explode('.', $amdtemp_parts_2[0]);
+                  $amdtempkey = $sensor_desc ."/" . $amdtempi_parts[3] . "/" . $amdtempi_parts[4];
+                  if ( (substr($amdtemp_parts_2[1],-1) == "C") && ($config['system']['webgui']['mbmon']['type'] == 'F') ) {
+                  	#remove the trailing C and convert to the right unit type
+                    $amdtempval = celsius_to_fahrenheit(substr($amdtemp_parts_2[1],0,strlen($amdtemp_parts_2[1])-1));
+                  } else {
+                    $amdtempval = substr($amdtemp_parts_2[1],0,strlen($amdtemp_parts_2[1])-1);
+                  }
+                  $amdtemps[$amdtempkey] = $amdtempval;
+              }
+            }
+        }
+     }
+  }
+ return array($amdtemps);
+}
+
+function get_system_sensors_mbmon() {
+  global $config;
+  $mbmontemps=array();
+  $mbmonfans=array();
+  $mbmonvolts=array();
+  if ($config['system']['webgui']['mbmon']['type'] == 'F')
+          {
+            exec("/usr/local/bin/mbmon -f -c1 -r 2>/dev/null ", $mbmonop, $error);
+          }
+        else
+          {
+            exec("/usr/local/bin/mbmon -c1 -r 2>/dev/null ", $mbmonop, $error);
+          }
+  if (!$error)
+    {
+      $oldvolts  = array(
+          'V33',
+          'V50P',
+          'V12P',
+          'V12N',
+          'V50N'
+      );
+      $nicevolts = array(
+          '+3.3v',
+          '+5v',
+          '+12v',
+          '-12v',
+          '-5v'
+      );
+      foreach ($mbmonop as $mbival)
+        {
+          if (preg_match('/^TEMP/', $mbival))
+            # TEMP0 : 39.5
+            {
+              $mbmonp = explode(':', $mbival);
+              $mbmontempkey = str_replace('TEMP', 'Sensor ', $mbmonp[0]);
+              $mbmontemps[$mbmontempkey] = $mbmonp[1];
+            }
+          if (preg_match('/^FAN/', $mbival))
+                              {
+              $mbmonp = explode(':', $mbival);
+              $mbmonfankey = str_replace('FAN', 'Fan ', $mbmonp[0]);
+              $mbmonfans[$mbmonfankey] = $mbmonp[1];
+            }
+          if (preg_match('/^V\d+/', $mbival))
+                              {
+              $mbmonp = explode(':', $mbival);
+              $mbmonvoltkey = str_replace($oldvolts, $nicevolts, $mbmonp[0]);
+              $mbmonvolts[$mbmonvoltkey] = $mbmonp[1];
+            }
+          if (preg_match('/^VC/', $mbival)) {
+              $mbmonp = explode(':', $mbival);
+              $mbmonvoltkey = str_replace('VC', 'Core ', $mbmonp[0]);
+              $mbmonvolts[$mbmonvoltkey] = $mbmonp[1];
+          }
+
+
+        }
+  }
+  return array($mbmontemps,$mbmonfans,$mbmonvolts);
+}
+
+function get_system_sensors() {
+ $stemps=array();
+ $sfans=array();
+ $svolts=array();
+ 
+ list($stemps) = get_system_temp_amdtemp();
+
+ if ( !empty($stemps) ) {
+  return array($stemps,$sfans,$svolts);
+ } else {
+  list($stemps,$sfans,$svolts) = get_system_sensors_mbmon();
+  return array($stemps,$sfans,$svolts);
+ }
+}
+
 	
 function hwcrypto_descr() {
 	$dmesg = system_get_dmesg_boot();
