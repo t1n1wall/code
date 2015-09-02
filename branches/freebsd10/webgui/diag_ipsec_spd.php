@@ -92,7 +92,7 @@ if ($fd) {
 				$upperspec = explode("/", $linea[0]);
 				$cursp['proto'] = $upperspec[0];
 				list($cursp['ep_src'], $cursp['ep_dst']) = explode("-", $upperspec[2]);
-			} else if ($i == 3) {
+			} else if ($i == 5) {
 				$upperspec = explode("=", $linea[0]);
 				$cursp['spi'] = $upperspec[1];
 			}
@@ -104,7 +104,7 @@ if ($fd) {
 		$spd[$spi] = $cursp;
 	pclose($fd);
 }
-if (count($spd)):
+if (array_filter($spd)):
 ?>
 <form action="diag_ipsec_spd.php" method="post">
             <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="inner content pane">
