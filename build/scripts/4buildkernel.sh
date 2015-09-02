@@ -24,6 +24,7 @@ fi
 		cp apuled.c $MW_BUILDPATH/tmp/sys/dev/apuled
 		cp Makefile $MW_BUILDPATH/tmp/sys/modules/apuled
 		echo "dev/apuled/apuled.c             optional apuled" >> $MW_BUILDPATH/tmp/sys/conf/files.i386
+		echo "dev/apuled/apuled.c             optional apuled" >> $MW_BUILDPATH/tmp/sys/conf/files.amd64
 		cd $MW_BUILDPATH/tmp
 		rm -rf apuled
 #  6RD support
