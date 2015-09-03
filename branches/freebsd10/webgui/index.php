@@ -107,6 +107,11 @@ readfile("/etc/version.buildtime");
                   <?= htmlspecialchars(exec("/sbin/sysctl -n hw.model")); ?> 
                 </td>
               </tr>
+              <tr>
+                <td width="25%" class="vncellt">Memory</td>
+                <td width="75%" class="listr">
+                  <?= htmlspecialchars(ceil(exec("/sbin/sysctl -n hw.physmem") / (1024 * 1024) ). "MB"); ?> 
+                </td>
               </tr>
               <tr>
                 <td width="25%" class="vncellt">OS</td>
