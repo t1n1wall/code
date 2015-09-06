@@ -21,6 +21,9 @@ fi
 		pkg install -y gcc46
 		ln -s /usr/local/bin/gcc46 /usr/local/bin/gcc
 	fi
+	if [ ! -x /usr/local/bin/makedepend ]; then
+                pkg install -y makedepend 
+        fi
 
 	cd $MW_BUILDPATH
 

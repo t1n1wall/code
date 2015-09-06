@@ -679,16 +679,16 @@ function system_ntp_configure() {
                 }
 	
 	
-        if (isset($ntpdcfg['bindlan'])) {
+        if (isset($syscfg['ntpbindlan'])) {
                 $ntpdconf = "listen on {$config['interfaces']['lan']['ipaddr']}\n";
 	} else {
-		$ntpdconf = "listen on 127.0.0.1\n";
+		$ntpdconf = "127.0.0.1\n";
 	}
         $timeservers = "";
         foreach (explode(' ', $syscfg['timeservers']) as $ts) {
-		$ntpdconf .= "server " . $ts; 
+		$ntpdconf .= "server " . $ts . "\n"; 
 	}
-
+	
 	fwrite($fd, $ntpdconf);
         fclose($fd);
 	
