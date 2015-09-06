@@ -21,6 +21,7 @@ export CC=cc
 	echo "depend:" >> $MW_BUILDPATH/tmp/ez-ipupdate-3.0.11b8/Makefile
 #build some stuff that crunchgen doesn't build right
 	cd /usr/src/sbin/camcontrol && /usr/bin/make 	
+	cd /usr/src/lib/libcam && /usr/bin/make
 	cd /usr/src/sbin/ipfw && /usr/bin/make 	
 	cd /usr/src/sbin/ping6 && /usr/bin/make 	
 	cd /usr/src/sbin/reboot && /usr/bin/make 	
@@ -73,4 +74,4 @@ export CC=cc
 	perl $MW_BUILDPATH/freebsd10/build/minibsd/mklibs.pl $MW_BUILDPATH/t1n1fs > t1n1wall.libs
 	perl $MW_BUILDPATH/freebsd10/build/minibsd/mkmini.pl t1n1wall.libs / $MW_BUILDPATH/t1n1fs
 
-echo "Finished Stage 4.5"
+echo "Finished Stage 4"

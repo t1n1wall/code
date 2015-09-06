@@ -71,4 +71,4 @@ fi
         cd modules/$MW_BUILDPATH/tmp/sys/modules
         cp -v aesni/aesni.ko glxsb/glxsb.ko padlock/padlock.ko if_tap/if_tap.ko if_vlan/if_vlan.ko dummynet/dummynet.ko ipfw/ipfw.ko $MW_BUILDPATH/t1n1fs/boot/kernel
 
-echo "Finished Stage 4"
+echo "Finished Stage 5"

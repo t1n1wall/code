@@ -150,6 +150,11 @@ export CC=gcc46
 # mpd5
 	cd $PORTSDIR/net/mpd5
         make
+	# remove PAM
+	cd $PORTSDIR/net/mpd5/work/mpd-5.7/src
+	make clean
+	sed -i '' -e's/^USE_AUTH_PAM/#USE_AUTH_PAM/' Makefile
+	make
 	install -s $WRKDIRPREFIX/$PORTSDIR/net/mpd5/work/mpd-*/src/mpd5 $MW_BUILDPATH/t1n1fs/usr/local/sbin/
 # xmbmon
 	cd $PORTSDIR/sysutils/xmbmon
