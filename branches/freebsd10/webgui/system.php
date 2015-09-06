@@ -47,9 +47,8 @@ $pconfig['webguiport'] = $config['system']['webgui']['port'];
 $pconfig['timezone'] = $config['system']['timezone'];
 $pconfig['timeupdateinterval'] = $config['system']['time-update-interval'];
 $pconfig['timeservers'] = $config['system']['timeservers'];
+$pconfig['ntpbindlan'] = isset($config['system']['ntpbindlan']);
 
-if (!isset($pconfig['timeupdateinterval']))
-	$pconfig['timeupdateinterval'] = 300;
 if (!$pconfig['timezone'])
 	$pconfig['timezone'] = "Etc/UTC";
 if (!$pconfig['timeservers'])
@@ -106,6 +105,7 @@ if ($_POST) {
 			$input_errors[] = "A NTP Time Server name may only contain the characters a-z, 0-9, '-' and '.'.";
 		}
 	}
+	$config['system']['ntpbindlan'] = $_POST['ntpbindlan'] ? true : false;
 
 	if (!$input_errors) {
 		$config['system']['hostname'] = strtolower($_POST['hostname']);
@@ -273,7 +273,9 @@ if ($_POST) {
                   <td width="78%" class="vtable"> <input name="timeservers" type="text" class="formfld" id="timeservers" size="40" value="<?=htmlspecialchars($pconfig['timeservers']);?>"> 
                     <br> <span class="vexpl">Use a space to separate multiple 
                     hosts (only one required). Remember to set up at least one 
-                    DNS server if you enter a host name here!</span></td>
+                    DNS server if you enter a host name here!</span><br>
+		  <input name="ntpbindlan" type="checkbox" value="yes" <?php if ($pconfig['ntpbindlan']) echo "checked"; ?>>  <strong>Bind to LAN interface</strong></td>
+		    </span></td>
                 </tr>
                 <tr> 
                   <td width="22%" valign="top">&nbsp;</td>
