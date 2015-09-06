@@ -13,14 +13,13 @@ export CC=cc
 	# patch dnsmasq Makefile, consider a Makefile header ?
 	cp $MW_BUILDPATH/tmp/dnsmasq-2.66/Makefile /usr/t1n1wall/build10/tmp/dnsmasq-2.66/src/
 	echo "depend:" >> $MW_BUILDPATH/tmp/dnsmasq-2.66/src/Makefile
-	echo "depend:" >> $MW_BUILDPATH/tmp/msntp-1.6/Makefile
-	echo "depend:" >> $MW_BUILDPATH/tmp/ports/work/usr/t1n1wall/build10/tmp/ports/tree/security/ipsec-tools/work/ipsec-tools-0.8.2/src/setkey/Makefile
-	echo "depend:" >> $MW_BUILDPATH/tmp/ports/work/usr/t1n1wall/build10/tmp/ports/tree/security/ipsec-tools/work/ipsec-tools-0.8.2/src/racoon/Makefile
+	echo "depend:" >> $MW_BUILDPATH/tmp/ports/tree/security/ipsec-tools/work/ipsec-tools-0.8.2/src/setkey/Makefile
+	echo "depend:" >> $MW_BUILDPATH/tmp/ports/tree/security/ipsec-tools/work/ipsec-tools-0.8.2/src/racoon/Makefile
 	echo "depend:" >> $MW_BUILDPATH/tmp/modem-stats-1.0.1/Makefile
 	echo "depend:" >> $MW_BUILDPATH/tmp/dudders-1.04/Makefile
 	echo "depend:" >> $MW_BUILDPATH/tmp/php-4.4.9/Makefile
 	echo "depend:" >> $MW_BUILDPATH/tmp/ez-ipupdate-3.0.11b8/Makefile
-	#build some stuff that crunchgen doesn't build right
+#build some stuff that crunchgen doesn't build right
 	cd /usr/src/sbin/camcontrol && /usr/bin/make 	
 	cd /usr/src/sbin/ipfw && /usr/bin/make 	
 	cd /usr/src/sbin/ping6 && /usr/bin/make 	
@@ -35,15 +34,10 @@ export CC=cc
 	mkdir crunchgen
 	cd crunchgen
 	cp $MW_BUILDPATH/freebsd10/build/minibsd/t1n1box.conf .
-	cp $MW_BUILDPATH/freebsd10/build/minibsd/t1n1ipf.conf .
 	export CC=gcc46
 	/usr/bin/crunchgen -f t1n1box.conf
 	/usr/bin/make -f t1n1box.mk objs exe
 	install -s t1n1box $MW_BUILDPATH/t1n1fs/bin/
-	#export CC=cc
-	#/usr/bin/crunchgen -f t1n1ipf.conf
-	#/usr/bin/make -f t1n1ipf.mk objs exe
-	#install -s t1n1ipf $MW_BUILDPATH/t1n1fs/bin/
 
 	# clean up
 	cd /usr/src/sbin/camcontrol && /usr/bin/make clean
@@ -54,18 +48,21 @@ export CC=cc
 	cd /usr/src/usr.sbin/traceroute && /usr/bin/make clean
 	cd $MW_BUILDPATH/tmp
 
-# remove files that are crunched
+# remove files that were put in by stage 2 and are now part of crunched binary
 	rm -rf $MW_BUILDPATH/t1n1fs/usr/local/sbin/dnsmasq
 	rm -rf $MW_BUILDPATH/t1n1fs/usr/local/sbin/setkey
 	rm -rf $MW_BUILDPATH/t1n1fs/usr/local/sbin/racoon
+	rm -rf $MW_BUILDPATH/t1n1fs/usr/local/lib/libipsec.so.0
 	rm -rf $MW_BUILDPATH/t1n1fs/usr/local/bin/dudders
 	rm -rf $MW_BUILDPATH/t1n1fs/usr/local/bin/ez-ipupdate
 	rm -rf $MW_BUILDPATH/t1n1fs/sbin/modem-stats
-	#rm -rf $MW_BUILDPATH/t1n1fs/sbin/ipf/ipf
-	#rm -rf $MW_BUILDPATH/t1n1fs/sbin/ipf/ipfs
-	#rm -rf $MW_BUILDPATH/t1n1fs/sbin/ipf/ipmon
-	#rm -rf $MW_BUILDPATH/t1n1fs/sbin/ipf/ipnat
-	#rm -rf $MW_BUILDPATH/t1n1fs/sbin/ipf/ippool 
+	rm -rf $MW_BUILDPATH/t1n1fs/sbin/ipf
+	rm -rf $MW_BUILDPATH/t1n1fs/sbin/ipfs
+	rm -rf $MW_BUILDPATH/t1n1fs/sbin/ipmon
+	rm -rf $MW_BUILDPATH/t1n1fs/sbin/ipnat
+	rm -rf $MW_BUILDPATH/t1n1fs/sbin/ippool 
+	rm -rf $MW_BUILDPATH/t1n1fs/sbin/ipfstat
+	rm -rf $MW_BUILDPATH/t1n1fs/usr/local/sbin/mpd5
 #
 	cd $MW_BUILDPATH/tmp
 	perl $MW_BUILDPATH/freebsd10/build/minibsd/mkmini.pl $MW_BUILDPATH/freebsd10/build/minibsd/t1n1wall.files  / $MW_BUILDPATH/t1n1fs/

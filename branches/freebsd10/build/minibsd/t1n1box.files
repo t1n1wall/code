@@ -26,7 +26,7 @@ bin/t1n1box:sbin/kldstat
 bin/t1n1box:sbin/ifconfig
 bin/t1n1box:sbin/adjkerntz
 bin/t1n1box:sbin/dmesg
-bin/t1n1box:sbin/fastboot:sbin/fasthalt:sbin/halt:sbin/reboot
+bin/t1n1box:sbin/fastboot:sbin/fasthalt:sbin/halt
 bin/t1n1box:sbin/init
 bin/t1n1box:sbin/ipfw
 bin/t1n1box:sbin/kldload
@@ -60,7 +60,7 @@ bin/t1n1box:usr/bin/tar
 bin/t1n1box:usr/bin/top
 bin/t1n1box:usr/bin/touch
 # contents of usr/sbin
-bin/t1n1box:usr/sbin/sntp
+bin/t1n1box:usr/sbin/ntpd
 bin/t1n1box:usr/sbin/ancontrol
 bin/t1n1box:usr/sbin/arp
 bin/t1n1box:usr/sbin/chown
@@ -76,13 +76,14 @@ bin/t1n1box:usr/local/sbin/racoon
 bin/t1n1box:usr/local/sbin/setkey
 bin/t1n1box:usr/local/bin/dudders
 bin/t1n1box:usr/local/bin/ez-ipupdate
+bin/t1n1box:usr/local/sbin/mpd5
 bin/t1n1box:sbin/modem-stats
 
 # ipf userland tools
-#bin/t1n1ipf:sbin/ipf
-#bin/t1n1ipf:sbin/ipfs
-#bin/t1n1ipf:sbin/ipmon
-#bin/t1n1ipf:sbin/ipnat
-#bin/t1n1ipf:sbin/ippool
-
+bin/t1n1box:sbin/ipf
+bin/t1n1box:sbin/ipfs
+bin/t1n1box:sbin/ipmon
+bin/t1n1box:sbin/ipnat
+bin/t1n1box:sbin/ippool
+bin/t1n1box:sbin/ipfstat
 

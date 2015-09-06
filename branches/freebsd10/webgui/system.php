@@ -269,12 +269,6 @@ if ($_POST) {
                     to you</span></td>
                 </tr>
                 <tr> 
-                  <td width="22%" valign="top" class="vncell">Time update interval</td>
-                  <td width="78%" class="vtable"> <input name="timeupdateinterval" type="text" class="formfld" id="timeupdateinterval" size="4" value="<?=htmlspecialchars($pconfig['timeupdateinterval']);?>"> 
-                    <br> <span class="vexpl">Minutes between network time sync.; 
-                    300 recommended, or 0 to disable </span></td>
-                </tr>
-                <tr> 
                   <td width="22%" valign="top" class="vncell">NTP time server</td>
                   <td width="78%" class="vtable"> <input name="timeservers" type="text" class="formfld" id="timeservers" size="40" value="<?=htmlspecialchars($pconfig['timeservers']);?>"> 
                     <br> <span class="vexpl">Use a space to separate multiple 
