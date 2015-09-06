@@ -128,4 +128,4 @@ makeimage() {
 	#Make firmware image that contains a firmware image
 
 
-echo "Finished Stage 5"
+echo "Finished Stage 6"
