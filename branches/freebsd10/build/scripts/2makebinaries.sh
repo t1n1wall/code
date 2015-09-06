@@ -105,7 +105,7 @@ export CC=gcc46
 # ntpd
         export CC=cc
  	cd $PORTSDIR/net/openntpd
-        make CONFIGURE_ARGS=--with-privsep-user=root MASTER_SITE_OVERRIDE=http://ftp.heanet.ie/mirrors/OpenBSD/OpenNTPD/
+        make CONFIGURE_ARGS="--with-privsep-user=root --localstatedir=/var" MASTER_SITE_OVERRIDE=http://ftp.heanet.ie/mirrors/OpenBSD/OpenNTPD/
 	export CC=gcc46
 # ISC dhcp-server
         cd $PORTSDIR/net/isc-dhcp41-server
