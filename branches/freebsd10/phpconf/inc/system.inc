@@ -666,30 +666,34 @@ function system_ntp_configure() {
 	$syscfg = $config['system'];
 
 	if ($g['booting'])
-		echo "Starting NTP client... ";
+		echo "Starting OpenNTP server... ";
 	else {
-		killbypid("{$g['varrun_path']}/runsntp.pid");
-		killbypid("{$g['varrun_path']}/sntp.pid");
+		killbypid("{$g['varrun_path']}/ntpd.pid");
+	}
+	
+	/* write ntpd.conf */
+                $fd = fopen("{$g['varetc_path']}/ntpd.conf", "w");
+                if (!$fd) {
+                        printf("Error: cannot open ntpd.conf in system_ntp_start().\n");
+                        return 1;
+                }
+	
+	
+        if (isset($ntpdcfg['bindlan'])) {
+                $ntpdconf = "listen on {$config['interfaces']['lan']['ipaddr']}\n";
+	} else {
+		$ntpdconf = "listen on 127.0.0.1\n";
+	}
+        $timeservers = "";
+        foreach (explode(' ', $syscfg['timeservers']) as $ts) {
+		$ntpdconf .= "server " . $ts; 
 	}
 
-	/* start ntp client if needed - needs to be forced into background */
-	$updateinterval = $syscfg['time-update-interval'];
+	fwrite($fd, $ntpdconf);
+        fclose($fd);
 	
-	if ($updateinterval > 0) {
-		if ($updateinterval < 6)
-			$updateinterval = 6;
-		
-		$timeservers = "";
-		foreach (explode(' ', $syscfg['timeservers']) as $ts)
-			$timeservers .= " " . $ts;
-		
-		mwexec_bg("/usr/local/bin/runsntp.sh " .
-			escapeshellarg("{$g['varrun_path']}/runsntp.pid") . " " .
-			escapeshellarg("{$g['varrun_path']}/sntp.pid") . " " .
-			escapeshellarg($updateinterval) . " " .
-			escapeshellarg($timeservers));
-	}
-		
+	$returnval = mwexec("/usr/sbin/ntpd -s -f {$g['varetc_path']}/ntpd.conf -p {$g['varrun_path']}/ntpd.pid");
+
 	if ($g['booting'])
 		echo "done\n";
 }

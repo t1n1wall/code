@@ -12,7 +12,6 @@ export CC=gcc46
 # set working directory etc for ports compilation
 	rm -Rf $MW_BUILDPATH/tmp/ports/work
 	mkdir -p $MW_BUILDPATH/tmp/ports/work
-	export WRKDIRPREFIX=$MW_BUILDPATH/tmp/ports/work
         export PORTSDIR=$MW_BUILDPATH/tmp/ports/tree
 # set port options for ports that need user input
 	rm -Rf $MW_BUILDPATH/tmp/ports/db
@@ -69,21 +68,12 @@ export CC=gcc46
         cp ipfstat.c ipfstat.c.original
         patch < $MW_BUILDPATH/freebsd10/build/patches/user/ipfstat.c.patch
         cd /usr/src/sbin/ipf/
-        make libipf ipfstat
-        cp /usr/src/sbin/ipf/ipfstat/ipfstat $MW_BUILDPATH/t1n1fs/sbin
         make clean
+	make libipf ipfstat ipf ipfs ipmon ipnat ippool 
+        cp /usr/src/sbin/ipf/ipfstat/ipfstat $MW_BUILDPATH/t1n1fs/sbin
         cd /usr/src/contrib/ipfilter/tools/
         cp ipfstat.c.original ipfstat.c
 	export CC=gcc46
-# msntp
-	export LIBS=-lm
-	cd $MW_BUILDPATH/tmp
-        rm -Rf msntp-1.6
-        tar -zxf $MW_BUILDPATH/freebsd10/build/local-sources/msntp-1.6.tar.gz
-        cd msntp-1.6
-        make
-	#don't install, t1n1wall expects sntp, not msntp, and crunchgen will alias it
-        #install -s msntp $MW_BUILDPATH/t1n1fs/sbin
 # modem-stats
 	cd $MW_BUILDPATH/tmp
 	rm -Rf modem-stats-1.0.1
@@ -112,6 +102,11 @@ export CC=gcc46
         install -s dudders $MW_BUILDPATH/t1n1fs/usr/local/bin
         
 ######## FreeBSD ports ########
+# ntpd
+        export CC=cc
+ 	cd $PORTSDIR/net/openntpd
+        make CONFIGURE_ARGS=--with-privsep-user=root MASTER_SITE_OVERRIDE=http://ftp.heanet.ie/mirrors/OpenBSD/OpenNTPD/
+	export CC=gcc46
 # ISC dhcp-server
         cd $PORTSDIR/net/isc-dhcp41-server
         cp $MW_BUILDPATH/freebsd10/build/patches/packages/isc-dhcpd/patch-server.db.c files/
@@ -186,7 +181,6 @@ export CC=gcc46
         install -s voucher $MW_BUILDPATH/t1n1fs/usr/local/bin
         install -s croen $MW_BUILDPATH/t1n1fs/usr/local/bin
 	install -s ledindicator $MW_BUILDPATH/t1n1fs/usr/local/sbin
-        install runsntp.sh $MW_BUILDPATH/t1n1fs/usr/local/bin
         install ppp-linkup vpn-linkdown vpn-linkup $MW_BUILDPATH/t1n1fs/usr/local/sbin
 
 # select Autoconf version 2.62
@@ -202,15 +196,5 @@ export CC=gcc46
         --enable-mfd-rewrites --with-defaults
 	make
         install -s agent/snmpd $MW_BUILDPATH/t1n1fs/usr/local/sbin
-
-# msntp
-        export LIBS=-lm
-        cd $MW_BUILDPATH/tmp
-        rm -Rf msntp-1.6
-        tar -zxf $MW_BUILDPATH/freebsd10/build/local-sources/msntp-1.6.tar.gz
-        cd msntp-1.6
-        make
-        #don't install, t1n1wall expects sntp, not msntp, and crunchgen will alias it
-        #install -s msntp $MW_BUILDPATH/t1n1fs/sbin
 
 echo "Finished Stage 2"
