@@ -151,7 +151,7 @@ function get_system_sensors() {
  
  list($stemps) = get_system_temp_amdtemp();
 
- if ( !array_filter($stemps) ) {
+ if ( array_filter($stemps) ) {
   return array($stemps,$sfans,$svolts);
  } else {
   list($stemps,$sfans,$svolts) = get_system_sensors_mbmon();

@@ -50,7 +50,7 @@ device		cpufreq
 device          coretemp
 device          amdtemp
 
-#device		apuled
+device		apuled
 
 options		NO_SWAPPING
 options         DEVICE_POLLING
