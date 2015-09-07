@@ -65,14 +65,19 @@ export CC=gcc46
         cd /sbin
         cp ipf ipfs ipmon ipnat ippool $MW_BUILDPATH/t1n1fs/sbin
         cd /usr/src/contrib/ipfilter/tools/
-        cp ipfstat.c ipfstat.c.original
+        #leaves patched ipfstat.c in place for crunchgen
+	if [ -a ipfstat.c.original ]
+                then
+                cp ipfstat.c.original ipfstat.c
+	else
+		cp ipfstat.c ipfstat.c.original
+        fi
         patch < $MW_BUILDPATH/freebsd10/build/patches/user/ipfstat.c.patch
         cd /usr/src/sbin/ipf/
         make clean
 	make libipf ipfstat ipf ipfs ipmon ipnat ippool 
         cp /usr/src/sbin/ipf/ipfstat/ipfstat $MW_BUILDPATH/t1n1fs/sbin
         cd /usr/src/contrib/ipfilter/tools/
-        cp ipfstat.c.original ipfstat.c
 	export CC=gcc46
 # modem-stats
 	cd $MW_BUILDPATH/tmp

@@ -258,9 +258,9 @@ function fr_insline(id, on) {
 				  echo $textss . htmlspecialchars($iflabels[$shaperent['interface']]);
 				  echo "<br>";
 				  if ($shaperent['direction'] != "in")
-					$iconfn = "out{$dis}.gif";
+					$iconfn = "out{$dis}.png";
 				  else
-				    $iconfn = "in{$dis}.gif";
+				    $iconfn = "in{$dis}.png";
 				  echo "<input name=\"toggle_$i\" type=\"image\" src=\"$iconfn\" width=\"11\" height=\"11\" style=\"margin-top: 5px\" title=\"click to toggle enabled/disabled status\">";
 				  echo $textse;
 				  ?>
