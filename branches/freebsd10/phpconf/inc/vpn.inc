@@ -409,6 +409,7 @@ sainfo anonymous
         pfs_group                modp1024;
 }
 # end l2tp configuration
+
 EOD;
 			}
 			/* mobile clients? */

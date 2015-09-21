@@ -127,7 +127,7 @@ foreach ($spd as $sp): ?>
 		<td class="listt"><input type="checkbox" name="entries[]" value="<?=$args;?>" style="margin: 0 5px 0 0; padding: 0; width: 15px; height: 15px;"></td>
 		<td class="listlr" valign="top"><?=htmlspecialchars($sp['src']);?></td>
 		<td class="listr" valign="top"><?=htmlspecialchars($sp['dst']);?></td>
-		<td class="listr" valign="top"><img src="<?=$sp['dir'];?>.gif" width="11" height="11" style="margin-top: 2px"></td>
+		<td class="listr" valign="top"><img src="<?=$sp['dir'];?>.png" width="11" height="11" style="margin-top: 2px"></td>
 		<td class="listr" valign="top"><?=htmlspecialchars(strtoupper($sp['proto']));?></td>
 		<td class="listr" valign="top"><?=htmlspecialchars($sp['ep_src']);?> - <br>
 			<?=htmlspecialchars($sp['ep_dst']);?></td>
