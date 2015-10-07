@@ -1,13 +1,43 @@
-diff -rup srca/racoon/localconf.c srcb/racoon/localconf.c
---- src/racoon/localconf.c	2008-12-23 12:04:42.000000000 -0200
-+++ src/racoon/localconf.c	2011-04-25 15:44:24.000000000 -0300
-@@ -207,7 +207,8 @@ getpsk(str, len)
+--- src/racoon/localconf.c.orig	2015-10-07 21:37:48.000000000 +0100
++++ src/racoon/localconf.c	2015-10-07 21:38:04.000000000 +0100
+@@ -207,7 +207,8 @@
  		if (*p == '\0')
  			continue;	/* no 2nd parameter */
  		p--;
 -		if (strncmp(buf, str, len) == 0 && buf[len] == '\0') {
-+		if (strcmp(buf, "*") == 0 ||
-+		    (strncmp(buf, str, len) == 0 && buf[len] == '\0')) {
++               if (strcmp(buf, "*") == 0 ||
++                   (strncmp(buf, str, len) == 0 && buf[len] == '\0')) {
  			p++;
  			keylen = 0;
  			for (q = p; *q != '\0' && *q != '\n'; q++)
+--- src/racoon/oakley.c.orig	2015-10-07 21:37:49.000000000 +0100
++++ src/racoon/oakley.c	2015-10-07 21:38:04.000000000 +0100
+@@ -2386,6 +2386,7 @@
+ 	char *p;
+ 	int len;
+ 	int error = -1;
++	struct ipsecdoi_id_b *id_b;
+ 	
+ 	/* SKEYID */
+ 	switch (iph1->approval->authmethod) {
+@@ -2395,7 +2396,19 @@
+ 	case OAKLEY_ATTR_AUTH_METHOD_XAUTH_PSKEY_R:
+ #endif
+ 		if (iph1->etype != ISAKMP_ETYPE_IDENT) {
+-			iph1->authstr = getpskbyname(iph1->id_p);
++		  id_b = (struct ipsecdoi_id_b *)iph1->id_p->v;
++		
++		  if (id_b->type != IPSECDOI_ID_IPV4_ADDR
++                   && id_b->type != IPSECDOI_ID_IPV6_ADDR) {
++	                	iph1->authstr = getpskbyname(iph1->id_p);
++			} else {
++               			struct sockaddr addr;
++                		u_int8_t prefix;
++                		u_int16_t ul_proto;
++                        	if (!ipsecdoi_id2sockaddr(iph1->id_p, &addr, &prefix, &ul_proto)) {
++					iph1->authstr = getpskbyaddr(&addr);
++				}
++			}
+ 			if (iph1->authstr == NULL) {
+ 				if (iph1->rmconf->verify_identifier) {
+ 					plog(LLV_ERROR, LOCATION, iph1->remote,

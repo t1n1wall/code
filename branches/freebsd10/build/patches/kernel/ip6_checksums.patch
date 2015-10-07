@@ -1,0 +1,177 @@
+--- sys/netinet/tcp_input.c.original	2015-10-06 17:09:43.917601000 +0100
++++ sys/netinet/tcp_input.c	2015-10-06 17:12:40.674590000 +0100
+@@ -595,21 +595,12 @@
+ 		}
+ 
+ 		ip6 = mtod(m, struct ip6_hdr *);
+-		th = (struct tcphdr *)((caddr_t)ip6 + off0);
+ 		tlen = sizeof(*ip6) + ntohs(ip6->ip6_plen) - off0;
+-		if (m->m_pkthdr.csum_flags & CSUM_DATA_VALID_IPV6) {
+-			if (m->m_pkthdr.csum_flags & CSUM_PSEUDO_HDR)
+-				th->th_sum = m->m_pkthdr.csum_data;
+-			else
+-				th->th_sum = in6_cksum_pseudo(ip6, tlen,
+-				    IPPROTO_TCP, m->m_pkthdr.csum_data);
+-			th->th_sum ^= 0xffff;
+-		} else
+-			th->th_sum = in6_cksum(m, IPPROTO_TCP, off0, tlen);
+-		if (th->th_sum) {
++		if (in6_cksum(m, IPPROTO_TCP, off0, tlen)) {
+ 			TCPSTAT_INC(tcps_rcvbadsum);
+ 			goto drop;
+ 		}
++		th = (struct tcphdr *)((caddr_t)ip6 + off0);
+ 
+ 		/*
+ 		 * Be proactive about unspecified IPv6 address in source.
+--- sys/netinet/tcp_output.c.original	2015-10-06 16:48:18.650266000 +0100
++++ sys/netinet/tcp_output.c	2015-10-06 16:59:12.718992000 +0100
+@@ -1179,7 +1179,6 @@
+ 	 * checksum extended header and data.
+ 	 */
+ 	m->m_pkthdr.len = hdrlen + len; /* in6_cksum() need this */
+-	m->m_pkthdr.csum_data = offsetof(struct tcphdr, th_sum);
+ #ifdef INET6
+ 	if (isipv6) {
+ 		/*
+@@ -1187,8 +1186,8 @@
+ 		 * in ip6_output.
+ 		 */
+ 		m->m_pkthdr.csum_flags = CSUM_TCP_IPV6;
+-		th->th_sum = in6_cksum_pseudo(ip6, sizeof(struct tcphdr) +
+-		    optlen + len, IPPROTO_TCP, 0);
++		th->th_sum = in6_cksum(m, IPPROTO_TCP, sizeof(struct ip6_hdr), 
++					sizeof(struct tcphdr) + optlen + len); 
+ 	}
+ #endif
+ #if defined(INET6) && defined(INET)
+@@ -1197,6 +1196,7 @@
+ #ifdef INET
+ 	{
+ 		m->m_pkthdr.csum_flags = CSUM_TCP;
++		m->m_pkthdr.csum_data = offsetof(struct tcphdr, th_sum);
+ 		th->th_sum = in_pseudo(ip->ip_src.s_addr, ip->ip_dst.s_addr,
+ 		    htons(sizeof(struct tcphdr) + IPPROTO_TCP + len + optlen));
+ 
+--- sys/netinet/tcp_subr.c.original	2015-10-06 17:00:06.696707000 +0100
++++ sys/netinet/tcp_subr.c	2015-10-06 17:05:52.865283000 +0100
+@@ -682,12 +682,12 @@
+ 		nth->th_win = htons((u_short)win);
+ 	nth->th_urp = 0;
+ 
+-	m->m_pkthdr.csum_data = offsetof(struct tcphdr, th_sum);
+ #ifdef INET6
+ 	if (isipv6) {
+ 		m->m_pkthdr.csum_flags = CSUM_TCP_IPV6;
+-		nth->th_sum = in6_cksum_pseudo(ip6,
+-		    tlen - sizeof(struct ip6_hdr), IPPROTO_TCP, 0);
++		nth->th_sum = in6_cksum(m, IPPROTO_TCP,
++			sizeof(struct ip6_hdr),
++			tlen - sizeof(struct ip6_hdr));
+ 		ip6->ip6_hlim = in6_selecthlim(tp != NULL ? tp->t_inpcb :
+ 		    NULL, NULL);
+ 	}
+@@ -698,6 +698,7 @@
+ #ifdef INET
+ 	{
+ 		m->m_pkthdr.csum_flags = CSUM_TCP;
++		m->m_pkthdr.csum_data = offsetof(struct tcphdr, th_sum);
+ 		nth->th_sum = in_pseudo(ip->ip_src.s_addr, ip->ip_dst.s_addr,
+ 		    htons((u_short)(tlen - sizeof(struct ip) + ip->ip_p)));
+ 	}
+--- sys/netinet/tcp_syncache.c.original	2015-10-06 17:06:19.746207000 +0100
++++ sys/netinet/tcp_syncache.c	2015-10-06 17:07:47.751243000 +0100
+@@ -1542,12 +1542,12 @@
+ 		optlen = 0;
+ 
+ 	M_SETFIB(m, sc->sc_inc.inc_fibnum);
+-	m->m_pkthdr.csum_data = offsetof(struct tcphdr, th_sum);
+ #ifdef INET6
+ 	if (sc->sc_inc.inc_flags & INC_ISIPV6) {
+ 		m->m_pkthdr.csum_flags = CSUM_TCP_IPV6;
+-		th->th_sum = in6_cksum_pseudo(ip6, tlen + optlen - hlen,
+-		    IPPROTO_TCP, 0);
++		th->th_sum = 0;
++		th->th_sum = in6_cksum(m, IPPROTO_TCP, hlen,
++			 tlen + optlen - hlen);
+ 		ip6->ip6_hlim = in6_selecthlim(NULL, NULL);
+ #ifdef TCP_OFFLOAD
+ 		if (ADDED_BY_TOE(sc)) {
+@@ -1567,6 +1567,7 @@
+ #ifdef INET
+ 	{
+ 		m->m_pkthdr.csum_flags = CSUM_TCP;
++		m->m_pkthdr.csum_data = offsetof(struct tcphdr, th_sum);
+ 		th->th_sum = in_pseudo(ip->ip_src.s_addr, ip->ip_dst.s_addr,
+ 		    htons(tlen + optlen - hlen + IPPROTO_TCP));
+ #ifdef TCP_OFFLOAD
+--- sys/netinet/tcp_timewait.c.original	2015-10-06 17:08:06.793786000 +0100
++++ sys/netinet/tcp_timewait.c	2015-10-06 17:09:12.957608000 +0100
+@@ -616,12 +616,11 @@
+ 	th->th_flags = flags;
+ 	th->th_win = htons(tw->last_win);
+ 
+-	m->m_pkthdr.csum_data = offsetof(struct tcphdr, th_sum);
+ #ifdef INET6
+ 	if (isipv6) {
+ 		m->m_pkthdr.csum_flags = CSUM_TCP_IPV6;
+-		th->th_sum = in6_cksum_pseudo(ip6,
+-		    sizeof(struct tcphdr) + optlen, IPPROTO_TCP, 0);
++		th->th_sum = in6_cksum(m, IPPROTO_TCP, sizeof(struct ip6_hdr),
++			sizeof(struct tcphdr) + optlen);
+ 		ip6->ip6_hlim = in6_selecthlim(inp, NULL);
+ 		error = ip6_output(m, inp->in6p_outputopts, NULL,
+ 		    (tw->tw_so_options & SO_DONTROUTE), NULL, NULL, inp);
+@@ -633,6 +632,7 @@
+ #ifdef INET
+ 	{
+ 		m->m_pkthdr.csum_flags = CSUM_TCP;
++		m->m_pkthdr.csum_data = offsetof(struct tcphdr, th_sum);
+ 		th->th_sum = in_pseudo(ip->ip_src.s_addr, ip->ip_dst.s_addr,
+ 		    htons(sizeof(struct tcphdr) + optlen + IPPROTO_TCP));
+ 		ip->ip_len = htons(m->m_pkthdr.len);
+--- sys/netinet6/udp6_usrreq.c.original	2015-10-06 17:14:38.025141000 +0100
++++ sys/netinet6/udp6_usrreq.c	2015-10-06 17:20:35.235141000 +0100
+@@ -200,7 +200,6 @@
+	int plen, ulen;
+	struct sockaddr_in6 fromsa;
+	struct m_tag *fwd_tag;
+-	uint16_t uh_sum;
+	uint8_t nxt;
+
+	ifp = m->m_pkthdr.rcvif;
+@@ -260,18 +260,7 @@
+ 		}
+ 	}
+ 
+-	if ((m->m_pkthdr.csum_flags & CSUM_DATA_VALID_IPV6) &&
+-	    !cscov_partial) {
+-		if (m->m_pkthdr.csum_flags & CSUM_PSEUDO_HDR)
+-			uh_sum = m->m_pkthdr.csum_data;
+-		else
+-			uh_sum = in6_cksum_pseudo(ip6, ulen, nxt,
+-			    m->m_pkthdr.csum_data);
+-		uh_sum ^= 0xffff;
+-	} else
+-		uh_sum = in6_cksum_partial(m, nxt, off, plen, ulen);
+-
+-	if (uh_sum != 0) {
++	if (in6_cksum(m, IPPROTO_UDP, off, ulen) != 0) {
+ 		UDPSTAT_INC(udps_badsum);
+ 		goto badunlocked;
+ 	}
+@@ -833,9 +822,11 @@
+ 			    sizeof(struct ip6_hdr), plen, cscov)) == 0)
+ 				udp6->uh_sum = 0xffff;
+ 		} else {
+-			udp6->uh_sum = in6_cksum_pseudo(ip6, plen, nxt, 0);
+-			m->m_pkthdr.csum_flags = CSUM_UDP_IPV6;
+-			m->m_pkthdr.csum_data = offsetof(struct udphdr, uh_sum);
++			if ((udp6->uh_sum = in6_cksum(m, IPPROTO_UDP,
++				sizeof(struct ip6_hdr), plen)) == 0) {
++				udp6->uh_sum = 0xffff;
++				m->m_pkthdr.csum_flags = CSUM_UDP_IPV6;
++			}
+ 		}
+ 
+ 		flags = 0;
