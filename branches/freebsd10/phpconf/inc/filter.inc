@@ -814,13 +814,13 @@ EOD;
 			isset($config['ipsec']['mobileclients']['enable']) )) || ($l2tpdcfg['mode'] == "server") ) {
 		
 		if ($curwanip)
-			$ipfrules .= filter_rules_ipsec_generate($wanif, $curwanip);
+			$ipfrules .= filter_rules_ipsec_generate($wanif, $curwanip,$inetfamily);
 		
-		$ipfrules .= filter_rules_ipsec_generate($lanif, $lanip);
+		$ipfrules .= filter_rules_ipsec_generate($lanif, $lanip, $inetfamily);
 		
 		foreach ($optcfg as $on => $oc) {
 			if ($oc['ip'])
-				$ipfrules .= filter_rules_ipsec_generate($oc['if'], $oc['ip']);
+				$ipfrules .= filter_rules_ipsec_generate($oc['if'], $oc['ip'], $inetfamily);
 		}
 	}
 
@@ -837,7 +837,7 @@ EOD;
 
 # Block TCP packets that do not mark the start of a connection
 skip 1 in family $inetfamily proto tcp from any to any flags S/SAFR
-block in $log quick family $inetfamily proto tcp all
+block in $log quick family $inetfamily proto tcp from any to any
 
 #---------------------------------------------------------------------------
 # group head {$ifgroups['lan']} - LAN interface
@@ -1243,7 +1243,7 @@ function filter_rules_spoofcheck_generate($ifname, $if, $sa, $sn, $log, $ipv6 = 
 	return $ipfrules;
 }
 
-function filter_rules_ipsec_generate($ifname, $ip) {
+function filter_rules_ipsec_generate($ifname, $ip, $inetfamily) {
 
 	$ipfrules = <<<EOD
 
