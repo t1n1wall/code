@@ -46,8 +46,9 @@ bin/t1n1box:sbin/route
 bin/t1n1box:sbin/shutdown
 bin/t1n1box:sbin/sysctl
 bin/t1n1box:sbin/umount
-# contents of /usr/bin
 bin/t1n1box:usr/sbin/hostapd
+# contents of /usr/bin
+bin/t1n1box:usr/bin/fetch
 bin/t1n1box:usr/bin/su
 bin/t1n1box:usr/bin/gzip:usr/bin/gunzip
 bin/t1n1box:usr/bin/uptime:usr/bin/w
