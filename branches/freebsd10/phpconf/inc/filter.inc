@@ -83,6 +83,9 @@ function filter_configure($ipv4only = false) {
 		
 	fwrite($fd, $ipnatrules);
 	pclose($fd);
+
+	/* create pools */
+	filter_pools_configure(false,$ipv4only);
 	
 	/* generate ipf rules */
 	$ipfrules = filter_rules_generate();
@@ -104,6 +107,54 @@ function filter_configure($ipv4only = false) {
 	unlock_file("{$g['varrun_path']}/filter.lock");	
 
 	return 0;
+}
+
+function filter_pools_configure($updateonly = false, $ipv4only = false) {
+	global $config;
+	$ipfpools = filter_pools_generate($ipv4only);
+	if (($ipfpools != 1) && (!$updateonly)) {
+		/* flush pools */
+		exec("/sbin/ippool -F");
+		$fd = popen("/sbin/ippool -f - > /dev/null 2>&1", "w");
+		if (!$fd) {
+			printf("Cannot open /sbin/ippool in filter_pools_configure()\n");
+			unlock_file("{$g['varrun_path']}/filter.lock");	
+			return 1;
+		}
+
+		fwrite($fd, $ipfpools);
+		pclose($fd);
+	}
+
+}
+
+function filter_pools_generate($ipv4only = false) {
+	global $config;
+	$a_ippools = &$config['ippools']['ippool'];
+	$a_ippoolmembers = &$config['ippools']['ippoolmember'];
+	$havevalidpools = false;
+	if (isset($a_ippools) && isset($a_ippoolmembers)) {
+		foreach ($a_ippools as $ippools) {
+			$addrlist = "";
+			foreach ($a_ippoolmembers as $member) {
+				if ($member['poolid'] == $ippools['poolid']) {
+					list($addrpart,$subnetpart) = explode('/', $member['address']);
+					if (is_ipaddr4or6($addrpart)) {
+						$havevalidpools = true;
+						$addrlist .= $member['address'] . "; ";
+					}
+				}
+			}
+			if ($addrlist != "") {
+				$ipfpoolsyntax .= "table role = ipf type = tree name = \"" . $ippools['poolid'] . "\" {" . $addrlist . "};\n";
+			}
+		}
+	}
+
+	if (!$havevalidpools)
+	 return 1;
+
+	return $ipfpoolsyntax;
 }
 
 function filter_configure6() {
@@ -1069,6 +1120,12 @@ EOD;
 						case 'l2tp':
 							$src = "$l2tpsa/$l2tpsn";
 							break;
+						case 'ippool':
+							/* check pool exists, incase orphaned rule */
+							if (is_array(get_ippool_details($rule['source']['poolid']))) {
+								$src =  "pool/'" . $rule['source']['poolid'] . "'";
+							}
+							break;
 					}
 				}
 			} else if ($rule['source']['address']) {
@@ -1127,7 +1184,13 @@ EOD;
 							$dst = "$pptpsa/$pptpsn";
 							break;
 						case 'l2tp':
-							$src = "$l2tpsa/$l2tpsn";
+							$dst = "$l2tpsa/$l2tpsn";
+							break;
+						case 'ippool':
+							/* check pool exists, incase orphaned rule */
+							if (is_array(get_ippool_details($rule['destination']['poolid']))) {
+								$dst =  "pool/'" . $rule['destination']['poolid'] . "'";
+							}
 							break;
 					}
 				}

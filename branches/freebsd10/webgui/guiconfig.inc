@@ -1,6 +1,6 @@
 <?php
 /*
-	$Id: guiconfig.inc 541 2013-06-20 22:18:34Z awhite $
+	$Id: guiconfig.inc 576 2015-02-18 00:44:44Z awhite $
 	part of m0n0wall (http://m0n0.ch/wall)
 	
 	Copyright (C) 2003-2012 Manuel Kasper <mk@neon1.net>.
@@ -64,6 +64,8 @@ $d_dnsmasqdirty_path = $g['varrun_path'] . "/dnsmasq.dirty";
 $d_staticmapsdirty_path = $g['varrun_path'] . "/staticmaps.dirty";
 $d_staticroutesdirty_path = $g['varrun_path'] . "/staticroutes.dirty";
 $d_aliasesdirty_path = $g['varrun_path'] . "/aliases.dirty";
+$d_ippoolsdirty_path = $g['varrun_path'] . "/ippools.dirty";
+$d_ippoolmdirty_path = $g['varrun_path'] . "/ippoolm.dirty";
 $d_proxyarpdirty_path = $g['varrun_path'] . "/proxyarp.dirty";
 $d_fwupenabled_path = $g['varrun_path'] . "/fwup.enabled";
 $d_firmwarelock_path = $g['varrun_path'] . "/firmware.lock";
@@ -89,7 +91,7 @@ $iptos = array("lowdelay", "throughput", "reliability", "mincost", "congestion")
 /* TCP flags */
 $tcpflags = array("fin", "syn", "rst", "psh", "ack", "urg");
 
-$specialnets = array("wanip" => "WAN address", "lan" => "LAN net", "pptp" => "PPTP clients", "l2tp" => "L2TP clients");
+$specialnets = array("wanip" => "WAN address", "lan" => "LAN net", "pptp" => "PPTP clients", "l2tp" => "L2TP clients", "ippool" => "IP Pool");
 
 for ($i = 1; isset($config['interfaces']['opt' . $i]); $i++) {
 	$specialnets['opt' . $i] = $config['interfaces']['opt' . $i]['descr'] . " net";
@@ -222,7 +224,16 @@ function pprint_address($adr) {
 	if (isset($adr['any'])) {
 		$padr = "*";
 	} else if ($adr['network']) {
-		$padr = $specialnets[$adr['network']];
+		if ($adr['network'] == "ippool") {
+			$pooldetails = get_ippool_details($adr['poolid']);
+			if (is_array($pooldetails)) {
+				$padr = "IP Pool/" . $pooldetails[0];
+			} else {
+				$padr = "IP Pool/ ERROR, pool not found";
+			}
+		} else {
+			$padr = $specialnets[$adr['network']];
+		}
 	} else {
 		$padr = $adr['address'];
 	}
@@ -433,6 +444,16 @@ function aliases_sort() {
 	}
 
 	usort($config['aliases']['alias'], "aliascmp");
+}
+
+function ippools_sort() {
+	global $g, $config;
+
+	function ippoolcmp($a, $b) {
+		return strcmp($a['name'], $b['name']);
+	}
+
+	usort($config['ippools']['ippool'], "ippoolcmp");
 }
 
 function ipsec_mobilekey_sort() {

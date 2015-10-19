@@ -134,7 +134,7 @@ function is_ipaddr($ipaddr) {
 		return false;
 }
 
-/* returns true if $ipaddr is a valid IPv6 address with not prefix */
+/* returns true if $ipaddr is a valid IPv6 address with no prefix */
 function is_ipaddr6($ipaddr) {
 	if (!Net_IPv6::getNetmaskSpec($ipaddr)) {
 		return Net_IPv6::checkIPv6($ipaddr);
@@ -231,6 +231,24 @@ function is_subnet6($subnet) {
 	return true;
 }
 
+/* returns true if $subnet is a true  network address, and not just an ip (as other functions do) in CIDR format*/
+function is_networkaddr4or6($subnet) {
+	if (is_subnet($subnet)) {
+		list($hp,$np) = explode('/', $subnet);
+		/* get network address */
+		$network = long2ip((ip2long($hp)) & ((-1 << (32 - (int)$np))));
+		if ($hp == $network) {
+			return true;
+		}
+	}
+	else if (ipv6enabled() && (Net_IPv6::getNetmask($subnet) == ipv6Uncompress(Net_IPv6::removeNetmaskSpec($subnet)) ) ) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 /* returns true if $subnet is a valid subnet in CIDR format or an alias thereof */
 function is_subnetoralias($subnet) {
 	
@@ -321,6 +339,24 @@ function is_validaliasname($name) {
 	else
 		return false;
 }
+
+function is_validippoolname($name) {
+	if (!preg_match("/[^a-zA-Z0-9-]/", $name))
+		return true;
+	else
+		return false;
+}
+
+function get_ippool_details($poolid) {
+	global $config;
+	$ippools = &$config['ippools']['ippool'];
+
+	foreach ($ippools as $ippool) {
+		if ($ippool['poolid'] == $poolid)
+			return array($ippool['name'], $ippool['descr']);
+	}
+	return 0;
+}	
 
 /* returns true if $port is a valid TCP/UDP port */
 function is_port($port) {
