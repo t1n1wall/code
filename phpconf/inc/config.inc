@@ -1,6 +1,6 @@
 <?php
 /*
-	$Id: config.inc 554 2013-12-29 16:07:30Z awhite $
+	$Id: config.inc 536 2013-01-05 22:43:08Z lgrahl $
 	part of m0n0wall (http://m0n0.ch/wall)
 	
 	Copyright (C) 2003-2007 Manuel Kasper <mk@neon1.net>.
@@ -200,7 +200,22 @@ if (!$noparseconfig) {
 				if (strstr($g['platform'], "cdrom")) {
 					/* try copying the default config. to the floppy/USB stick */
 					echo "No XML configuration file found - using factory defaults.\n";
-					reset_factory_defaults();								
+					reset_factory_defaults();
+						
+					echo "Detecting LAN interface.\n";
+				
+				    $iflist = get_interface_list(true, false, false);
+				
+				    foreach ($iflist as $iface => $ifa) {
+				    	if ($ifa['up']) {
+				        	$config = parse_xml_config("{$g['conf_path']}/config.xml", $g['xml_rootobj']);
+							$config['interfaces']['lan']['if'] = $iface;
+							write_config();
+							echo "LAN set as {$iface} .\n";
+							break;
+						}
+					}
+								
 				} else {
 					echo "XML configuration file not found. m0n0wall cannot continue booting.\n"; 
 					mwexec("/sbin/halt");

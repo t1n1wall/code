@@ -76,6 +76,19 @@ if (isset($_POST['del_x']) && is_array($_POST['entries'])) {
 <?php print_info_box_np("The alias list has been changed.<br>You must apply the changes in order for them to take effect.");?><br>
 <input name="apply" type="submit" class="formbtn" id="apply" value="Apply changes"></p>
 <?php endif; ?>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="tab pane">
+  <tr><td class="tabnavtbl">
+  <ul id="tabnav">
+<?php 
+   	$tabs = array('Aliases' => 'firewall_aliases.php',
+           		  'IP Pools' => 'firewall_ippools.php');
+	dynamic_tab_menu($tabs);
+?>       
+  </ul>
+  </td></tr>
+  <tr> 
+    <td class="tabcont">
+
               <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="content pane">
                 <tr>
     			  <td width="5%" class="list">&nbsp;</td>
@@ -106,6 +119,10 @@ if (isset($_POST['del_x']) && is_array($_POST['entries'])) {
 					<a href="firewall_aliases_edit.php"><img src="plus.png" title="add alias" width="17" height="17" border="0" alt="add alias"></a></td>
 				</tr>
               </table>
+       	</td>
+	</tr>
+</table>
+
             </form>
 <p><span class="vexpl"><span class="red"><strong>Note:<br>
                 </strong></span>Aliases act as placeholders for real IP addresses 

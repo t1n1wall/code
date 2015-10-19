@@ -1,7 +1,7 @@
 #!/usr/local/bin/php
 <?php 
 /*
-	$Id: firewall_rules_edit.php 468 2011-06-06 19:34:13Z awhite $
+	$Id: firewall_rules_edit.php 576 2015-02-18 00:44:44Z awhite $
 	part of m0n0wall (http://m0n0.ch/wall)
 	
 	Copyright (C) 2003-2007 Manuel Kasper <mk@neon1.net>.
@@ -43,13 +43,16 @@ if ($ipv6rules = ($_GET['type'] == 'ipv6')) {
 $pgtitle = array("Firewall", "Rules", "Edit");	/* make group manager happy */
 $pgtitle = array("Firewall", ipv6enabled() ? ($ipv6rules ? 'IPv6 Rules' : 'IPv4 Rules') : 'Rules', "Edit");
 
-$specialsrcdst = explode(" ", "any wanip lan pptp l2tp");
+$specialsrcdst = explode(" ", "any ippool wanip lan pptp l2tp");
 
 if (!is_array($config['filter'][$configname])) {
 	$config['filter'][$configname] = array();
 }
 filter_rules_sort();
 $a_filter = &$config['filter'][$configname];
+
+ippools_sort();
+$a_ippools = &$config['ippools']['ippool'];
 
 $id = $_GET['id'];
 if (is_numeric($_POST['id']))
@@ -143,14 +146,22 @@ if (isset($id) && $a_filter[$id]) {
 	if ($a_filter[$id]['protocol'] == "icmp" || $a_filter[$id]['protocol'] == "ipv6-icmp")
 		$pconfig['icmptype'] = $a_filter[$id]['icmptype'];
 	
+	/* if(isset($a_filter[$id]['srcpoolid']))
+		$pconfig['srcpoolid'] = $a_filter[$id]['srcpoolid']; */
+	if(isset($a_filter[$id]['source']['poolid']))
+		$pconfig['srcpoolid'] = $a_filter[$id]['source']['poolid'];
+	
 	address_to_pconfig($a_filter[$id]['source'], $pconfig['src'],
-		$pconfig['srcmask'], $pconfig['srcnot'],
-		$pconfig['srcbeginport'], $pconfig['srcendport']);
-		
+			$pconfig['srcmask'], $pconfig['srcnot'],
+			$pconfig['srcbeginport'], $pconfig['srcendport']);
+
+	if(isset($a_filter[$id]['destination']['poolid']))
+		$pconfig['dstpoolid'] = $a_filter[$id]['destination']['poolid'];
+
 	address_to_pconfig($a_filter[$id]['destination'], $pconfig['dst'],
 		$pconfig['dstmask'], $pconfig['dstnot'],
 		$pconfig['dstbeginport'], $pconfig['dstendport']);
-
+	
 	$pconfig['disabled'] = isset($a_filter[$id]['disabled']);
 	$pconfig['log'] = isset($a_filter[$id]['log']);
 	$pconfig['frags'] = isset($a_filter[$id]['frags']);
@@ -322,7 +333,14 @@ if ($_POST) {
 		$filterent['log'] = $_POST['log'] ? true : false;
 		$filterent['frags'] = $_POST['frags'] ? true : false;
 		$filterent['descr'] = $_POST['descr'];
-		
+	
+		if ($_POST['dst'] == "ippool") 
+	    	/* $filterent['dstpoolid'] = $_POST['dstpoolid']; */
+	    	$filterent['destination']['poolid'] = $_POST['dstpoolid'];
+
+	    if ($_POST['src'] == "ippool") 
+	    	$filterent['source']['poolid'] = $_POST['srcpoolid'];
+
 		if (isset($id) && $a_filter[$id])
 			$a_filter[$id] = $filterent;
 		else {
@@ -390,16 +408,24 @@ function typesel_change() {
 			document.iform.src.disabled = 0;
 			document.iform.srcmask.value = "";
 			document.iform.srcmask.disabled = 1;
+			document.iform.srcpoolid.disabled = 1;
 			break;
-		case 2:	/* network */
+		case 2:	/* ippool */
+			document.iform.src.disabled = 1;
+			document.iform.srcmask.disabled = 1;
+			document.iform.srcpoolid.disabled = 0;
+			break;
+		case 3:	/* network */
 			document.iform.src.disabled = 0;
 			document.iform.srcmask.disabled = 0;
+			document.iform.srcpoolid.disabled = 1;
 			break;
 		default:
 			document.iform.src.value = "";
 			document.iform.src.disabled = 1;
 			document.iform.srcmask.value = "";
 			document.iform.srcmask.disabled = 1;
+			document.iform.srcpoolid.disabled = 1;
 			break;
 	}
 	switch (document.iform.dsttype.selectedIndex) {
@@ -407,16 +433,24 @@ function typesel_change() {
 			document.iform.dst.disabled = 0;
 			document.iform.dstmask.value = "";
 			document.iform.dstmask.disabled = 1;
+			document.iform.dstpoolid.disabled = 1;
+			break;
+		case 2:	/* ippool */
+			document.iform.dst.disabled = 1;
+			document.iform.dstmask.disabled = 1;
+			document.iform.dstpoolid.disabled = 0;
 			break;
 		case 2:	/* network */
 			document.iform.dst.disabled = 0;
 			document.iform.dstmask.disabled = 0;
+			document.iform.dstpoolid.disabled = 1;
 			break;
 		default:
 			document.iform.dst.value = "";
 			document.iform.dst.disabled = 1;
 			document.iform.dstmask.value = "";
 			document.iform.dstmask.disabled = 1;
+			document.iform.dstpoolid.disabled = 1;
 			break;
 	}
 }
@@ -574,23 +608,32 @@ Hint: the difference between block and reject is that with reject, a packet (TCP
                             any</option>
                             <option value="single" <?php if (($pconfig['srcmask'] == $maxnetmask) && !$sel) { echo "selected"; $sel = 1; } ?>>
                             Single host or alias</option>
+                            <option value="ippool" <?php if ($pconfig['src'] == "ippool") { echo "selected"; } ?>>
+                            IP Pool</option>
                             <option value="network" <?php if (!$sel) echo "selected"; ?>>
                             Network</option>
-                            <option value="wanip" <?php if ($pconfig['src'] == "wanip") { echo "selected"; } ?>>
+                            <option value="wanip"   <?php if ($pconfig['src'] == "wanip") { echo "selected"; } ?>>
                             WAN address</option>
-                            <option value="lan" <?php if ($pconfig['src'] == "lan") { echo "selected"; } ?>>
+                            <option value="lan"     <?php if ($pconfig['src'] == "lan") { echo "selected"; } ?>>
                             LAN subnet</option>
 							<?php if (!$ipv6rules): ?>
-                            <option value="pptp" <?php if ($pconfig['src'] == "pptp") { echo "selected"; } ?>>
+                            <option value="pptp"    <?php if ($pconfig['src'] == "pptp") { echo "selected"; } ?>>
                             PPTP clients</option>
-                            <option value="l2tp" <?php if ($pconfig['src'] == "l2tp") { echo "selected"; } ?>>
+                            <option value="l2tp"    <?php if ($pconfig['src'] == "l2tp") { echo "selected"; } ?>>
                             L2TP clients</option>
 							<?php endif; ?>
 							<?php for ($i = 1; isset($config['interfaces']['opt' . $i]); $i++): ?>
                             <option value="opt<?=$i;?>" <?php if ($pconfig['src'] == "opt" . $i) { echo "selected"; } ?>>
                             <?=htmlspecialchars($config['interfaces']['opt' . $i]['descr']);?> subnet</option>
 							<?php endfor; ?>
-                          </select></td>
+                          </select>
+                          /
+                          <select name="srcpoolid" class="formfld" id="srcpoolid">
+                          <?php $i = 0; foreach ($a_ippools as $ippool): ?>
+                          <option value="<?=$ippool['poolid'];?>" <?php if ($ippool['poolid'] == $pconfig['srcpoolid']) echo "selected"; ?>><?=$ippool['name'];?></option>
+						  <?php endforeach; ?>
+						  </select>
+                          </td>
                       </tr>
                       <tr> 
                         <td>Address:&nbsp;&nbsp;</td>
@@ -664,6 +707,8 @@ Hint: the difference between block and reject is that with reject, a packet (TCP
                             any</option>
                             <option value="single" <?php if (($pconfig['dstmask'] == $maxnetmask) && !$sel) { echo "selected"; $sel = 1; } ?>>
                             Single host or alias</option>
+                            <option value="ippool" <?php if ($pconfig['dst'] == "ippool") { echo "selected"; } ?>>
+                            IP Pool</option>
                             <option value="network" <?php if (!$sel) echo "selected"; ?>>
                             Network</option>
                             <option value="wanip" <?php if ($pconfig['dst'] == "wanip") { echo "selected"; } ?>>
@@ -680,7 +725,13 @@ Hint: the difference between block and reject is that with reject, a packet (TCP
                             <option value="opt<?=$i;?>" <?php if ($pconfig['dst'] == "opt" . $i) { echo "selected"; } ?>>
                             <?=htmlspecialchars($config['interfaces']['opt' . $i]['descr']);?> subnet</option>
 							<?php endfor; ?>
-                          </select></td>
+                          </select>
+                          /
+                          <select name="dstpoolid" class="formfld" id="dstpoolid">
+                          <?php $i = 0; foreach ($a_ippools as $ippool): ?>
+                          <option value="<?=$ippool['poolid'];?>" <?php if ($ippool['poolid'] == $pconfig['dstpoolid']) echo "selected"; ?>><?=$ippool['name'];?></option>
+						  <?php endforeach; ?>
+						  </td>
                       </tr>
                       <tr> 
                         <td>Address:&nbsp;&nbsp;</td>
