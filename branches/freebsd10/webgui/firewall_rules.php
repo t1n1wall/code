@@ -1,7 +1,7 @@
 #!/usr/local/bin/php
 <?php 
 /*
-	$Id: firewall_rules.php 557 2014-01-11 20:05:02Z awhite $
+	$Id: firewall_rules.php 576 2015-02-18 00:44:44Z awhite $
 	part of m0n0wall (http://m0n0.ch/wall)
 	
 	Copyright (C) 2003-2007 Manuel Kasper <mk@neon1.net>.
@@ -78,7 +78,11 @@ if ($_POST) {
 		
 		if (!file_exists($d_sysrebootreqd_path)) {
 			config_lock();
-			$retval = filter_configure();
+			if ($configname == 'rule6') {
+				$retval = filter_configure6();
+			} else {
+				$retval = filter_configure(true);
+			}
 			config_unlock();
 		}
 		$savemsg = get_std_save_message($retval);

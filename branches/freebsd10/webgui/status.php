@@ -131,12 +131,15 @@ defCmdT("Kernel modules loaded", "/sbin/kldstat");
 
 defCmdT("ipfw show", "/sbin/ipfw show");
 defCmdT("ipnat -lv", "/sbin/ipnat -lv");
+defCmdT("ippool -l", "/sbin/ippool -l");
+defCmdT("ippool -s", "/sbin/ippool -s");
 defCmdT("ipfstat -v", "/sbin/ipfstat -v");
 defCmdT("ipfstat -nio", "/sbin/ipfstat -nio");
 if (ipv6enabled())
 	defCmdT("ipfstat -6 -nio", "/sbin/ipfstat -6 -nio");
 
 defStrT("unparsed ipnat rules", filter_nat_rules_generate());
+defStrT("unparsed ippool definitions", filter_pools_generate());
 defStrT("unparsed ipfilter rules", filter_rules_generate());
 if (ipv6enabled())
 	defStrT("unparsed IPv6 ipfilter rules", filter_rules_generate_ipv6());

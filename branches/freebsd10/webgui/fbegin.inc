@@ -134,7 +134,7 @@ $menu['Firewall']['Traffic shaper'] = array('firewall_shaper.php',
 											'firewall_shaper_pipes.php',
 							  				'firewall_shaper_queues.php',
 											'firewall_shaper_magic.php');
-$menu['Firewall']['Aliases']        = array('firewall_aliases.php');
+$menu['Firewall']['Aliases + IPpools']        = array('firewall_aliases.php');
 
 $menu['Services']['DNS forwarder']	= array('services_dnsmasq.php');
 $menu['Services']['Dynamic DNS'] 	= array('services_dyndns.php');
@@ -215,7 +215,7 @@ $menu['Diagnostics']['Reboot system'] 	= array('reboot.php');
 <?php require_once("fmeta.inc"); ?>
 <link href="gui.css" rel="stylesheet" type="text/css">
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-</head>
+<script type="text/javascript">if (top != self) {top.location.href = self.location.href;}</script></head>
 
 <body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 <script type="text/javascript">
@@ -249,7 +249,7 @@ function showhide(tspan, tri) {
 </script>
 <table width="750" border="0" cellspacing="0" cellpadding="2" summary="outer first pane">
   <tr valign="bottom"> 
-    <td width="150" height="65" align="center" valign="middle"> <strong><a href="http://t1n1wall.com" target="_blank"><img src="/logo.png" width="150" height="47" border="0" alt=""></a></strong></td>
+    <td width="150" height="65" align="center" valign="middle"> <strong><a href="http://m0n0.ch/wall" target="_blank"><img src="/logo.png" width="150" height="47" border="0" alt=""></a></strong></td>
     <td height="65" bgcolor="#228b22">
 	<table border="0" cellspacing="0" cellpadding="0" width="100%" summary="header pane">
 	<tr><td align="left" valign="bottom"><span class="tfrtitle">&nbsp;webGUI 
@@ -316,4 +316,3 @@ dynamic_menu($menu['Diagnostics'], 'Diagnostics');
 <?php if (!$pgtitle_omit): ?>
       <p class="pgtitle"><?=gentitle($pgtitle);?></p>
 <?php endif; ?>
-
